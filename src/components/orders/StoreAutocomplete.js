@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const StoreList = (props) => {
+const StoreAutocomplete = (props) => {
   const { stores, handleChange } = props;
   return (
     <Autocomplete
@@ -23,4 +23,4 @@ const StoreList = (props) => {
     />
   );
 };
-export default StoreList;
+export default StoreAutocomplete;

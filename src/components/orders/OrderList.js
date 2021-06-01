@@ -12,6 +12,7 @@ import {
   TableRow,
   IconButton,
   Grid,
+  Typography,
 } from "@material-ui/core";
 
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -90,33 +91,44 @@ const OrderList = ({ orders }) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Order Number</TableCell>
-              <TableCell align="right">Order Date</TableCell>
-              <TableCell align="left">Customer</TableCell>
-              <TableCell align="left">Store</TableCell>
-              <TableCell align="left">Status</TableCell>
-              <TableCell align="right">Options</TableCell>
+              <TableCell className="bold">
+                <Typography variant="h6">Order Number</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant="h6">Order Date</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Customer</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Store</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Status</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant="h6">Options</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
-          {orders &&
-            orders
-              .filter((order) => {
-                if (value === "") {
-                  return order;
-                } else if (
-                  order.customer.fullName
-                    .toLowerCase()
-                    .includes(value.toLowerCase())
-                ) {
-                  return order;
-                }
-                return null;
-              })
-              .map((order) => {
-                console.log(order);
-                return (
-                  <TableBody>
-                    <TableRow key={order.id}>
+          <TableBody>
+            {orders &&
+              orders
+                .filter((order) => {
+                  if (!order.customer.fullName) {
+                    return order;
+                  } else if (
+                    order.customer.fullName
+                      .toLowerCase()
+                      .includes(value.toLowerCase())
+                  ) {
+                    return order;
+                  }
+                  return null;
+                })
+                .map((order, i) => {
+                  return (
+                    <TableRow key={i}>
                       <TableCell component="th" scope="row">
                         {order.id}
                       </TableCell>
@@ -127,20 +139,14 @@ const OrderList = ({ orders }) => {
                       <TableCell align="left">{order.store.name}</TableCell>
                       <TableCell align="left">{order.status}</TableCell>
                       <TableCell align="right">
-                        <RouterLink
-                          to={"/orders/view/" + order.id}
-                          key={order.id}
-                        >
+                        <RouterLink to={"/orders/view/" + order.id}>
                           <IconButton>
                             <VisibilityIcon>
                               <OrderSummary order={order} />
                             </VisibilityIcon>
                           </IconButton>
                         </RouterLink>
-                        <RouterLink
-                          to={"/orders/edit/" + order.id}
-                          key={order.id}
-                        >
+                        <RouterLink to={"/orders/edit/" + order.id}>
                           <IconButton>
                             <EditIcon>
                               <OrderSummary order={order} />
@@ -152,9 +158,9 @@ const OrderList = ({ orders }) => {
                         </IconButton>
                       </TableCell>
                     </TableRow>
-                  </TableBody>
-                );
-              })}
+                  );
+                })}
+          </TableBody>
         </Table>
       </Paper>
     </React.Fragment>

@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const ShippingList = (props) => {
+const ShippingAutocomplete = (props) => {
   const { handleShipping } = props;
   //const { handleShipping } = props;
   const shippingMethods = [
@@ -31,4 +31,4 @@ const ShippingList = (props) => {
   );
 };
 
-export default ShippingList;
+export default ShippingAutocomplete;

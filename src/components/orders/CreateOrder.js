@@ -6,9 +6,9 @@ import { firestoreConnect } from "react-redux-firebase";
 import { createOrder } from "../../store/actions/orderActions";
 import { Redirect } from "react-router-dom";
 import OrderItems from "./OrderItems";
-import CustomerList from "./CustomerList";
-import StoreList from "./StoreList";
-import ShippingList from "./ShippingList";
+import CustomerAutocomplete from "./CustomerAutocomplete";
+import StoreAutocomplete from "./StoreAutocomplete";
+import ShippingAutocomplete from "./ShippingAutocomplete";
 import MaterialUIPickers from "./DatePicker";
 import moment from "moment";
 import { Grid, Typography, Paper } from "@material-ui/core";
@@ -97,26 +97,30 @@ class CreateOrder extends Component {
           </Grid>
         </Grid>
         <Paper className={classes.paper}>
-          <form className={classes.container} onSubmit={this.handleSubmit}>
+          <form
+            noValidate
+            className={classes.container}
+            onSubmit={this.handleSubmit}
+          >
             <Grid container spacing={5}>
               <Grid item xs>
                 <MaterialUIPickers handleDate={this.handleDate} />
               </Grid>
               <Grid item xs>
-                <StoreList
+                <StoreAutocomplete
                   id="store"
                   stores={stores}
                   handleChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs>
-                <CustomerList
+                <CustomerAutocomplete
                   customers={customers}
                   handleChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs>
-                <ShippingList handleShipping={this.handleShipping} />
+                <ShippingAutocomplete handleShipping={this.handleShipping} />
               </Grid>
             </Grid>
             <OrderItems />

@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const CustomerList = (props) => {
+const CustomerAutocomplete = (props) => {
   const { customers, handleChange } = props;
   return (
     <Autocomplete
@@ -14,10 +14,15 @@ const CustomerList = (props) => {
       renderOption={(customer) => customer.fullName}
       getOptionLabel={(customer) => customer.fullName}
       renderInput={(params) => (
-        <TextField {...params} label="Customer" placeholder="Search.." />
+        <TextField
+          {...params}
+          required
+          label="Customer"
+          placeholder="Search.."
+        />
       )}
     />
   );
 };
 
-export default CustomerList;
+export default CustomerAutocomplete;
