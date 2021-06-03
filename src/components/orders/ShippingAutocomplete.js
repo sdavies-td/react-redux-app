@@ -3,7 +3,7 @@ import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const ShippingAutocomplete = (props) => {
-  const { handleShipping } = props;
+  const { handleChange } = props;
   //const { handleShipping } = props;
   const shippingMethods = [
     { method: "Delivery", price: 15 },
@@ -15,7 +15,7 @@ const ShippingAutocomplete = (props) => {
       id="shipping"
       disableClearable
       options={shippingMethods}
-      onChange={handleShipping}
+      onChange={handleChange}
       renderOption={(option) => option.method}
       getOptionLabel={(option) => option.method}
       getOptionSelected={(option) => option.method}

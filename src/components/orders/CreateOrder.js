@@ -11,7 +11,7 @@ import StoreAutocomplete from "./StoreAutocomplete";
 import ShippingAutocomplete from "./ShippingAutocomplete";
 import MaterialUIPickers from "./DatePicker";
 import moment from "moment";
-import { Grid, Typography, Paper } from "@material-ui/core";
+import { Grid, Typography, Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = (theme) => ({
@@ -34,6 +34,7 @@ class CreateOrder extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleItems = this.handleItems.bind(this);
   }
   state = {
     orderDate: moment(new Date()).format("DD/MM/YYYY"),
@@ -46,12 +47,24 @@ class CreateOrder extends Component {
   handleChange(e, value) {
     const str = e.target.id;
     const id = str.substring(0, str.indexOf("-"));
+    const { createdAt, createdById, createdByName, ...store } = value;
     this.setState(
       {
-        [id]: value,
+        [id]: store,
       },
       () => {
-        //console.log(this.state);
+        //console.log(this.state.orderItems);
+      }
+    );
+  }
+
+  handleItems(list) {
+    this.setState(
+      {
+        orderItems: list,
+      },
+      () => {
+        //console.log(this.state.orderItems);
       }
     );
   }
@@ -86,9 +99,8 @@ class CreateOrder extends Component {
     );
   };
   render() {
-    const { auth, stores, customers, classes } = this.props;
+    const { auth, stores, customers, classes, items } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    //console.log(this.state);
     return (
       <div className={classes.root}>
         <Grid spacing={1}>
@@ -97,11 +109,7 @@ class CreateOrder extends Component {
           </Grid>
         </Grid>
         <Paper className={classes.paper}>
-          <form
-            noValidate
-            className={classes.container}
-            onSubmit={this.handleSubmit}
-          >
+          <form noValidate className={classes.container}>
             <Grid container spacing={5}>
               <Grid item xs>
                 <MaterialUIPickers handleDate={this.handleDate} />
@@ -120,15 +128,20 @@ class CreateOrder extends Component {
                 />
               </Grid>
               <Grid item xs>
-                <ShippingAutocomplete handleShipping={this.handleShipping} />
+                <ShippingAutocomplete handleChange={this.handleChange} />
               </Grid>
             </Grid>
-            <OrderItems />
-            <div>
-              <button>Create</button>
-            </div>
+            <OrderItems
+              classes={classes}
+              items={items}
+              handleItems={this.handleItems}
+            />
+            <Button variant="outlined" onClick={this.handleSubmit}>
+              Create Order
+            </Button>
           </form>
         </Paper>
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </div>
     );
   }
@@ -136,7 +149,6 @@ class CreateOrder extends Component {
 
 const mapStateToProps = (state) => {
   const db = state.firestore.ordered;
-  //console.log(db.suppliers);
   return {
     auth: state.firebase.auth,
     stores: db.stores,

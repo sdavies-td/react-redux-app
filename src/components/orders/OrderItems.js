@@ -1,95 +1,123 @@
 import React, { useState } from "react";
+import { TextField, IconButton, Grid, Typography } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 
-function OrderItems() {
+function OrderItems(props) {
   const [inputList, setInputList] = useState([
     {
       itemName: "",
       itemSupplier: "",
-      itemQty: "",
+      itemQty: null,
+      itemPrice: null,
     },
   ]);
 
-  const handleListChange = (e, index) => {
+  const handleListChange = (e, i) => {
+    // const { name, value } = e;
+    // console.log(e);
+    const str = e.target.id;
+    const value = e.target.innerHTML;
+    const id = str.substring(0, str.indexOf("-"));
+    const list = [...inputList];
+    list[i][id] = value;
+    setInputList(list);
+    props.handleItems(inputList);
+  };
+
+  const handleQtyChange = (e, i) => {
     const { name, value } = e.target;
 
     const list = [...inputList];
 
-    list[index][name] = value;
+    list[i][name] = parseInt(value);
 
     setInputList(list);
+    props.handleItems(list);
   };
 
   const handleAddInput = () => {
     setInputList([
       ...inputList,
-      { itemName: "", itemSupplier: "", itemQty: "" },
+      { itemName: "", itemSupplier: "", itemQty: null },
     ]);
   };
 
-  const handleRemoveInput = (index) => {
+  const handleRemoveInput = (e, i) => {
     const list = [...inputList];
-    list.splice(index, 1);
+    //console.log(i);
+    list.splice(i, 1);
     setInputList(list);
   };
-  //console.log(JSON.stringify(inputList, null, 2));
+  //console.log(props);
+  const { items, classes } = props;
   return (
     <div>
-      <h5 className="center">Order Items</h5>
-
+      <Grid spacing={1}>
+        <Grid className={classes.title} item xs={12}>
+          <Typography variant="h6">Add Order Items</Typography>
+        </Grid>
+      </Grid>
       {inputList.map((item, i) => {
         return (
-          <div key={i} className="row">
-            <div className="input-field col s3">
-              <label htmlFor="itemName">Item Name</label>
-              <input
-                type="text"
-                name="itemName"
-                value={item.itemName}
+          <Grid key={i} container spacing={4}>
+            <Grid item xs>
+              <Autocomplete
+                id="itemName"
+                autoSelect
                 onChange={(e) => handleListChange(e, i)}
+                disableClearable
+                options={items}
+                renderOption={(item) => item.name}
+                getOptionLabel={(item) => item.name}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Item Name"
+                    placeholder="Search.."
+                    value={item.itemName}
+                  />
+                )}
               />
-            </div>
-            <div className="input-field col s3">
-              <label htmlFor="itemSupplier">Supplier</label>
-              <input
+            </Grid>
+            <Grid item xs>
+              <TextField
+                id="itemSupplier"
                 type="text"
-                name="itemSupplier"
+                label="Supplier"
                 value={item.itemSupplier}
+                fullWidth
                 onChange={(e) => handleListChange(e, i)}
               />
-            </div>
-            <div className="input-field col s2">
-              <label htmlFor="itemQty">Quantity</label>
-              <input
-                type="text"
-                name="itemQty"
+            </Grid>
+            <Grid item xs>
+              <TextField
+                type="number"
+                id="itemQty"
+                label="Quantity"
                 value={item.itemQty}
-                onChange={(e) => handleListChange(e, i)}
+                fullWidth
+                onChange={(e) => handleQtyChange(e, i)}
               />
-            </div>
-            <div className="col s3">
+            </Grid>
+            <Grid item xs>
               {inputList.length !== 1 && (
-                <div
-                  type="button"
-                  value="Remove"
-                  onClick={handleRemoveInput}
-                  className="btn-floating btn-medium waves-effect waves-light
-                  red"
+                <IconButton
+                  color="secondary"
+                  onClick={(e) => handleRemoveInput(e, i)}
                 >
-                  <i className="material-icons">remove</i>
-                </div>
+                  <RemoveCircleIcon />
+                </IconButton>
               )}
               {inputList.length - 1 === i && (
-                <div
-                  type="button"
-                  value="Add"
-                  onClick={handleAddInput}
-                  className="btn-floating btn-medium waves-effect waves-light blue"
-                >
-                  <i className="material-icons">add</i>
-                </div>
+                <IconButton color="primary" onClick={handleAddInput}>
+                  <AddCircleIcon />
+                </IconButton>
               )}
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         );
       })}
     </div>

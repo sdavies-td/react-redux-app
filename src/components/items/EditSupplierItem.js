@@ -5,16 +5,7 @@ import { Redirect } from "react-router-dom";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  FormControl,
-  InputLabel,
-  Input,
-  Grid,
-  Typography,
-  FormControlLabel,
-  TextField,
-  Paper,
-} from "@material-ui/core";
+import { Grid, Typography, TextField, Paper } from "@material-ui/core";
 import Loader from "../layout/Loader";
 
 class EditSupplierItem extends Component {

@@ -9,12 +9,12 @@ import moment from "moment";
 
 export default function MaterialUIPickers(props) {
   const { handleDate } = props;
-  const date = moment(new Date()).format("YYYY-MM-DD");
+  const date = moment(new Date()).format("L");
   const [selectedDate, setSelectedDate] = React.useState(date);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    handleDate(date);
+    handleDate(moment(date));
   };
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -26,6 +26,7 @@ export default function MaterialUIPickers(props) {
         value={selectedDate}
         onChange={handleDateChange}
         variant="inline"
+        fullWidth
       />
     </MuiPickersUtilsProvider>
   );
