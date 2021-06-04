@@ -19,16 +19,18 @@ const styles = (theme) => ({
   root: {
     alignItems: "center",
     justifyContent: "center",
-    padding: theme.spacing(4),
-    margin: theme.spacing(2),
   },
   header: {
-    marginBottom: "20px",
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    display: "flex",
+    padding: theme.spacing(2),
   },
-  subHeader: {
+  title: {
+    fontSize: "1.6rem",
+    fontWeight: "Medium",
+  },
+  subTitle: {
     marginTop: "40px",
     marginBottom: "20px",
     alignItems: "center",
@@ -40,7 +42,6 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   paper: {
-    width: "80%",
     padding: theme.spacing(4),
     margin: theme.spacing(2),
   },
@@ -55,10 +56,9 @@ const styles = (theme) => ({
   },
   row: {
     display: "flex",
-    justifyContent: "space-between",
   },
   item: {
-    width: "100%",
+    width: "150px",
     marginLeft: "20px",
     marginRight: "20px",
   },
@@ -133,12 +133,12 @@ class CreateOrder extends Component {
     const { auth, stores, customers, classes, items } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     return (
-      <div className={classes.root}>
+      <Grid className={classes.root}>
+        <Grid className={classes.header}>
+          <Typography className={classes.title}>Create an Order</Typography>
+        </Grid>
         <Grid container className={classes.body}>
           <Paper className={classes.paper}>
-            <Grid className={classes.header}>
-              <Typography variant="h5">Create an Order</Typography>
-            </Grid>
             <form
               noValidate
               onSubmit={this.handleSubmit}
@@ -191,8 +191,7 @@ class CreateOrder extends Component {
             </form>
           </Paper>
         </Grid>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
-      </div>
+      </Grid>
     );
   }
 }

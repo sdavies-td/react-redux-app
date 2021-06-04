@@ -10,13 +10,9 @@ function OrderItems(props) {
       itemName: "",
       itemSupplier: "",
       itemQty: null,
-      itemPrice: null,
     },
   ]);
-
   const handleListChange = (e, i) => {
-    // const { name, value } = e;
-    // console.log(e);
     const str = e.target.id;
     const value = e.target.innerHTML;
     const id = str.substring(0, str.indexOf("-"));
@@ -25,48 +21,40 @@ function OrderItems(props) {
     setInputList(list);
     props.handleItems(inputList);
   };
-
   const handleQtyChange = (e, i) => {
-    const { name, value } = e.target;
-
+    const { id, value } = e.target;
     const list = [...inputList];
-
-    list[i][name] = parseInt(value);
-
+    list[i][id] = value;
     setInputList(list);
-    props.handleItems(list);
+    props.handleItems(inputList);
   };
-
   const handleAddInput = () => {
     setInputList([
       ...inputList,
       { itemName: "", itemSupplier: "", itemQty: null },
     ]);
   };
-
-  const handleRemoveInput = (e, i) => {
+  const handleRemoveInput = (i) => {
     const list = [...inputList];
-    //console.log(i);
     list.splice(i, 1);
     setInputList(list);
   };
-  //console.log(props);
   const { items, classes } = props;
   return (
     <div>
       <Grid className={classes.subHeader}>
-        <Typography variant="h6">Add Order Items</Typography>
+        <Typography className={classes.subTitle}>Add Order Items</Typography>
       </Grid>
-      {inputList.map((item, i) => {
+      {inputList.map((x, i) => {
         return (
           <Grid key={i} className={classes.row}>
             <Grid className={classes.item}>
               <Autocomplete
                 id="itemName"
                 autoSelect
-                onChange={(e) => handleListChange(e, i)}
                 disableClearable
                 options={items}
+                onChange={(e) => handleListChange(e, i)}
                 renderOption={(item) => item.name}
                 getOptionLabel={(item) => item.name}
                 renderInput={(params) => (
@@ -75,7 +63,7 @@ function OrderItems(props) {
                     required
                     label="Item Name"
                     placeholder="Search.."
-                    value={item.itemName}
+                    value={x.itemName}
                   />
                 )}
               />
@@ -85,8 +73,8 @@ function OrderItems(props) {
                 id="itemSupplier"
                 type="text"
                 label="Supplier"
-                value={item.itemSupplier}
-                fullWidth
+                value={x.itemSupplier}
+                required
                 onChange={(e) => handleListChange(e, i)}
               />
             </Grid>
@@ -95,8 +83,8 @@ function OrderItems(props) {
                 type="number"
                 id="itemQty"
                 label="Quantity"
-                value={item.itemQty}
-                fullWidth
+                value={x.itemQty}
+                required
                 onChange={(e) => handleQtyChange(e, i)}
               />
             </Grid>
@@ -104,7 +92,7 @@ function OrderItems(props) {
               {inputList.length !== 1 && (
                 <IconButton
                   color="secondary"
-                  onClick={(e) => handleRemoveInput(e, i)}
+                  onClick={() => handleRemoveInput(i)}
                 >
                   <RemoveCircleIcon />
                 </IconButton>
@@ -118,6 +106,7 @@ function OrderItems(props) {
           </Grid>
         );
       })}
+      <pre>{JSON.stringify(inputList, null, 2)}</pre>
     </div>
   );
 }

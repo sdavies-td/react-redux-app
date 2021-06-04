@@ -26,7 +26,7 @@ const Navbar = (props) => {
 
   return (
     <AppBar className={classes.root}>
-      <Toolbar>
+      <Toolbar className={classes.toolbar}>
         <Grid
           container
           direction="row"

@@ -16,8 +16,14 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   header: {
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    padding: theme.spacing(1),
+  },
+  title: {
+    fontSize: "1.6rem",
+    fontWeight: "Medium",
   },
   body: {
     alignItems: "center",
@@ -33,7 +39,7 @@ class ItemsDashboard extends Component {
       return (
         <Grid className={classes.root}>
           <Grid container className={classes.header}>
-            <Typography variant="h5">Items</Typography>
+            <Typography className={classes.title}>Order Items</Typography>
             <IconButton color="primary" component={Link} to="/items/create">
               <AddCircleIcon />
             </IconButton>
