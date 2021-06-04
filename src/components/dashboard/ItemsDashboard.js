@@ -5,39 +5,47 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Paper, Grid, IconButton, Typography } from "@material-ui/core";
+import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Loader from "../layout/Loader";
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    margin: theme.spacing(2),
+    alignItems: "center",
+    justifyContent: "center",
   },
-  paper: { padding: theme.spacing(2) },
-  iconButton: {},
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 class ItemsDashboard extends Component {
   render() {
     const { items, auth, classes } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    return (
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs>
-            <Paper className={classes.paper}>
-              <Typography variant="h6">Items</Typography>
-              <IconButton color="primary" component={Link} to="/items/create">
-                <AddCircleIcon />
-              </IconButton>
-              <ItemList items={items} />
-            </Paper>
+    if (items) {
+      return (
+        <Grid className={classes.root}>
+          <Grid container className={classes.header}>
+            <Typography variant="h5">Items</Typography>
+            <IconButton color="primary" component={Link} to="/items/create">
+              <AddCircleIcon />
+            </IconButton>
+          </Grid>
+          <Grid container className={classes.body}>
+            <ItemList items={items} />
           </Grid>
         </Grid>
-      </div>
-    );
+      );
+    } else {
+      return <Loader />;
+    }
   }
 }
 

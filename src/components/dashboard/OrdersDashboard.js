@@ -8,12 +8,20 @@ import { Link } from "react-router-dom";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Loader from "../layout/Loader";
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    margin: theme.spacing(2),
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
@@ -21,17 +29,23 @@ class OrdersDashboard extends Component {
   render() {
     const { orders, auth, classes } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    return (
-      <div className={classes.root}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Typography variant="h5">Customer Orders</Typography>
-          <IconButton color="primary" component={Link} to="/orders/create">
-            <AddCircleIcon />
-          </IconButton>
+    if (orders) {
+      return (
+        <Grid className={classes.root}>
+          <Grid container className={classes.header}>
+            <Typography variant="h5">Customer Orders</Typography>
+            <IconButton color="primary" component={Link} to="/orders/create">
+              <AddCircleIcon />
+            </IconButton>
+          </Grid>
+          <Grid container className={classes.body}>
+            <OrderList orders={orders} />
+          </Grid>
         </Grid>
-        <OrderList orders={orders} />
-      </div>
-    );
+      );
+    } else {
+      return <Loader />;
+    }
   }
 }
 

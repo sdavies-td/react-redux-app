@@ -27,6 +27,7 @@ export default function MaterialUIPickers(props) {
         onChange={handleDateChange}
         variant="inline"
         fullWidth
+        required
       />
     </MuiPickersUtilsProvider>
   );

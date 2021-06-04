@@ -13,20 +13,54 @@ import MaterialUIPickers from "./DatePicker";
 import moment from "moment";
 import { Grid, Typography, Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    margin: theme.spacing(2),
-  },
-  paper: {
-    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "center",
     padding: theme.spacing(4),
     margin: theme.spacing(2),
   },
-  title: {
-    textAlign: "center",
+  header: {
+    marginBottom: "20px",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+  },
+  subHeader: {
+    marginTop: "40px",
+    marginBottom: "20px",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    width: "80%",
+    padding: theme.spacing(4),
+    margin: theme.spacing(2),
+  },
+  button: {
+    marginTop: "100px",
+    justifyContent: "center",
+    display: "flex",
+  },
+  buttonRow: {
+    marginLeft: "20px",
+    marginRight: "20px",
+  },
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  item: {
+    width: "100%",
+    marginLeft: "20px",
+    marginRight: "20px",
   },
 });
 
@@ -43,7 +77,6 @@ class CreateOrder extends Component {
     shipping: "",
     orderItems: [],
   };
-
   handleChange(e, value) {
     const str = e.target.id;
     const id = str.substring(0, str.indexOf("-"));
@@ -57,7 +90,6 @@ class CreateOrder extends Component {
       }
     );
   }
-
   handleItems(list) {
     this.setState(
       {
@@ -68,7 +100,6 @@ class CreateOrder extends Component {
       }
     );
   }
-
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createOrder(this.state);
@@ -103,44 +134,63 @@ class CreateOrder extends Component {
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     return (
       <div className={classes.root}>
-        <Grid spacing={1}>
-          <Grid className={classes.title} item xs={12}>
-            <Typography variant="h5">Create Order</Typography>
-          </Grid>
-        </Grid>
-        <Paper className={classes.paper}>
-          <form noValidate className={classes.container}>
-            <Grid container spacing={5}>
-              <Grid item xs>
-                <MaterialUIPickers handleDate={this.handleDate} />
-              </Grid>
-              <Grid item xs>
-                <StoreAutocomplete
-                  id="store"
-                  stores={stores}
-                  handleChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <CustomerAutocomplete
-                  customers={customers}
-                  handleChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <ShippingAutocomplete handleChange={this.handleChange} />
-              </Grid>
+        <Grid container className={classes.body}>
+          <Paper className={classes.paper}>
+            <Grid className={classes.header}>
+              <Typography variant="h5">Create an Order</Typography>
             </Grid>
-            <OrderItems
-              classes={classes}
-              items={items}
-              handleItems={this.handleItems}
-            />
-            <Button variant="outlined" onClick={this.handleSubmit}>
-              Create Order
-            </Button>
-          </form>
-        </Paper>
+            <form
+              noValidate
+              onSubmit={this.handleSubmit}
+              className={classes.container}
+            >
+              <Grid className={classes.row}>
+                <Grid className={classes.item}>
+                  <MaterialUIPickers handleDate={this.handleDate} />
+                </Grid>
+                <Grid className={classes.item}>
+                  <StoreAutocomplete
+                    id="store"
+                    stores={stores}
+                    handleChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid className={classes.item}>
+                  <CustomerAutocomplete
+                    customers={customers}
+                    handleChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid className={classes.item}>
+                  <ShippingAutocomplete handleChange={this.handleChange} />
+                </Grid>
+              </Grid>
+              <OrderItems
+                classes={classes}
+                items={items}
+                handleItems={this.handleItems}
+              />
+              <Grid className={classes.button}>
+                <Grid className={classes.buttonRow}>
+                  <Button
+                    onClick={this.handleCancel}
+                    variant="outlined"
+                    color="secondary"
+                    component={Link}
+                    to="/orders"
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+                <Grid className={classes.buttonRow}>
+                  <Button type="submit" variant="outlined" color="primary">
+                    Create
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Grid>
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </div>
     );

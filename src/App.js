@@ -24,9 +24,9 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <ToastContainer />
         <div className="App">
           <Navbar />
+          <ToastContainer />
           <Switch>
             <Route exact path="/items" component={ItemsDashboard} />
             <Route exact path="/items/view/:id" component={ItemDetails} />

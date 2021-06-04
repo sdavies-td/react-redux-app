@@ -54,15 +54,13 @@ function OrderItems(props) {
   const { items, classes } = props;
   return (
     <div>
-      <Grid spacing={1}>
-        <Grid className={classes.title} item xs={12}>
-          <Typography variant="h6">Add Order Items</Typography>
-        </Grid>
+      <Grid className={classes.subHeader}>
+        <Typography variant="h6">Add Order Items</Typography>
       </Grid>
       {inputList.map((item, i) => {
         return (
-          <Grid key={i} container spacing={4}>
-            <Grid item xs>
+          <Grid key={i} className={classes.row}>
+            <Grid className={classes.item}>
               <Autocomplete
                 id="itemName"
                 autoSelect
@@ -82,7 +80,7 @@ function OrderItems(props) {
                 )}
               />
             </Grid>
-            <Grid item xs>
+            <Grid className={classes.item}>
               <TextField
                 id="itemSupplier"
                 type="text"
@@ -92,7 +90,7 @@ function OrderItems(props) {
                 onChange={(e) => handleListChange(e, i)}
               />
             </Grid>
-            <Grid item xs>
+            <Grid className={classes.item}>
               <TextField
                 type="number"
                 id="itemQty"
@@ -102,7 +100,7 @@ function OrderItems(props) {
                 onChange={(e) => handleQtyChange(e, i)}
               />
             </Grid>
-            <Grid item xs>
+            <Grid className={classes.item}>
               {inputList.length !== 1 && (
                 <IconButton
                   color="secondary"

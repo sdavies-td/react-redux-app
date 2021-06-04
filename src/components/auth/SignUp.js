@@ -1,8 +1,34 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { signUp } from "../../store/actions/authActions";
-import { Button, Icon } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = (theme) => ({
+  root: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    padding: theme.spacing(4),
+    margin: theme.spacing(2),
+  },
+  button: {
+    padding: theme.spacing(1),
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 class SignUp extends Component {
   state = {
@@ -22,51 +48,73 @@ class SignUp extends Component {
     this.props.signUp(this.state);
   };
   render() {
-    const { auth } = this.props;
+    const { auth, classes } = this.props;
     if (auth.uid) return <Redirect to="/orders" />;
     return (
-      <div className="container">
-        <div className="row center">
-          <h4>Sign Up</h4>
-        </div>
-        <form onSubmit={this.handleSubmit} className="white">
-          <div className="input-field ">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="validate"
-              required=""
-              aria-required="true"
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="input-field">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" id="firstName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id="lastName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="orderPin">Order Pin</label>
-            <input type="number" id="orderPin" onChange={this.handleChange} />
-          </div>
-          <Button
-            type="submit"
-            variant="outlined"
-            color="primary"
-            size="large"
-            endIcon={<Icon>send</Icon>}
-          >
-            Send
-          </Button>
-        </form>
+      <div className={classes.root}>
+        <Grid spacing={1}>
+          <Grid container className={classes.header}>
+            <Typography variant="h5">Sign Up</Typography>
+          </Grid>
+        </Grid>
+        <Grid container className={classes.body}>
+          <Paper className={classes.paper}>
+            <form onSubmit={this.handleSubmit} className="white">
+              <Grid item xs>
+                <TextField
+                  id="email"
+                  label="Email"
+                  type="email"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  id="password"
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  type="text"
+                  label="First Name"
+                  id="firstName"
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  type="text"
+                  label="Last Name"
+                  id="lastName"
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  type="number"
+                  label="Order Pin"
+                  id="orderPin"
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid item xs className={classes.button}>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                >
+                  Sign Up
+                </Button>
+              </Grid>
+            </form>
+          </Paper>
+        </Grid>
       </div>
     );
   }
@@ -82,4 +130,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, { withTheme: true })
+)(SignUp);

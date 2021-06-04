@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -139,20 +139,20 @@ const OrderList = ({ orders }) => {
                       <TableCell align="left">{order.store.name}</TableCell>
                       <TableCell align="left">{order.status}</TableCell>
                       <TableCell align="right">
-                        <RouterLink to={"/orders/view/" + order.id}>
+                        <Link to={"/orders/view/" + order.id}>
                           <IconButton>
                             <VisibilityIcon>
                               <OrderSummary order={order} />
                             </VisibilityIcon>
                           </IconButton>
-                        </RouterLink>
-                        <RouterLink to={"/orders/edit/" + order.id}>
+                        </Link>
+                        <Link to={"/orders/edit/" + order.id}>
                           <IconButton>
                             <EditIcon>
                               <OrderSummary order={order} />
                             </EditIcon>
                           </IconButton>
-                        </RouterLink>
+                        </Link>
                         <IconButton>
                           <DeleteIcon />
                         </IconButton>

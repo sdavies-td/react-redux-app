@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 const SignedOutLinks = () => {
   return (
     <React.Fragment>
-      <Button component={Link} to="/signin">
+      <Button component={Link} to="/auth/signin">
         Sign In
       </Button>
-      <Button component={Link} to="/signup">
+      <Button component={Link} to="/auth/signup">
         Sign Up
       </Button>
     </React.Fragment>
