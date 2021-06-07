@@ -42,8 +42,8 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(2),
+    padding: theme.spacing(8),
+    margin: theme.spacing(4),
   },
   button: {
     marginTop: "100px",
@@ -196,8 +196,9 @@ class CreateOrder extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const db = state.firestore.ordered;
+  console.log(ownProps);
   return {
     auth: state.firebase.auth,
     stores: db.stores,

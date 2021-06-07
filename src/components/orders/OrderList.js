@@ -66,6 +66,7 @@ const OrderList = ({ orders }) => {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+  const [, ...rest] = orders;
   return (
     <React.Fragment>
       <Grid container direction="row" justify="center" alignItems="center">
@@ -112,8 +113,8 @@ const OrderList = ({ orders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders &&
-              orders
+            {rest &&
+              rest
                 .filter((order) => {
                   if (!order.customer.fullName) {
                     return order;
@@ -130,7 +131,7 @@ const OrderList = ({ orders }) => {
                   return (
                     <TableRow key={i}>
                       <TableCell component="th" scope="row">
-                        {order.id}
+                        {order.orderCount}
                       </TableCell>
                       <TableCell align="right">{order.orderDate}</TableCell>
                       <TableCell align="left">

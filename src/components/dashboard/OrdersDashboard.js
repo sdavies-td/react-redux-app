@@ -56,9 +56,11 @@ class OrdersDashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const orders = state.firestore.ordered.orders;
+  const auth = state.firebase.auth;
   return {
-    orders: state.firestore.ordered.orders,
-    auth: state.firebase.auth,
+    orders,
+    auth,
   };
 };
 

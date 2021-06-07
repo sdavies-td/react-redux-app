@@ -106,9 +106,10 @@ function OrderItems(props) {
           </Grid>
         );
       })}
-      <pre>{JSON.stringify(inputList, null, 2)}</pre>
     </div>
   );
 }
 
 export default OrderItems;
+
+//<pre>JSON.stringify(inputList, null, 2)}</pre>
