@@ -91,20 +91,17 @@ const StoreList = ({ stores }) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className="bold">
-                <Typography variant="h6">Store Number</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant="h6">Store Email</Typography>
-              </TableCell>
               <TableCell align="left">
                 <Typography variant="h6">Store</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">Store</Typography>
+                <Typography variant="h6">Address</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">Status</Typography>
+                <Typography variant="h6">Bank Account</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">GST Number</Typography>
               </TableCell>
               <TableCell align="right">
                 <Typography variant="h6">Options</Typography>
@@ -127,21 +124,11 @@ const StoreList = ({ stores }) => {
                 .map((store, i) => {
                   return (
                     <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {store.id}
-                      </TableCell>
-                      <TableCell align="right">{store.email}</TableCell>
-                      <TableCell align="left">{store.fullName}</TableCell>
                       <TableCell align="left">{store.name}</TableCell>
-                      <TableCell align="left">{store.status}</TableCell>
+                      <TableCell align="left">{store.address}</TableCell>
+                      <TableCell align="left">{store.bank}</TableCell>
+                      <TableCell align="left">{store.gst}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/stores/view/" + store.id}>
-                          <IconButton>
-                            <VisibilityIcon>
-                              <StoreSummary store={store} />
-                            </VisibilityIcon>
-                          </IconButton>
-                        </Link>
                         <Link to={"/stores/edit/" + store.id}>
                           <IconButton>
                             <EditIcon>

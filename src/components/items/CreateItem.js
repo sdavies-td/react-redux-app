@@ -1,26 +1,62 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { createItem } from "../../store/actions/itemActions";
-import { Redirect } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { Link, Redirect } from "react-router-dom";
+
+const styles = (theme) => ({
+  root: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+  },
+  title: {
+    fontSize: "1.6rem",
+    fontWeight: "Medium",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    padding: theme.spacing(4),
+    margin: theme.spacing(4),
+    width: "400px",
+  },
+  button: {
+    marginTop: "40px",
+    justifyContent: "center",
+    display: "flex",
+  },
+  buttonRow: {
+    marginLeft: "20px",
+    marginRight: "20px",
+  },
+  item: {
+    marginTop: "20px",
+    marginBottom: "20px",
+  },
+});
 
 class CreateItem extends Component {
   state = {
     itemName: "",
+    itemPrice: null,
     supplierName: "",
-    supplierInfo: { supplierPrice: null, supplierLink: "" },
+    itemLink: "",
   };
   handleChange = (e) => {
+    //console.log(e.target);
     this.setState({
       [e.target.id]: e.target.value,
     });
-  };
-  handleSuppliers = (e) => {
-    this.setState((prevState) => ({
-      supplierInfo: {
-        ...prevState.supplierInfo,
-        [e.target.id]: e.target.value,
-      },
-    }));
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -28,45 +64,78 @@ class CreateItem extends Component {
     this.props.history.push("/items");
   };
   render() {
-    const { auth } = this.props;
+    const { auth, classes } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     return (
-      <div className="container">
-        <form onSubmit={this.handleSubmit} className="white">
-          <h5 className="grey-text text-darker-3">Create Item</h5>
-          <div className="input-field">
-            <label htmlFor="itemName">Item Name</label>
-            <input type="text" id="itemName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="supplierName">Supplier Name</label>
-            <input type="text" id="supplierName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="supplierPrice">
-              Supplier Price (Including GST)
-            </label>
-            <input
-              type="number"
-              min="1"
-              step="any"
-              id="supplierPrice"
-              onChange={this.handleSuppliers}
-            />
-          </div>
-          <div className="input-field">
-            <label htmlFor="supplierLink">Suppliers link to item</label>
-            <input
-              type="text"
-              id="supplierLink"
-              onChange={this.handleSuppliers}
-            />
-          </div>
-          <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">Create</button>
-          </div>
-        </form>
-      </div>
+      <Grid className={classes.root}>
+        <Grid className={classes.header}>
+          <Typography className={classes.title}>Create an Item</Typography>
+        </Grid>
+        <Grid container className={classes.body}>
+          <Paper className={classes.paper}>
+            <form
+              noValidate
+              onSubmit={this.handleSubmit}
+              className={classes.container}
+            >
+              <Grid className={classes.item}>
+                <TextField
+                  id="itemName"
+                  label="Item Name"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="supplierName"
+                  label="Supplier Name"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="itemPrice"
+                  label="Item Price"
+                  type="number"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="itemLink"
+                  label="Link to Item"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.button}>
+                <Grid className={classes.buttonRow}>
+                  <Button
+                    onClick={this.handleCancel}
+                    variant="outlined"
+                    color="secondary"
+                    component={Link}
+                    to="/items"
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+                <Grid className={classes.buttonRow}>
+                  <Button type="submit" variant="outlined" color="primary">
+                    Create
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -84,4 +153,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateItem);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, { withTheme: true })
+)(CreateItem);

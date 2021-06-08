@@ -1,7 +1,50 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { createCustomer } from "../../store/actions/customerActions";
 import { Redirect } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { Link } from "react-router-dom";
+
+const styles = (theme) => ({
+  root: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+  },
+  title: {
+    fontSize: "1.6rem",
+    fontWeight: "Medium",
+  },
+  body: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    padding: theme.spacing(4),
+    margin: theme.spacing(4),
+    width: "400px",
+  },
+  button: {
+    marginTop: "40px",
+    justifyContent: "center",
+    display: "flex",
+  },
+  item: {
+    marginTop: "20px",
+    marginBottom: "20px",
+  },
+  buttonRow: {
+    marginLeft: "20px",
+    marginRight: "20px",
+  },
+});
 
 class CreateCustomer extends Component {
   state = {
@@ -30,38 +73,83 @@ class CreateCustomer extends Component {
     );
   };
   render() {
-    const { auth } = this.props;
-    console.log(auth);
+    const { auth, classes } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     return (
-      <div className="container">
-        <form onSubmit={this.handleSubmit} className="white">
-          <h5 className="grey-text text-darker-3">Create Customer</h5>
-          <div className="input-field">
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" id="firstName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id="lastName" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="phone">Phone</label>
-            <input type="text" id="phone" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="address">Address</label>
-            <input type="text" id="address" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">Create</button>
-          </div>
-        </form>
-      </div>
+      <Grid className={classes.root}>
+        <Grid className={classes.header}>
+          <Typography className={classes.title}>Create a Customer</Typography>
+        </Grid>
+        <Grid container className={classes.body}>
+          <Paper className={classes.paper}>
+            <form onSubmit={this.handleSubmit} className="white">
+              <Grid className={classes.item}>
+                <TextField
+                  id="firstName"
+                  label="First Name"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="lastName"
+                  label="Last Name"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="email"
+                  label="Email"
+                  type="email"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="phone"
+                  label="Phone"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.item}>
+                <TextField
+                  id="address"
+                  label="Address"
+                  type="text"
+                  fullWidth
+                  onChange={this.handleChange}
+                />
+              </Grid>
+              <Grid className={classes.button}>
+                <Grid className={classes.buttonRow}>
+                  <Button
+                    onClick={this.handleCancel}
+                    variant="outlined"
+                    color="secondary"
+                    component={Link}
+                    to="/customers"
+                  >
+                    Cancel
+                  </Button>
+                </Grid>
+                <Grid className={classes.buttonRow}>
+                  <Button type="submit" variant="outlined" color="primary">
+                    Create
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -79,4 +167,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateCustomer);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, { withTheme: true })
+)(CreateCustomer);

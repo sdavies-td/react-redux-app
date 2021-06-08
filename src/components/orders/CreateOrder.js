@@ -196,9 +196,9 @@ class CreateOrder extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   const db = state.firestore.ordered;
-  console.log(ownProps);
+  //console.log(ownProps);
   return {
     auth: state.firebase.auth,
     stores: db.stores,

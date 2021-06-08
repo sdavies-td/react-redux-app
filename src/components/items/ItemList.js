@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ItemSummary from "./ItemSummary";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+
 import {
   InputBase,
   Table,
@@ -15,10 +16,10 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import LinkIcon from "@material-ui/icons/Link";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -92,19 +93,13 @@ const ItemList = ({ items }) => {
           <TableHead>
             <TableRow>
               <TableCell className="bold">
-                <Typography variant="h6">Item Number</Typography>
+                <Typography variant="h6">Item Name</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography variant="h6">Item Email</Typography>
+                <Typography variant="h6">Supplier Name</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">Item</Typography>
-              </TableCell>
-              <TableCell align="left">
-                <Typography variant="h6">Store</Typography>
-              </TableCell>
-              <TableCell align="left">
-                <Typography variant="h6">Status</Typography>
+                <Typography variant="h6">Item Price</Typography>
               </TableCell>
               <TableCell align="right">
                 <Typography variant="h6">Options</Typography>
@@ -115,10 +110,10 @@ const ItemList = ({ items }) => {
             {items &&
               items
                 .filter((item) => {
-                  if (!item.fullName) {
+                  if (!item.itemName) {
                     return item;
                   } else if (
-                    item.fullName.toLowerCase().includes(value.toLowerCase())
+                    item.itemName.toLowerCase().includes(value.toLowerCase())
                   ) {
                     return item;
                   }
@@ -127,19 +122,23 @@ const ItemList = ({ items }) => {
                 .map((item, i) => {
                   return (
                     <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {item.id}
-                      </TableCell>
-                      <TableCell align="right">{item.email}</TableCell>
-                      <TableCell align="left">{item.fullName}</TableCell>
-                      <TableCell align="left">{item.name}</TableCell>
-                      <TableCell align="left">{item.status}</TableCell>
+                      <TableCell align="left">{item.itemName}</TableCell>
+                      <TableCell align="left">{item.supplierName}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/items/view/" + item.id}>
+                        {Intl.NumberFormat("en-NZ", {
+                          style: "currency",
+                          currency: "NZD",
+                        }).format(item.itemPrice)}
+                      </TableCell>
+                      <TableCell align="right">
+                        <Link
+                          to={{
+                            pathname: item.itemLink,
+                          }}
+                          target="_blank"
+                        >
                           <IconButton>
-                            <VisibilityIcon>
-                              <ItemSummary item={item} />
-                            </VisibilityIcon>
+                            <LinkIcon />
                           </IconButton>
                         </Link>
                         <Link to={"/items/edit/" + item.id}>

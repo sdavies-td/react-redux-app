@@ -91,22 +91,19 @@ const CustomerList = ({ customers }) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className="bold">
-                <Typography variant="h6">Customer Number</Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography variant="h6">Customer Email</Typography>
-              </TableCell>
               <TableCell align="left">
                 <Typography variant="h6">Customer</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">Store</Typography>
+                <Typography variant="h6">Email</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">Status</Typography>
+                <Typography variant="h6">Phone</Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
+                <Typography variant="h6">Address</Typography>
+              </TableCell>
+              <TableCell align="left">
                 <Typography variant="h6">Options</Typography>
               </TableCell>
             </TableRow>
@@ -129,21 +126,11 @@ const CustomerList = ({ customers }) => {
                 .map((customer, i) => {
                   return (
                     <TableRow key={i}>
-                      <TableCell component="th" scope="row">
-                        {customer.id}
-                      </TableCell>
-                      <TableCell align="right">{customer.email}</TableCell>
                       <TableCell align="left">{customer.fullName}</TableCell>
-                      <TableCell align="left">{customer.name}</TableCell>
-                      <TableCell align="left">{customer.status}</TableCell>
+                      <TableCell align="left">{customer.email}</TableCell>
+                      <TableCell align="left">{customer.phone}</TableCell>
+                      <TableCell align="left">{customer.address}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/customers/view/" + customer.id}>
-                          <IconButton>
-                            <VisibilityIcon>
-                              <CustomerSummary customer={customer} />
-                            </VisibilityIcon>
-                          </IconButton>
-                        </Link>
                         <Link to={"/customers/edit/" + customer.id}>
                           <IconButton>
                             <EditIcon>

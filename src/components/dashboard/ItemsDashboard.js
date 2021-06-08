@@ -40,7 +40,12 @@ class ItemsDashboard extends Component {
         <Grid className={classes.root}>
           <Grid container className={classes.header}>
             <Typography className={classes.title}>Order Items</Typography>
-            <IconButton color="primary" component={Link} to="/items/create">
+            <IconButton
+              color="primary"
+              component={Link}
+              classes={classes}
+              to="/items/create"
+            >
               <AddCircleIcon />
             </IconButton>
           </Grid>
