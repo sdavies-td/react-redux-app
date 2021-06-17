@@ -128,7 +128,7 @@ class CreateOrder extends Component {
       {
         orderItems: items,
         orderTotal: {
-          total: parseFloat(orderTotal).toFixed(2),
+          total: parseFloat(Math.round(orderTotal * 100) / 100),
           gst: Math.round(((orderTotal * 3) / 23) * 100) / 100,
           exclGst: Math.round((orderTotal - (orderTotal * 3) / 23) * 100) / 100,
         },
