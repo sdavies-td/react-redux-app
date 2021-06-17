@@ -14,8 +14,6 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";

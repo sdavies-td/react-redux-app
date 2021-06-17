@@ -53,10 +53,17 @@ class CreateItem extends Component {
     itemLink: "",
   };
   handleChange = (e) => {
-    //console.log(e.target);
-    this.setState({
-      [e.target.id]: e.target.value,
-    });
+    //console.log(e.target.type);
+    const value = e.target.value;
+    if (e.target.type === "number") {
+      this.setState({
+        [e.target.id]: parseFloat(value).toFixed(2),
+      });
+    } else {
+      this.setState({
+        [e.target.id]: value,
+      });
+    }
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -135,6 +142,7 @@ class CreateItem extends Component {
             </form>
           </Paper>
         </Grid>
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Grid>
     );
   }

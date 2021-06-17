@@ -21,3 +21,26 @@ export const createStore = (store) => {
       });
   };
 };
+
+export const editStore = (store) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const profile = getState().firebase.profile;
+    const editedById = getState().firebase.auth.uid;
+    const editedBy = profile.firstName + " " + profile.lastName;
+    firestore
+      .collection("stores")
+      .add({
+        ...store,
+        editedByName: editedBy,
+        editedLastById: editedById,
+        editedAt: new Date(),
+      })
+      .then(() => {
+        dispatch({ type: "EDIT_STORE_SUCCESS" });
+      })
+      .catch((err) => {
+        dispatch({ type: "EDIT_STORE_ERROR" }, err);
+      });
+  };
+};

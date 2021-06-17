@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ItemSummary from "./ItemSummary";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -120,20 +119,21 @@ const ItemList = ({ items }) => {
                   return null;
                 })
                 .map((item, i) => {
+                  const { itemName, supplierName, itemPrice, itemLink } = item;
                   return (
                     <TableRow key={i}>
-                      <TableCell align="left">{item.itemName}</TableCell>
-                      <TableCell align="left">{item.supplierName}</TableCell>
+                      <TableCell align="left">{itemName}</TableCell>
+                      <TableCell align="left">{supplierName}</TableCell>
                       <TableCell align="right">
                         {Intl.NumberFormat("en-NZ", {
                           style: "currency",
                           currency: "NZD",
-                        }).format(item.itemPrice)}
+                        }).format(itemPrice)}
                       </TableCell>
                       <TableCell align="right">
                         <Link
                           to={{
-                            pathname: item.itemLink,
+                            pathname: itemLink,
                           }}
                           target="_blank"
                         >
@@ -143,9 +143,7 @@ const ItemList = ({ items }) => {
                         </Link>
                         <Link to={"/items/edit/" + item.id}>
                           <IconButton>
-                            <EditIcon>
-                              <ItemSummary item={item} />
-                            </EditIcon>
+                            <EditIcon />
                           </IconButton>
                         </Link>
                         <IconButton>

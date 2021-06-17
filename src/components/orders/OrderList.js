@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import OrderSummary from "./OrderSummary";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -142,16 +141,12 @@ const OrderList = ({ orders }) => {
                       <TableCell align="right">
                         <Link to={"/orders/view/" + order.id}>
                           <IconButton>
-                            <VisibilityIcon>
-                              <OrderSummary order={order} />
-                            </VisibilityIcon>
+                            <VisibilityIcon />
                           </IconButton>
                         </Link>
                         <Link to={"/orders/edit/" + order.id}>
                           <IconButton>
-                            <EditIcon>
-                              <OrderSummary order={order} />
-                            </EditIcon>
+                            <EditIcon />
                           </IconButton>
                         </Link>
                         <IconButton>

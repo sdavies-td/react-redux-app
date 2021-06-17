@@ -11,7 +11,7 @@ import StoreAutocomplete from "./StoreAutocomplete";
 import ShippingAutocomplete from "./ShippingAutocomplete";
 import MaterialUIPickers from "./DatePicker";
 import moment from "moment";
-import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { Grid, Typography, Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
@@ -56,40 +56,15 @@ const styles = (theme) => ({
   },
   row: {
     display: "flex",
-    marginBottom: "10px",
-  },
-  totalRow: {
-    display: "flex",
-    marginTop: "50px",
   },
   item: {
-    width: "25%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemName: {
-    width: "35%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemSupplier: {
-    width: "35%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemPrice: {
-    width: "20%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemQty: {
-    width: "13%",
+    width: "150px",
     marginLeft: "20px",
     marginRight: "20px",
   },
 });
 
-class CreateOrder extends Component {
+class EditOrder extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -101,11 +76,6 @@ class CreateOrder extends Component {
     customer: "",
     shipping: "",
     orderItems: [],
-    orderTotal: {
-      exclGst: 0,
-      gst: 0,
-      total: 0,
-    },
   };
   handleChange(e, value) {
     const str = e.target.id;
@@ -120,18 +90,10 @@ class CreateOrder extends Component {
       }
     );
   }
-  handleItems(items) {
-    const orderTotal = items
-      .map((item) => item.itemSubtotal)
-      .reduce((prev, next) => prev + next);
+  handleItems(list) {
     this.setState(
       {
-        orderItems: items,
-        orderTotal: {
-          total: parseFloat(orderTotal).toFixed(2),
-          gst: Math.round(((orderTotal * 3) / 23) * 100) / 100,
-          exclGst: Math.round((orderTotal - (orderTotal * 3) / 23) * 100) / 100,
-        },
+        orderItems: list,
       },
       () => {
         //console.log(this.state.orderItems);
@@ -173,7 +135,7 @@ class CreateOrder extends Component {
     return (
       <Grid className={classes.root}>
         <Grid className={classes.header}>
-          <Typography className={classes.title}>Create an Order</Typography>
+          <Typography className={classes.title}>Edit an Order</Typography>
         </Grid>
         <Grid container className={classes.body}>
           <Paper className={classes.paper}>
@@ -208,56 +170,6 @@ class CreateOrder extends Component {
                 items={items}
                 handleItems={this.handleItems}
               />
-              <Grid className={classes.totalRow}>
-                <Grid className={classes.itemPrice}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="gstExcl"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.exclGst)}
-                    label="Total Excl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid className={classes.itemPrice}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="gst"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.gst)}
-                    label="GST Amount"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid className={classes.itemPrice}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="total"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.total)}
-                    label="Total Incl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-              </Grid>
               <Grid className={classes.button}>
                 <Grid className={classes.buttonRow}>
                   <Button
@@ -272,14 +184,13 @@ class CreateOrder extends Component {
                 </Grid>
                 <Grid className={classes.buttonRow}>
                   <Button type="submit" variant="outlined" color="primary">
-                    Create
+                    Edit
                   </Button>
                 </Grid>
               </Grid>
             </form>
           </Paper>
         </Grid>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Grid>
     );
   }
@@ -303,7 +214,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-//export default connect(mapStateToProps, mapDispatchToProps)(CreateOrder);
+//export default connect(mapStateToProps, mapDispatchToProps)(EditOrder);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
@@ -314,4 +225,4 @@ export default compose(
     { collection: "items" },
   ]),
   withStyles(styles, { withTheme: true })
-)(CreateOrder);
+)(EditOrder);

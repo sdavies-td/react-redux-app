@@ -46,3 +46,27 @@ export const createOrder = (order) => {
       });
   };
 };
+
+export const editOrder = (order) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const profile = getState().firebase.profile;
+    const editedById = getState().firebase.auth.uid;
+    const editedBy = profile.firstName + " " + profile.lastName;
+    const docRef = firestore.collection("orders").doc(order.orderId);
+    const { orderId, ...rest } = order;
+    docRef
+      .update({
+        ...rest,
+        editedLastByName: editedBy,
+        editedLastById: editedById,
+        editedLastAt: new Date(),
+      })
+      .then(() => {
+        dispatch({ type: "EDIT_ITEM_SUCCESS" });
+      })
+      .catch((err) => {
+        dispatch({ type: "EDIT_ITEM_ERROR" }, err);
+      });
+  };
+};
