@@ -4,7 +4,7 @@ import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
-  InputBase,
+  TextField,
   Table,
   TableBody,
   TableCell,
@@ -32,24 +32,24 @@ const OrderList = ({ orders }) => {
   const [, ...rest] = orders;
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="center">
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search Customer…"
-            id="search"
-            type="search"
-            value={value}
-            onChange={handleChange}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </div>
+      <Grid
+        className={classes.search}
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <TextField
+          id="outlined-search"
+          label="Search by Customer..."
+          type="search"
+          variant="outlined"
+          value={value}
+          onChange={handleChange}
+        />
       </Grid>
       <Paper>
         <Table aria-label="simple table">

@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, Grid } from "@material-ui/core";
-
+import logo from "./logo.png";
 import { themeStyles } from "../../theme";
 
 const useStyles = makeStyles(themeStyles);
@@ -13,9 +14,9 @@ const Navbar = (props) => {
   const classes = useStyles();
   const { auth, profile } = props;
   const links = auth.uid ? (
-    <SignedInLinks profile={profile} />
+    <SignedInLinks profile={profile} classes={classes} />
   ) : (
-    <SignedOutLinks />
+    <SignedOutLinks classes={classes} />
   );
 
   return (
@@ -28,12 +29,18 @@ const Navbar = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <Typography variant="h6" className={classes.navBarTitle}>
-              Project Kitchens
-            </Typography>
+            <Link
+              to={{
+                pathname: "https://www.projectkitchens.co.nz/",
+              }}
+              target="_blank"
+            >
+              <Typography className={classes.navBarTitle}>
+                <img src={logo} alt="Project Kitchens" height={80} />
+              </Typography>
+            </Link>
           </Grid>
-          <Grid item></Grid>
-          <Grid item>{links}</Grid>
+          <Grid>{links}</Grid>
         </Grid>
       </Toolbar>
     </AppBar>

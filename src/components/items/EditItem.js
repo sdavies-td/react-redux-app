@@ -218,7 +218,6 @@ class EditItem extends Component {
               </form>
             </Paper>
           </Grid>
-          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {
@@ -226,7 +225,8 @@ class EditItem extends Component {
     }
   }
 }
-//
+// <pre>{JSON.stringify(this.state, null, 2)}</pre>
+
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const items = state.firestore.ordered.items;

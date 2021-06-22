@@ -7,7 +7,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
-  InputBase,
+  TextField,
   Table,
   TableBody,
   TableCell,
@@ -30,24 +30,24 @@ const ItemList = ({ items }) => {
   };
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="center" alignItems="center">
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search Item Name…"
-            id="search"
-            type="search"
-            value={value}
-            onChange={handleChange}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </div>
+      <Grid
+        className={classes.search}
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <TextField
+          id="outlined-search"
+          label="Search by Item Name..."
+          type="search"
+          variant="outlined"
+          value={value}
+          onChange={handleChange}
+        />
       </Grid>
       <Paper>
         <Table aria-label="simple table">

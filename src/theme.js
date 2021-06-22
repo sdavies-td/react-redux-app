@@ -1,5 +1,4 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles";
 
 // A custom theme for this app
 export const theme = createMuiTheme({
@@ -14,7 +13,7 @@ export const theme = createMuiTheme({
       main: "#eb4034",
     },
     background: {
-      default: "#fff",
+      default: "#ededed",
     },
   },
 });
@@ -53,9 +52,6 @@ export const themeStyles = {
     marginTop: "20px",
     marginBottom: "20px",
   },
-  searchItem: {
-    width: "100%",
-  },
   placesItem: {
     marginTop: "20px",
     marginBottom: "20px",
@@ -64,41 +60,11 @@ export const themeStyles = {
     marginLeft: "20px",
     marginRight: "20px",
   },
-  search: {
-    position: "relative",
-    bitemRadius: theme.shape.bitemRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   inputRoot: {
     color: "inherit",
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
+  search: {
+    paddingBottom: "10px",
   },
   subTitle: {
     marginTop: "40px",
@@ -124,19 +90,19 @@ export const themeStyles = {
     marginBottom: "10px",
   },
   date: {
-    padding: theme.spacing(1), // width: "25%",
+    padding: theme.spacing(1),
     width: "15%",
   },
   store: {
-    padding: theme.spacing(1), // width: "25%",
+    padding: theme.spacing(1),
     width: "25%",
   },
   customer: {
-    padding: theme.spacing(1), // width: "25%",
+    padding: theme.spacing(1),
     width: "25%",
   },
   shipping: {
-    padding: theme.spacing(1), // width: "25%",
+    padding: theme.spacing(1),
     width: "15%",
   },
   itemRow: {
@@ -164,12 +130,22 @@ export const themeStyles = {
   orderButtonRow: {
     alignItems: "center",
     display: "flex",
-  },
+  }, //navbar
   navbarRoot: {
     flexGrow: 1,
     position: "static",
+    background: "#fff",
   },
   navBarTitle: {
     flexGrow: 1,
+    paddingTop: "5px",
+  },
+  navLinksRow: {
+    alignItems: "center",
+    display: "flex",
+  },
+  navLinkItem: {
+    marginLeft: "1px",
+    marginRight: "1px",
   },
 };

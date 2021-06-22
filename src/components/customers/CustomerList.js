@@ -4,7 +4,7 @@ import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
-  InputBase,
+  TextField,
   Table,
   TableBody,
   TableCell,
@@ -31,24 +31,24 @@ const CustomerList = ({ customers }) => {
   };
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="center" alignItems="center">
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search Customer…"
-            id="search"
-            type="search"
-            value={value}
-            onChange={handleChange}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </div>
+      <Grid
+        className={classes.search}
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <TextField
+          id="outlined-search"
+          label="Search by Customer..."
+          type="search"
+          variant="outlined"
+          value={value}
+          onChange={handleChange}
+        />
       </Grid>
       <Paper>
         <Table aria-label="simple table">
@@ -94,7 +94,6 @@ const CustomerList = ({ customers }) => {
                 })
                 .map((customer, i) => {
                   const {
-                    id,
                     fullName,
                     email,
                     phone,
@@ -113,7 +112,12 @@ const CustomerList = ({ customers }) => {
                       </TableCell>
                       <TableCell align="left">{createdByName}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/customers/edit/" + id}>
+                        <Link
+                          to={{
+                            pathname: "itemLink",
+                          }}
+                          target="_blank"
+                        >
                           <IconButton>
                             <EditIcon />
                           </IconButton>

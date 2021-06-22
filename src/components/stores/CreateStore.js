@@ -94,11 +94,12 @@ class CreateStore extends Component {
             </form>
           </Paper>
         </Grid>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Grid>
     );
   }
 }
+
+//<pre>{JSON.stringify(this.state, null, 2)}</pre>
 
 const mapStateToProps = (state) => {
   return {
