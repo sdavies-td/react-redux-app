@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import OrderList from "../orders/OrderList";
+import OrderList from "./OrderList";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -8,28 +8,11 @@ import { Link } from "react-router-dom";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import Loader from "../layout/Loader";
+import Loader from "../utils/Loader";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(1),
-  },
-  title: {
-    fontSize: "1.6rem",
-    fontWeight: "Medium",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class OrdersDashboard extends Component {
   render() {

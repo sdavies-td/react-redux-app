@@ -5,15 +5,9 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, Grid } from "@material-ui/core";
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    position: "static",
-  },
-  title: {
-    flexGrow: 1,
-  },
-});
+import { themeStyles } from "../../theme";
+
+const useStyles = makeStyles(themeStyles);
 
 const Navbar = (props) => {
   const classes = useStyles();
@@ -25,7 +19,7 @@ const Navbar = (props) => {
   );
 
   return (
-    <AppBar className={classes.root}>
+    <AppBar className={classes.navbarRoot}>
       <Toolbar className={classes.toolbar}>
         <Grid
           container
@@ -34,7 +28,7 @@ const Navbar = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={classes.navBarTitle}>
               Project Kitchens
             </Typography>
           </Grid>

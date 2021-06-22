@@ -6,88 +6,18 @@ import { firestoreConnect } from "react-redux-firebase";
 import { createOrder } from "../../store/actions/orderActions";
 import { Redirect } from "react-router-dom";
 import OrderItems from "./OrderItems";
-import CustomerAutocomplete from "./CustomerAutocomplete";
-import StoreAutocomplete from "./StoreAutocomplete";
-import ShippingAutocomplete from "./ShippingAutocomplete";
-import MaterialUIPickers from "./DatePicker";
+import CustomerAutocomplete from "../utils/CustomerAutocomplete";
+import StoreAutocomplete from "../utils/StoreAutocomplete";
+import ShippingAutocomplete from "../utils/ShippingAutocomplete";
+import MaterialUIPickers from "../utils/DatePicker";
 import moment from "moment";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-  },
-  title: {
-    fontSize: "1.6rem",
-    fontWeight: "Medium",
-  },
-  subTitle: {
-    marginTop: "40px",
-    marginBottom: "20px",
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(8),
-    margin: theme.spacing(4),
-  },
-  button: {
-    marginTop: "100px",
-    justifyContent: "center",
-    display: "flex",
-  },
-  buttonRow: {
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  row: {
-    display: "flex",
-    marginBottom: "10px",
-  },
-  totalRow: {
-    display: "flex",
-    marginTop: "50px",
-  },
-  item: {
-    width: "25%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemName: {
-    width: "35%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemSupplier: {
-    width: "35%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemPrice: {
-    width: "20%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  itemQty: {
-    width: "13%",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class CreateOrder extends Component {
   constructor(props) {
@@ -100,7 +30,15 @@ class CreateOrder extends Component {
     store: "",
     customer: "",
     shipping: "",
-    orderItems: [],
+    orderItems: [
+      {
+        itemName: "",
+        supplierName: "",
+        itemPrice: 0,
+        itemQty: 0,
+        itemSubtotal: 0,
+      },
+    ],
     orderTotal: {
       exclGst: 0,
       gst: 0,
@@ -115,20 +53,27 @@ class CreateOrder extends Component {
       {
         [id]: store,
       },
-      () => {
-        //console.log(this.state.orderItems);
-      }
+      () => {}
     );
   }
   handleItems(items) {
+    this.setState(
+      {
+        orderItems: items,
+      },
+      () => {
+        this.updateTotal(this.state.orderItems);
+      }
+    );
+  }
+  updateTotal(items) {
     const orderTotal = items
       .map((item) => item.itemSubtotal)
       .reduce((prev, next) => prev + next);
     this.setState(
       {
-        orderItems: items,
         orderTotal: {
-          total: parseFloat(Math.round(orderTotal * 100) / 100),
+          total: parseFloat(orderTotal).toFixed(2),
           gst: Math.round(((orderTotal * 3) / 23) * 100) / 100,
           exclGst: Math.round((orderTotal - (orderTotal * 3) / 23) * 100) / 100,
         },
@@ -175,31 +120,31 @@ class CreateOrder extends Component {
         <Grid className={classes.header}>
           <Typography className={classes.title}>Create an Order</Typography>
         </Grid>
-        <Grid container className={classes.body}>
-          <Paper className={classes.paper}>
+        <Grid className={classes.orderBody}>
+          <Paper className={classes.orderPaper}>
             <form
               noValidate
               onSubmit={this.handleSubmit}
               className={classes.container}
             >
               <Grid className={classes.row}>
-                <Grid className={classes.item}>
+                <Grid className={classes.date}>
                   <MaterialUIPickers handleDate={this.handleDate} />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.store}>
                   <StoreAutocomplete
                     id="store"
                     stores={stores}
                     handleChange={this.handleChange}
                   />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.customer}>
                   <CustomerAutocomplete
                     customers={customers}
                     handleChange={this.handleChange}
                   />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.shipping}>
                   <ShippingAutocomplete handleChange={this.handleChange} />
                 </Grid>
               </Grid>
@@ -209,7 +154,7 @@ class CreateOrder extends Component {
                 handleItems={this.handleItems}
               />
               <Grid className={classes.totalRow}>
-                <Grid className={classes.itemPrice}>
+                <Grid className={classes.totalItems}>
                   <TextField
                     inputProps={{ min: 0, style: { textAlign: "right" } }}
                     id="gstExcl"
@@ -223,9 +168,10 @@ class CreateOrder extends Component {
                       readOnly: true,
                     }}
                     variant="outlined"
+                    disabled
                   />
                 </Grid>
-                <Grid className={classes.itemPrice}>
+                <Grid className={classes.totalItems}>
                   <TextField
                     inputProps={{ min: 0, style: { textAlign: "right" } }}
                     id="gst"
@@ -239,9 +185,10 @@ class CreateOrder extends Component {
                       readOnly: true,
                     }}
                     variant="outlined"
+                    disabled
                   />
                 </Grid>
-                <Grid className={classes.itemPrice}>
+                <Grid className={classes.totalItems}>
                   <TextField
                     inputProps={{ min: 0, style: { textAlign: "right" } }}
                     id="total"
@@ -255,23 +202,30 @@ class CreateOrder extends Component {
                       readOnly: true,
                     }}
                     variant="outlined"
+                    disabled
                   />
                 </Grid>
               </Grid>
-              <Grid className={classes.button}>
-                <Grid className={classes.buttonRow}>
+              <Grid className={classes.orderButtonRow}>
+                <Grid className={classes.buttonItem}>
                   <Button
                     onClick={this.handleCancel}
                     variant="outlined"
                     color="secondary"
                     component={Link}
                     to="/orders"
+                    fullWidth
                   >
                     Cancel
                   </Button>
                 </Grid>
-                <Grid className={classes.buttonRow}>
-                  <Button type="submit" variant="outlined" color="primary">
+                <Grid className={classes.buttonItem}>
+                  <Button
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                  >
                     Create
                   </Button>
                 </Grid>
@@ -279,12 +233,11 @@ class CreateOrder extends Component {
             </form>
           </Paper>
         </Grid>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Grid>
     );
   }
 }
-
+//<pre>{JSON.stringify(this.state, null, 2)}</pre>
 const mapStateToProps = (state) => {
   const db = state.firestore.ordered;
   //console.log(ownProps);

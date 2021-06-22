@@ -28,6 +28,7 @@ export default function MaterialUIPickers(props) {
         variant="inline"
         fullWidth
         required
+        inputProps={{ min: 0, style: { textAlign: "center" } }}
       />
     </MuiPickersUtilsProvider>
   );

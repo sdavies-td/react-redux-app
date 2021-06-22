@@ -6,29 +6,9 @@ import { Redirect } from "react-router-dom";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(2),
-  },
-  button: {
-    padding: theme.spacing(1),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class SignIn extends Component {
   state = {

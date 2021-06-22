@@ -21,13 +21,13 @@ export const orderReducer = (state = {}, action) => {
 
 export const editOrderReducer = (state = {}, action) => {
   switch (action.type) {
-    case "EDIT_ITEM_ERROR": {
+    case "EDIT_ORDER_ERROR": {
       toast.error("Edit order error", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       return state;
     }
-    case "EDIT_ITEM_SUCCESS": {
+    case "EDIT_ORDER_SUCCESS": {
       toast.success("Order edited", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

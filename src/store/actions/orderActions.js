@@ -63,10 +63,10 @@ export const editOrder = (order) => {
         editedLastAt: new Date(),
       })
       .then(() => {
-        dispatch({ type: "EDIT_ITEM_SUCCESS" });
+        dispatch({ type: "EDIT_ORDER_SUCCESS" });
       })
       .catch((err) => {
-        dispatch({ type: "EDIT_ITEM_ERROR" }, err);
+        dispatch({ type: "EDIT_ORDER_ERROR" }, err);
       });
   };
 };

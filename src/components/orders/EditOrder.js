@@ -6,63 +6,18 @@ import { firestoreConnect } from "react-redux-firebase";
 import { createOrder } from "../../store/actions/orderActions";
 import { Redirect } from "react-router-dom";
 import OrderItems from "./OrderItems";
-import CustomerAutocomplete from "./CustomerAutocomplete";
-import StoreAutocomplete from "./StoreAutocomplete";
-import ShippingAutocomplete from "./ShippingAutocomplete";
-import MaterialUIPickers from "./DatePicker";
+import CustomerAutocomplete from "../utils/CustomerAutocomplete";
+import StoreAutocomplete from "../utils/StoreAutocomplete";
+import ShippingAutocomplete from "../utils/ShippingAutocomplete";
+import MaterialUIPickers from "../utils/DatePicker";
 import moment from "moment";
-import { Grid, Typography, Paper, Button } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-  },
-  title: {
-    fontSize: "1.6rem",
-    fontWeight: "Medium",
-  },
-  subTitle: {
-    marginTop: "40px",
-    marginBottom: "20px",
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(8),
-    margin: theme.spacing(4),
-  },
-  button: {
-    marginTop: "100px",
-    justifyContent: "center",
-    display: "flex",
-  },
-  buttonRow: {
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  row: {
-    display: "flex",
-  },
-  item: {
-    width: "150px",
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class EditOrder extends Component {
   constructor(props) {
@@ -75,7 +30,20 @@ class EditOrder extends Component {
     store: "",
     customer: "",
     shipping: "",
-    orderItems: [],
+    orderItems: [
+      {
+        itemName: "",
+        supplierName: "",
+        itemPrice: 0,
+        itemQty: 0,
+        itemSubtotal: 0,
+      },
+    ],
+    orderTotal: {
+      exclGst: 0,
+      gst: 0,
+      total: 0,
+    },
   };
   handleChange(e, value) {
     const str = e.target.id;
@@ -137,31 +105,31 @@ class EditOrder extends Component {
         <Grid className={classes.header}>
           <Typography className={classes.title}>Edit an Order</Typography>
         </Grid>
-        <Grid container className={classes.body}>
-          <Paper className={classes.paper}>
+        <Grid container className={classes.orderBody}>
+          <Paper className={classes.orderPaper}>
             <form
               noValidate
               onSubmit={this.handleSubmit}
               className={classes.container}
             >
               <Grid className={classes.row}>
-                <Grid className={classes.item}>
+                <Grid className={classes.date}>
                   <MaterialUIPickers handleDate={this.handleDate} />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.store}>
                   <StoreAutocomplete
                     id="store"
                     stores={stores}
                     handleChange={this.handleChange}
                   />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.customer}>
                   <CustomerAutocomplete
                     customers={customers}
                     handleChange={this.handleChange}
                   />
                 </Grid>
-                <Grid className={classes.item}>
+                <Grid className={classes.shipping}>
                   <ShippingAutocomplete handleChange={this.handleChange} />
                 </Grid>
               </Grid>
@@ -170,20 +138,79 @@ class EditOrder extends Component {
                 items={items}
                 handleItems={this.handleItems}
               />
-              <Grid className={classes.button}>
-                <Grid className={classes.buttonRow}>
+              <Grid className={classes.totalRow}>
+                <Grid className={classes.totalItems}>
+                  <TextField
+                    inputProps={{ min: 0, style: { textAlign: "right" } }}
+                    id="gstExcl"
+                    type="text"
+                    value={Intl.NumberFormat("en-NZ", {
+                      style: "currency",
+                      currency: "NZD",
+                    }).format(this.state.orderTotal.exclGst)}
+                    label="Total Excl. GST"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    variant="outlined"
+                    disabled
+                  />
+                </Grid>
+                <Grid className={classes.totalItems}>
+                  <TextField
+                    inputProps={{ min: 0, style: { textAlign: "right" } }}
+                    id="gst"
+                    type="text"
+                    value={Intl.NumberFormat("en-NZ", {
+                      style: "currency",
+                      currency: "NZD",
+                    }).format(this.state.orderTotal.gst)}
+                    label="GST Amount"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    variant="outlined"
+                    disabled
+                  />
+                </Grid>
+                <Grid className={classes.totalItems}>
+                  <TextField
+                    inputProps={{ min: 0, style: { textAlign: "right" } }}
+                    id="total"
+                    type="text"
+                    value={Intl.NumberFormat("en-NZ", {
+                      style: "currency",
+                      currency: "NZD",
+                    }).format(this.state.orderTotal.total)}
+                    label="Total Incl. GST"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    variant="outlined"
+                    disabled
+                  />
+                </Grid>
+              </Grid>
+              <Grid className={classes.orderButtonRow}>
+                <Grid className={classes.buttonItem}>
                   <Button
                     onClick={this.handleCancel}
                     variant="outlined"
                     color="secondary"
                     component={Link}
                     to="/orders"
+                    fullWidth
                   >
                     Cancel
                   </Button>
                 </Grid>
-                <Grid className={classes.buttonRow}>
-                  <Button type="submit" variant="outlined" color="primary">
+                <Grid className={classes.buttonItem}>
+                  <Button
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                  >
                     Edit
                   </Button>
                 </Grid>

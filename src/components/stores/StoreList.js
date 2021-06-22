@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import StoreSummary from "./StoreSummary";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
   InputBase,
@@ -14,49 +15,11 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { themeStyles } from "../../theme";
 
-const useStyles = makeStyles((theme) => ({
-  search: {
-    position: "relative",
-    bstoreRadius: theme.shape.bstoreRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignStores: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+const useStyles = makeStyles((theme) => themeStyles);
 
 const StoreList = ({ stores }) => {
   const classes = useStyles();
@@ -72,7 +35,7 @@ const StoreList = ({ stores }) => {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search store…"
+            placeholder="Search Store Name..."
             id="search"
             type="search"
             value={value}
@@ -90,7 +53,7 @@ const StoreList = ({ stores }) => {
           <TableHead>
             <TableRow>
               <TableCell align="left">
-                <Typography variant="h6">Store</Typography>
+                <Typography variant="h6">Store Name</Typography>
               </TableCell>
               <TableCell align="left">
                 <Typography variant="h6">Address</Typography>
@@ -101,6 +64,12 @@ const StoreList = ({ stores }) => {
               <TableCell align="left">
                 <Typography variant="h6">GST Number</Typography>
               </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Created At</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Created By</Typography>
+              </TableCell>
               <TableCell align="right">
                 <Typography variant="h6">Options</Typography>
               </TableCell>
@@ -110,28 +79,38 @@ const StoreList = ({ stores }) => {
             {stores &&
               stores
                 .filter((store) => {
-                  if (!store.fullName) {
+                  const { name } = store;
+                  if (!name) {
                     return store;
-                  } else if (
-                    store.fullName.toLowerCase().includes(value.toLowerCase())
-                  ) {
+                  } else if (name.toLowerCase().includes(value.toLowerCase())) {
                     return store;
                   }
                   return null;
                 })
                 .map((store, i) => {
+                  const {
+                    id,
+                    name,
+                    address,
+                    bank,
+                    gst,
+                    createdAt,
+                    createdByName,
+                  } = store;
                   return (
                     <TableRow key={i}>
-                      <TableCell align="left">{store.name}</TableCell>
-                      <TableCell align="left">{store.address}</TableCell>
-                      <TableCell align="left">{store.bank}</TableCell>
-                      <TableCell align="left">{store.gst}</TableCell>
+                      <TableCell align="left">{name}</TableCell>
+                      <TableCell align="left">{address}</TableCell>
+                      <TableCell align="left">{bank}</TableCell>
+                      <TableCell align="left">{gst}</TableCell>
+                      <TableCell align="left">
+                        {moment(createdAt.toDate()).calendar()}
+                      </TableCell>
+                      <TableCell align="left">{createdByName}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/stores/edit/" + store.id}>
+                        <Link to={"/stores/edit/" + id}>
                           <IconButton>
-                            <EditIcon>
-                              <StoreSummary store={store} />
-                            </EditIcon>
+                            <EditIcon />
                           </IconButton>
                         </Link>
                         <IconButton>

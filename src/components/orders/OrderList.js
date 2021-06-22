@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
   InputBase,
@@ -13,51 +15,13 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles((theme) => ({
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+import { themeStyles } from "../../theme";
+
+const useStyles = makeStyles((theme) => themeStyles);
 
 const OrderList = ({ orders }) => {
   const classes = useStyles();
@@ -68,13 +32,13 @@ const OrderList = ({ orders }) => {
   const [, ...rest] = orders;
   return (
     <React.Fragment>
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid container direction="row" justify="center">
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search customer…"
+            placeholder="Search Customer…"
             id="search"
             type="search"
             value={value}
@@ -106,6 +70,12 @@ const OrderList = ({ orders }) => {
               <TableCell align="left">
                 <Typography variant="h6">Status</Typography>
               </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Created At</Typography>
+              </TableCell>
+              <TableCell align="left">
+                <Typography variant="h6">Created By</Typography>
+              </TableCell>
               <TableCell align="right">
                 <Typography variant="h6">Options</Typography>
               </TableCell>
@@ -126,25 +96,40 @@ const OrderList = ({ orders }) => {
                   }
                   return null;
                 })
+                .sort((a, b) => b.orderCount.localeCompare(a.orderCount))
                 .map((order, i) => {
+                  const {
+                    id,
+                    orderCount,
+                    orderDate,
+                    customer,
+                    store,
+                    status,
+                    createdByName,
+                    createdAt,
+                  } = order;
+                  const { name } = store;
+                  const { fullName } = customer;
                   return (
                     <TableRow key={i}>
                       <TableCell component="th" scope="row">
-                        {order.orderCount}
+                        {orderCount}
                       </TableCell>
-                      <TableCell align="right">{order.orderDate}</TableCell>
+                      <TableCell align="right">{orderDate}</TableCell>
+                      <TableCell align="left">{fullName}</TableCell>
+                      <TableCell align="left">{name}</TableCell>
+                      <TableCell align="left">{status}</TableCell>
                       <TableCell align="left">
-                        {order.customer.fullName}
+                        {moment(createdAt.toDate()).calendar()}
                       </TableCell>
-                      <TableCell align="left">{order.store.name}</TableCell>
-                      <TableCell align="left">{order.status}</TableCell>
+                      <TableCell align="left">{createdByName}</TableCell>
                       <TableCell align="right">
-                        <Link to={"/orders/view/" + order.id}>
+                        <Link to={"/orders/view/" + id}>
                           <IconButton>
                             <VisibilityIcon />
                           </IconButton>
                         </Link>
-                        <Link to={"/orders/edit/" + order.id}>
+                        <Link to={"/orders/edit/" + id}>
                           <IconButton>
                             <EditIcon />
                           </IconButton>

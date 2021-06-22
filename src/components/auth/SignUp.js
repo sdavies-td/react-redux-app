@@ -6,29 +6,9 @@ import { signUp } from "../../store/actions/authActions";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(2),
-  },
-  button: {
-    padding: theme.spacing(1),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class SignUp extends Component {
   state = {
@@ -36,7 +16,6 @@ class SignUp extends Component {
     password: "",
     firstName: "",
     lastName: "",
-    orderPin: null,
   };
   handleChange = (e) => {
     this.setState({
@@ -67,6 +46,7 @@ class SignUp extends Component {
                   type="email"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs>
@@ -76,6 +56,7 @@ class SignUp extends Component {
                   type="password"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs>
@@ -84,6 +65,7 @@ class SignUp extends Component {
                   label="First Name"
                   id="firstName"
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs>
@@ -92,14 +74,7 @@ class SignUp extends Component {
                   label="Last Name"
                   id="lastName"
                   onChange={this.handleChange}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField
-                  type="number"
-                  label="Order Pin"
-                  id="orderPin"
-                  onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs className={classes.button}>

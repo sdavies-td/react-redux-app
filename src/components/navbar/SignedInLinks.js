@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authActions";
-import { Button } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const SignedInLinks = (props) => {
   return (
@@ -27,9 +28,9 @@ const SignedInLinks = (props) => {
       >
         Sign Out
       </Button>
-      <Button variant="outlined" component={Link} to="/profile">
-        {props.profile.initials}
-      </Button>
+      <IconButton variant="outlined" component={Link} to="/profile">
+        <AccountCircleIcon>{props.profile.initials}</AccountCircleIcon>
+      </IconButton>
     </React.Fragment>
   );
 };

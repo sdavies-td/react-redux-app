@@ -3,61 +3,35 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { createItem } from "../../store/actions/itemActions";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  TextField,
+  InputAdornment,
+  Switch,
+  FormControlLabel,
+} from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-  },
-  title: {
-    fontSize: "1.6rem",
-    fontWeight: "Medium",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(4),
-    width: "400px",
-  },
-  button: {
-    marginTop: "40px",
-    justifyContent: "center",
-    display: "flex",
-  },
-  buttonRow: {
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  item: {
-    marginTop: "20px",
-    marginBottom: "20px",
-  },
-});
+import { themeStyles } from "../../theme";
+
+const styles = (theme) => themeStyles;
 
 class CreateItem extends Component {
   state = {
     itemName: "",
-    itemPrice: null,
+    itemPrice: 0,
     supplierName: "",
     itemLink: "",
+    gstExclusive: false,
   };
   handleChange = (e) => {
-    //console.log(e.target.type);
     const value = e.target.value;
     if (e.target.type === "number") {
       this.setState({
-        [e.target.id]: parseFloat(value).toFixed(2),
+        itemPrice: Math.round(value * 100) / 100,
       });
     } else {
       this.setState({
@@ -65,10 +39,38 @@ class CreateItem extends Component {
       });
     }
   };
+  handleSwitch = (e, value) => {
+    if (value) {
+      this.setState({
+        gstExclusive: value,
+        itemPrice:
+          Math.round(
+            (this.state.itemPrice - (this.state.itemPrice * 3) / 23) * 100
+          ) / 100,
+      });
+    } else {
+      this.setState({
+        gstExclusive: value,
+        itemPrice: Math.round(this.state.itemPrice * 1.15 * 100) / 100,
+      });
+    }
+  };
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.createItem(this.state);
-    this.props.history.push("/items");
+    if (this.state.gstExclusive) {
+      this.setState(
+        {
+          itemPrice: Math.round(this.state.itemPrice * 1.15 * 100) / 100,
+        },
+        () => {
+          this.props.createItem(this.state);
+          this.props.history.push("/items");
+        }
+      );
+    } else {
+      this.props.createItem(this.state);
+      this.props.history.push("/items");
+    }
   };
   render() {
     const { auth, classes } = this.props;
@@ -92,6 +94,7 @@ class CreateItem extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.item}>
@@ -101,21 +104,58 @@ class CreateItem extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
+              <FormControlLabel
+                control={
+                  <Switch
+                    defaultValue={this.state.gstExclusive}
+                    onChange={this.handleSwitch}
+                    name="gstSwitch"
+                    color="primary"
+                  />
+                }
+                label="Toggle GST Exclusive"
+              />
               <Grid className={classes.item}>
-                <TextField
-                  id="itemPrice"
-                  label="Item Price"
-                  type="number"
-                  fullWidth
-                  onChange={this.handleChange}
-                />
+                {!this.state.gstExclusive && (
+                  <TextField
+                    id="itemPriceIncl"
+                    label="Item Price (GST Inclusive)"
+                    type="number"
+                    fullWidth
+                    defaultValue={this.state.itemPrice}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
+                    }}
+                    onChange={this.handleChange}
+                    required
+                  />
+                )}
+                {this.state.gstExclusive && (
+                  <TextField
+                    id="itemPriceExcl"
+                    label="Item Price (GST Exclusive)"
+                    type="number"
+                    fullWidth
+                    defaultValue={this.state.itemPrice}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
+                    }}
+                    onChange={this.handleChange}
+                    required
+                  />
+                )}
               </Grid>
               <Grid className={classes.item}>
                 <TextField
                   id="itemLink"
-                  label="Link to Item"
+                  label="URL Link to Item"
                   type="text"
                   fullWidth
                   onChange={this.handleChange}

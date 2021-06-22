@@ -5,45 +5,10 @@ import { createStore } from "../../store/actions/storeActions";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { Redirect, Link } from "react-router-dom";
+import Places from "../utils/Places";
+import { themeStyles } from "../../theme";
 
-const styles = (theme) => ({
-  root: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(2),
-  },
-  title: {
-    fontSize: "1.6rem",
-    fontWeight: "Medium",
-  },
-  body: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(4),
-    width: "400px",
-  },
-  button: {
-    marginTop: "40px",
-    justifyContent: "center",
-    display: "flex",
-  },
-  buttonRow: {
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  item: {
-    marginTop: "20px",
-    marginBottom: "20px",
-  },
-});
+const styles = (theme) => themeStyles;
 
 class CreateStore extends Component {
   state = {
@@ -55,6 +20,11 @@ class CreateStore extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
+    });
+  };
+  handleAddress = (e) => {
+    this.setState({
+      address: e.description,
     });
   };
   handleSubmit = (e) => {
@@ -82,14 +52,8 @@ class CreateStore extends Component {
                   onChange={this.handleChange}
                 />
               </Grid>
-              <Grid className={classes.item}>
-                <TextField
-                  id="address"
-                  label="Address"
-                  type="text"
-                  fullWidth
-                  onChange={this.handleChange}
-                />
+              <Grid className={classes.placesItem}>
+                <Places handleAddress={this.handleAddress} />
               </Grid>
               <Grid className={classes.item}>
                 <TextField
@@ -130,6 +94,7 @@ class CreateStore extends Component {
             </form>
           </Paper>
         </Grid>
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </Grid>
     );
   }

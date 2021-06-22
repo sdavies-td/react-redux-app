@@ -13,11 +13,11 @@ import {
 import firebase from "./config/fbConfig";
 import { createFirestoreInstance } from "redux-firestore";
 import App from "./App";
-import Loader from "./components/layout/Loader";
+import Loader from "./components/utils/Loader";
 import "./index.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "./theme";
+import { theme } from "./theme";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

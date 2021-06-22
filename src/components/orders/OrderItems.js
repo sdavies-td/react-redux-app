@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { TextField, IconButton, Grid, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import LinkIcon from "@material-ui/icons/Link";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
@@ -9,9 +11,9 @@ function OrderItems(props) {
     {
       itemName: "",
       supplierName: "",
-      itemPrice: null,
+      itemPrice: 0,
       itemQty: 0,
-      itemSubtotal: null,
+      itemSubtotal: 0,
     },
   ]);
   const handleListChange = (e, i, item) => {
@@ -31,19 +33,24 @@ function OrderItems(props) {
       itemQty: 0,
       itemSubtotal: 0,
     };
-
+    handleSubtotal(i);
     setInputList(list);
-    props.handleItems(inputList);
+    props.handleItems(list);
   };
   const handleQtyChange = (e, i) => {
     const { value } = e.target;
-    //console.log(id);
     const list = [...inputList];
-
-    list[i].itemQty = parseInt(value);
-    handleSubtotal(i);
-    setInputList(list);
-    props.handleItems(inputList);
+    if (e.target.value === "") {
+      list[i].itemQty = 0;
+      handleSubtotal(i);
+      setInputList(list);
+      props.handleItems(list);
+    } else {
+      list[i].itemQty = parseInt(value);
+      handleSubtotal(i);
+      setInputList(list);
+      props.handleItems(list);
+    }
   };
   const handleSubtotal = (i) => {
     const itemSubtotal = inputList[i].itemPrice * inputList[i].itemQty;
@@ -57,9 +64,9 @@ function OrderItems(props) {
       {
         itemName: "",
         supplierName: "",
-        itemPrice: null,
+        itemPrice: 0,
         itemQty: 0,
-        itemSubtotal: null,
+        itemSubtotal: 0,
       },
     ];
     setInputList(list);
@@ -79,8 +86,8 @@ function OrderItems(props) {
       </Grid>
       {inputList.map((x, i) => {
         return (
-          <Grid key={i} className={classes.row}>
-            <Grid className={classes.itemName}>
+          <Grid key={i} className={classes.itemRow}>
+            <Grid className={classes.name}>
               <Autocomplete
                 id="itemName"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
@@ -97,13 +104,25 @@ function OrderItems(props) {
                     type
                     label="Item Name"
                     placeholder="Search.."
-                    value={inputList[i].itemName}
+                    value={inputList[i].item}
                     variant="outlined"
                   />
                 )}
               />
             </Grid>
-            <Grid className={classes.itemSupplier}>
+            <Grid className={classes.qty}>
+              <TextField
+                id="itemQty"
+                type="number"
+                label="Qty"
+                required
+                inputProps={{ min: 0, style: { textAlign: "center" } }}
+                value={inputList[i].itemQty}
+                onChange={(e) => handleQtyChange(e, i)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid className={classes.supplier}>
               <TextField
                 id="supplierName"
                 inputProps={{ min: 0, style: { textAlign: "left" } }}
@@ -114,9 +133,22 @@ function OrderItems(props) {
                   readOnly: true,
                 }}
                 variant="outlined"
+                disabled
               />
             </Grid>
-            <Grid className={classes.itemPrice}>
+            <Grid className={classes.link}>
+              <Link
+                to={{
+                  pathname: inputList[i].itemLink,
+                }}
+                target="_blank"
+              >
+                <IconButton>
+                  <LinkIcon />
+                </IconButton>
+              </Link>
+            </Grid>
+            <Grid className={classes.price}>
               <TextField
                 inputProps={{ min: 0, style: { textAlign: "right" } }}
                 id="itemPrice"
@@ -130,21 +162,10 @@ function OrderItems(props) {
                   readOnly: true,
                 }}
                 variant="outlined"
+                disabled
               />
             </Grid>
-            <Grid className={classes.itemQty}>
-              <TextField
-                type="number"
-                id="itemQty"
-                label="Qty"
-                required
-                inputProps={{ min: 0, style: { textAlign: "right" } }}
-                value={inputList[i].itemQty}
-                onChange={(e) => handleQtyChange(e, i)}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid className={classes.itemPrice}>
+            <Grid className={classes.itemSubtotal}>
               <TextField
                 inputProps={{ min: 0, style: { textAlign: "right" } }}
                 id="itemSubtotal"
@@ -158,9 +179,10 @@ function OrderItems(props) {
                   readOnly: true,
                 }}
                 variant="outlined"
+                disabled
               />
             </Grid>
-            <Grid className={classes.item}>
+            <Grid className={classes.itemAddRemove}>
               {inputList.length !== 1 && (
                 <IconButton
                   color="secondary"
