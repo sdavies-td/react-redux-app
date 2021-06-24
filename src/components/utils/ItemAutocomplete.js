@@ -14,7 +14,7 @@ const ItemAutocomplete = (props) => {
       renderOption={(item) => item.name}
       getOptionLabel={(item) => item.name}
       renderInput={(params) => (
-        <TextField {...params} required label="Item" placeholder="Search.." />
+        <TextField {...params} label="Item" placeholder="Search.." />
       )}
     />
   );

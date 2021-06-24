@@ -14,12 +14,7 @@ const CustomerAutocomplete = (props) => {
       renderOption={(customer) => customer.fullName}
       getOptionLabel={(customer) => customer.fullName}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          required
-          label="Customer"
-          placeholder="Search.."
-        />
+        <TextField {...params} label="Customer" placeholder="Search.." />
       )}
     />
   );

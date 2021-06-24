@@ -14,6 +14,7 @@ import {
   IconButton,
   Grid,
   Typography,
+  InputAdornment,
 } from "@material-ui/core";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
@@ -31,17 +32,8 @@ const OrderList = ({ orders }) => {
   };
   const [, ...rest] = orders;
   return (
-    <React.Fragment>
-      <Grid
-        className={classes.search}
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
+    <Grid>
+      <Grid className={classes.search}>
         <TextField
           id="outlined-search"
           label="Search by Customer..."
@@ -49,6 +41,13 @@ const OrderList = ({ orders }) => {
           variant="outlined"
           value={value}
           onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <Paper>
@@ -144,7 +143,7 @@ const OrderList = ({ orders }) => {
           </TableBody>
         </Table>
       </Paper>
-    </React.Fragment>
+    </Grid>
   );
 };
 

@@ -113,13 +113,9 @@ class EditItem extends Component {
               Edit Item: {itemName}
             </Typography>
           </Grid>
-          <Grid container className={classes.body}>
+          <Grid className={classes.body}>
             <Paper className={classes.paper}>
-              <form
-                noValidate
-                onSubmit={this.handleSubmit}
-                className={classes.container}
-              >
+              <form noValidate onSubmit={this.handleSubmit}>
                 <Grid className={classes.item}>
                   <TextField
                     id="itemName"
@@ -228,12 +224,11 @@ class EditItem extends Component {
 // <pre>{JSON.stringify(this.state, null, 2)}</pre>
 
 const mapStateToProps = (state, ownProps) => {
-  const id = ownProps.match.params.id;
+  //const id = ownProps.match.params.id;
   const items = state.firestore.ordered.items;
   return {
     auth: state.firebase.auth,
     items,
-    id,
   };
 };
 

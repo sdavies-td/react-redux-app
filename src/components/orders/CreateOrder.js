@@ -12,11 +12,12 @@ import ShippingAutocomplete from "../utils/ShippingAutocomplete";
 import MaterialUIPickers from "../utils/DatePicker";
 import moment from "moment";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+
 import { Link } from "react-router-dom";
+import Loader from "../utils/Loader";
 
+import { withStyles } from "@material-ui/core/styles";
 import { themeStyles } from "../../theme";
-
 const styles = (theme) => themeStyles;
 
 class CreateOrder extends Component {
@@ -115,126 +116,117 @@ class CreateOrder extends Component {
   render() {
     const { auth, stores, customers, classes, items } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    return (
-      <Grid className={classes.root}>
-        <Grid className={classes.header}>
-          <Typography className={classes.title}>Create an Order</Typography>
+    if (items) {
+      return (
+        <Grid className={classes.root}>
+          <Grid className={classes.header}>
+            <Typography className={classes.title}>Create an Order</Typography>
+          </Grid>
+          <Grid className={classes.orderBody}>
+            <Paper className={classes.orderPaper}>
+              <form noValidate onSubmit={this.handleSubmit}>
+                <Grid className={classes.row}>
+                  <Grid className={classes.date}>
+                    <MaterialUIPickers handleDate={this.handleDate} />
+                  </Grid>
+                  <Grid className={classes.store}>
+                    <StoreAutocomplete
+                      id="store"
+                      stores={stores}
+                      handleChange={this.handleChange}
+                    />
+                  </Grid>
+                  <Grid className={classes.customer}>
+                    <CustomerAutocomplete
+                      customers={customers}
+                      handleChange={this.handleChange}
+                    />
+                  </Grid>
+                  <Grid className={classes.shipping}>
+                    <ShippingAutocomplete handleChange={this.handleChange} />
+                  </Grid>
+                </Grid>
+                <OrderItems
+                  classes={classes}
+                  items={items}
+                  handleItems={this.handleItems}
+                />
+                <Grid className={classes.totalRow}>
+                  <Grid className={classes.totalItems}>
+                    <TextField
+                      inputProps={{ min: 0, style: { textAlign: "right" } }}
+                      id="gstExcl"
+                      type="text"
+                      value={Intl.NumberFormat("en-NZ", {
+                        style: "currency",
+                        currency: "NZD",
+                      }).format(this.state.orderTotal.exclGst)}
+                      label="Total Excl. GST"
+                      variant="outlined"
+                      disabled
+                    />
+                  </Grid>
+                  <Grid className={classes.totalItems}>
+                    <TextField
+                      inputProps={{ min: 0, style: { textAlign: "right" } }}
+                      id="gst"
+                      type="text"
+                      value={Intl.NumberFormat("en-NZ", {
+                        style: "currency",
+                        currency: "NZD",
+                      }).format(this.state.orderTotal.gst)}
+                      label="GST Amount"
+                      variant="outlined"
+                      disabled
+                    />
+                  </Grid>
+                  <Grid className={classes.totalItems}>
+                    <TextField
+                      inputProps={{ min: 0, style: { textAlign: "right" } }}
+                      id="total"
+                      type="text"
+                      value={Intl.NumberFormat("en-NZ", {
+                        style: "currency",
+                        currency: "NZD",
+                      }).format(this.state.orderTotal.total)}
+                      label="Total Incl. GST"
+                      variant="outlined"
+                      disabled
+                    />
+                  </Grid>
+                </Grid>
+                <Grid className={classes.buttonRow}>
+                  <Grid className={classes.buttonItem}>
+                    <Button
+                      onClick={this.handleCancel}
+                      variant="outlined"
+                      color="secondary"
+                      component={Link}
+                      to="/orders"
+                      fullWidth
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                  <Grid className={classes.buttonItem}>
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                    >
+                      Create
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid className={classes.orderBody}>
-          <Paper className={classes.orderPaper}>
-            <form
-              noValidate
-              onSubmit={this.handleSubmit}
-              className={classes.container}
-            >
-              <Grid className={classes.row}>
-                <Grid className={classes.date}>
-                  <MaterialUIPickers handleDate={this.handleDate} />
-                </Grid>
-                <Grid className={classes.store}>
-                  <StoreAutocomplete
-                    id="store"
-                    stores={stores}
-                    handleChange={this.handleChange}
-                  />
-                </Grid>
-                <Grid className={classes.customer}>
-                  <CustomerAutocomplete
-                    customers={customers}
-                    handleChange={this.handleChange}
-                  />
-                </Grid>
-                <Grid className={classes.shipping}>
-                  <ShippingAutocomplete handleChange={this.handleChange} />
-                </Grid>
-              </Grid>
-              <OrderItems
-                classes={classes}
-                items={items}
-                handleItems={this.handleItems}
-              />
-              <Grid className={classes.totalRow}>
-                <Grid className={classes.totalItems}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="gstExcl"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.exclGst)}
-                    label="Total Excl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                    disabled
-                  />
-                </Grid>
-                <Grid className={classes.totalItems}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="gst"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.gst)}
-                    label="GST Amount"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                    disabled
-                  />
-                </Grid>
-                <Grid className={classes.totalItems}>
-                  <TextField
-                    inputProps={{ min: 0, style: { textAlign: "right" } }}
-                    id="total"
-                    type="text"
-                    value={Intl.NumberFormat("en-NZ", {
-                      style: "currency",
-                      currency: "NZD",
-                    }).format(this.state.orderTotal.total)}
-                    label="Total Incl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                    disabled
-                  />
-                </Grid>
-              </Grid>
-              <Grid className={classes.orderButtonRow}>
-                <Grid className={classes.buttonItem}>
-                  <Button
-                    onClick={this.handleCancel}
-                    variant="outlined"
-                    color="secondary"
-                    component={Link}
-                    to="/orders"
-                    fullWidth
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid className={classes.buttonItem}>
-                  <Button
-                    type="submit"
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                  >
-                    Create
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </Paper>
-        </Grid>
-      </Grid>
-    );
+      );
+    } else {
+      return <Loader />;
+    }
   }
 }
 //<pre>{JSON.stringify(this.state, null, 2)}</pre>

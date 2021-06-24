@@ -105,13 +105,9 @@ class EditOrder extends Component {
         <Grid className={classes.header}>
           <Typography className={classes.title}>Edit an Order</Typography>
         </Grid>
-        <Grid container className={classes.orderBody}>
+        <Grid className={classes.orderBody}>
           <Paper className={classes.orderPaper}>
-            <form
-              noValidate
-              onSubmit={this.handleSubmit}
-              className={classes.container}
-            >
+            <form noValidate onSubmit={this.handleSubmit}>
               <Grid className={classes.row}>
                 <Grid className={classes.date}>
                   <MaterialUIPickers handleDate={this.handleDate} />
@@ -149,9 +145,6 @@ class EditOrder extends Component {
                       currency: "NZD",
                     }).format(this.state.orderTotal.exclGst)}
                     label="Total Excl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
                     variant="outlined"
                     disabled
                   />
@@ -166,9 +159,6 @@ class EditOrder extends Component {
                       currency: "NZD",
                     }).format(this.state.orderTotal.gst)}
                     label="GST Amount"
-                    InputProps={{
-                      readOnly: true,
-                    }}
                     variant="outlined"
                     disabled
                   />
@@ -183,9 +173,6 @@ class EditOrder extends Component {
                       currency: "NZD",
                     }).format(this.state.orderTotal.total)}
                     label="Total Incl. GST"
-                    InputProps={{
-                      readOnly: true,
-                    }}
                     variant="outlined"
                     disabled
                   />
@@ -223,9 +210,8 @@ class EditOrder extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const db = state.firestore.ordered;
-  //console.log(ownProps);
   return {
     auth: state.firebase.auth,
     stores: db.stores,

@@ -21,18 +21,13 @@ class ItemsDashboard extends Component {
     if (items) {
       return (
         <Grid className={classes.root}>
-          <Grid container className={classes.header}>
+          <Grid className={classes.header}>
             <Typography className={classes.title}>Order Items</Typography>
-            <IconButton
-              color="primary"
-              component={Link}
-              classes={classes}
-              to="/items/create"
-            >
+            <IconButton color="primary" component={Link} to="/items/create">
               <AddCircleIcon />
             </IconButton>
           </Grid>
-          <Grid container className={classes.body}>
+          <Grid className={classes.body}>
             <ItemList items={items} />
           </Grid>
         </Grid>

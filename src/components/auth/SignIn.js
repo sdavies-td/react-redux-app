@@ -29,14 +29,14 @@ class SignIn extends Component {
     if (auth.uid) return <Redirect to="/orders" />;
     return (
       <div className={classes.root}>
-        <Grid spacing={1}>
-          <Grid container className={classes.header}>
+        <Grid>
+          <Grid className={classes.header}>
             <Typography variant="h5">Sign In</Typography>
           </Grid>
         </Grid>
-        <Grid container className={classes.body}>
+        <Grid className={classes.body}>
           <Paper className={classes.paper}>
-            <form onSubmit={this.handleSubmit} className={classes.form}>
+            <form onSubmit={this.handleSubmit}>
               <Grid item xs>
                 <TextField
                   id="email"
@@ -55,7 +55,7 @@ class SignIn extends Component {
                   onChange={this.handleChange}
                 />
               </Grid>
-              <Grid item xs className={classes.button}>
+              <Grid className={classes.button}>
                 <Button
                   type="submit"
                   variant="outlined"

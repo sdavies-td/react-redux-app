@@ -27,7 +27,6 @@ export default function MaterialUIPickers(props) {
         onChange={handleDateChange}
         variant="inline"
         fullWidth
-        required
         inputProps={{ min: 0, style: { textAlign: "center" } }}
       />
     </MuiPickersUtilsProvider>

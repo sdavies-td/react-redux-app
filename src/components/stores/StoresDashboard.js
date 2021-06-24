@@ -21,13 +21,13 @@ class StoresDashboard extends Component {
     if (stores) {
       return (
         <Grid className={classes.root}>
-          <Grid container className={classes.header}>
+          <Grid className={classes.header}>
             <Typography className={classes.title}>Stores</Typography>
             <IconButton color="primary" component={Link} to="/stores/create">
               <AddCircleIcon />
             </IconButton>
           </Grid>
-          <Grid container className={classes.body}>
+          <Grid className={classes.body}>
             <StoreList stores={stores} />
           </Grid>
         </Grid>

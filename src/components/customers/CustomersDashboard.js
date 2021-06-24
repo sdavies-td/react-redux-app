@@ -21,13 +21,13 @@ class CustomersDashboard extends Component {
     if (customers) {
       return (
         <Grid className={classes.root}>
-          <Grid container className={classes.header}>
+          <Grid className={classes.header}>
             <Typography className={classes.title}>Customers</Typography>
             <IconButton color="primary" component={Link} to="/customers/create">
               <AddCircleIcon />
             </IconButton>
           </Grid>
-          <Grid container className={classes.body}>
+          <Grid className={classes.body}>
             <CustomerList customers={customers} />
           </Grid>
         </Grid>

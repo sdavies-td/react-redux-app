@@ -4,7 +4,6 @@ import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
-  InputAdornment,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +14,7 @@ import {
   Grid,
   Typography,
   TextField,
+  InputAdornment,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -29,17 +29,8 @@ const StoreList = ({ stores }) => {
     setValue(event.target.value);
   };
   return (
-    <React.Fragment>
-      <Grid
-        className={classes.search}
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
+    <Grid>
+      <Grid className={classes.search}>
         <TextField
           id="outlined-search"
           label="Search by Store Name..."
@@ -47,6 +38,13 @@ const StoreList = ({ stores }) => {
           variant="outlined"
           value={value}
           onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <Paper>
@@ -124,7 +122,7 @@ const StoreList = ({ stores }) => {
           </TableBody>
         </Table>
       </Paper>
-    </React.Fragment>
+    </Grid>
   );
 };
 

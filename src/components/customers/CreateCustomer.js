@@ -49,7 +49,7 @@ class CreateCustomer extends Component {
         <Grid className={classes.header}>
           <Typography className={classes.title}>Create a Customer</Typography>
         </Grid>
-        <Grid container className={classes.body}>
+        <Grid className={classes.body}>
           <Paper className={classes.paper}>
             <form onSubmit={this.handleSubmit} className="white">
               <Grid className={classes.item}>
@@ -91,20 +91,26 @@ class CreateCustomer extends Component {
               <Grid className={classes.placesItem}>
                 <Places handleAddress={this.handleAddress} />
               </Grid>
-              <Grid className={classes.button}>
-                <Grid className={classes.buttonRow}>
+              <Grid className={classes.buttonRow}>
+                <Grid className={classes.buttonItem}>
                   <Button
                     onClick={this.handleCancel}
                     variant="outlined"
                     color="secondary"
                     component={Link}
                     to="/customers"
+                    fullWidth
                   >
                     Cancel
                   </Button>
                 </Grid>
-                <Grid className={classes.buttonRow}>
-                  <Button type="submit" variant="outlined" color="primary">
+                <Grid className={classes.buttonItem}>
+                  <Button
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                  >
                     Create
                   </Button>
                 </Grid>

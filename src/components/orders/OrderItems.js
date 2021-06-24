@@ -79,6 +79,7 @@ function OrderItems(props) {
     props.handleItems(list);
   };
   const { items, classes } = props;
+
   return (
     <div>
       <Grid className={classes.subHeader}>
@@ -101,7 +102,6 @@ function OrderItems(props) {
                   <TextField
                     {...params}
                     required
-                    type
                     label="Item Name"
                     placeholder="Search.."
                     value={inputList[i].item}
@@ -125,13 +125,13 @@ function OrderItems(props) {
             <Grid className={classes.supplier}>
               <TextField
                 id="supplierName"
-                inputProps={{ min: 0, style: { textAlign: "left" } }}
+                inputProps={{
+                  min: 0,
+                  style: { textAlign: "right" },
+                }}
                 type="text"
                 value={inputList[i].supplierName}
                 label="Supplier"
-                InputProps={{
-                  readOnly: true,
-                }}
                 variant="outlined"
                 disabled
               />
@@ -150,7 +150,10 @@ function OrderItems(props) {
             </Grid>
             <Grid className={classes.price}>
               <TextField
-                inputProps={{ min: 0, style: { textAlign: "right" } }}
+                inputProps={{
+                  min: 0,
+                  style: { textAlign: "right" },
+                }}
                 id="itemPrice"
                 type="text"
                 value={Intl.NumberFormat("en-NZ", {
@@ -158,16 +161,16 @@ function OrderItems(props) {
                   currency: "NZD",
                 }).format(inputList[i].itemPrice)}
                 label="Price"
-                InputProps={{
-                  readOnly: true,
-                }}
                 variant="outlined"
                 disabled
               />
             </Grid>
             <Grid className={classes.itemSubtotal}>
               <TextField
-                inputProps={{ min: 0, style: { textAlign: "right" } }}
+                inputProps={{
+                  min: 0,
+                  style: { textAlign: "right" },
+                }}
                 id="itemSubtotal"
                 type="text"
                 value={Intl.NumberFormat("en-NZ", {
@@ -175,9 +178,6 @@ function OrderItems(props) {
                   currency: "NZD",
                 }).format(inputList[i].itemSubtotal)}
                 label="Subtotal"
-                InputProps={{
-                  readOnly: true,
-                }}
                 variant="outlined"
                 disabled
               />

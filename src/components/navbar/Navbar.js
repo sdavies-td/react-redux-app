@@ -4,7 +4,7 @@ import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, Grid } from "@material-ui/core";
+import { AppBar, Typography, Grid } from "@material-ui/core";
 import logo from "./logo.png";
 import { themeStyles } from "../../theme";
 
@@ -12,37 +12,33 @@ const useStyles = makeStyles(themeStyles);
 
 const Navbar = (props) => {
   const classes = useStyles();
+  const { navbarRoot, navBarTitle, toolbar } = classes;
   const { auth, profile } = props;
   const links = auth.uid ? (
-    <SignedInLinks profile={profile} classes={classes} />
+    <SignedInLinks
+      profile={profile}
+      handleLoad={props.handleLoad}
+      navLinks={props.navLinks}
+    />
   ) : (
-    <SignedOutLinks classes={classes} />
+    <SignedOutLinks handleLoad={props.handleLoad} navLinks={props.navLinks} />
   );
 
   return (
-    <AppBar className={classes.navbarRoot}>
-      <Toolbar className={classes.toolbar}>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
+    <AppBar className={navbarRoot}>
+      <Grid className={toolbar}>
+        <Link
+          to={{
+            pathname: "https://www.projectkitchens.co.nz/",
+          }}
+          target="_blank"
         >
-          <Grid item>
-            <Link
-              to={{
-                pathname: "https://www.projectkitchens.co.nz/",
-              }}
-              target="_blank"
-            >
-              <Typography className={classes.navBarTitle}>
-                <img src={logo} alt="Project Kitchens" height={80} />
-              </Typography>
-            </Link>
-          </Grid>
-          <Grid>{links}</Grid>
-        </Grid>
-      </Toolbar>
+          <Typography className={navBarTitle}>
+            <img src={logo} alt="Project Kitchens" height={80} />
+          </Typography>
+        </Link>
+        {links}
+      </Grid>
     </AppBar>
   );
 };

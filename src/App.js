@@ -7,7 +7,7 @@ import SignUp from "./components/auth/SignUp";
 
 import CustomersDashboard from "./components/customers/CustomersDashboard";
 import CreateCustomer from "./components/customers/CreateCustomer";
-import EditCustomer from "./components/customers/EditCustomer";
+//import EditCustomer from "./components/customers/EditCustomer";
 
 import ItemsDashboard from "./components/items/ItemsDashboard";
 import CreateItem from "./components/items/CreateItem";
@@ -19,33 +19,90 @@ import EditOrder from "./components/orders/EditOrder";
 
 import StoresDashboard from "./components/stores/StoresDashboard";
 import CreateStore from "./components/stores/CreateStore";
-import EditStore from "./components/stores/EditStore";
+//import EditStore from "./components/stores/EditStore";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.handleLoad = this.handleLoad.bind(this);
+    this.navLinks = {
+      variant: {
+        orders: "outlined",
+        items: "outlined",
+        customers: "outlined",
+        stores: "outlined",
+        profile: "outlined",
+      },
+      color: {
+        orders: "default",
+        items: "default",
+        customers: "default",
+        stores: "default",
+        profile: "default",
+      },
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener("load", this.handleLoad);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("load", this.handleLoad);
+  }
+
+  handleLoad() {
+    console.log("loaded");
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar />
+          <Navbar handleLoad={this.handleLoad} navLinks={this.navLinks} />
           <ToastContainer />
           <Switch>
-            <Route exact path="/items" component={ItemsDashboard} />
-            <Route path="/items/edit/:id" component={EditItem} />
-            <Route path="/items/create" component={CreateItem} />
-            <Route exact path="/customers" component={CustomersDashboard} />
-            <Route path="/customers/edit/:id" component={EditCustomer} />
-            <Route path="/customers/create" component={CreateCustomer} />
-            <Route exact path="/orders" component={OrdersDashboard} />
-            <Route path="/orders/edit/:id" component={EditOrder} />
-            <Route path="/orders/create" component={CreateOrder} />
-            <Route exact path="/stores" component={StoresDashboard} />
-            <Route path="/stores/edit/:id" component={EditStore} />
-            <Route path="/stores/create" component={CreateStore} />
-            <Route path="/auth/signin" component={SignIn} />
-            <Route path="/auth/signup" component={SignUp} />
+            <Route exact path="/items">
+              <ItemsDashboard />
+            </Route>
+            <Route path="/items/edit/:id">
+              <EditItem />
+            </Route>
+            <Route path="/items/create">
+              <CreateItem />
+            </Route>
+            <Route exact path="/customers">
+              <CustomersDashboard />
+            </Route>
+            <Route path="/customers/edit/:id"></Route>
+            <Route path="/customers/create">
+              <CreateCustomer />
+            </Route>
+            <Route exact path="/orders">
+              <OrdersDashboard />
+            </Route>
+            <Route path="/orders/edit/:id">
+              <EditOrder />
+            </Route>
+            <Route path="/orders/create">
+              <CreateOrder />
+            </Route>
+            <Route exact path="/stores">
+              <StoresDashboard />
+            </Route>
+            <Route path="/stores/edit/:id"></Route>
+            <Route path="/stores/create">
+              <CreateStore />
+            </Route>
+            <Route path="/auth/signin">
+              <SignIn />
+            </Route>
+            <Route path="/auth/signup">
+              <SignUp />
+            </Route>
             <Route exact path="/">
               <Redirect to="/orders" />
             </Route>

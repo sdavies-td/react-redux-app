@@ -31,12 +31,12 @@ class SignUp extends Component {
     if (auth.uid) return <Redirect to="/orders" />;
     return (
       <div className={classes.root}>
-        <Grid spacing={1}>
-          <Grid container className={classes.header}>
+        <Grid>
+          <Grid className={classes.header}>
             <Typography variant="h5">Sign Up</Typography>
           </Grid>
         </Grid>
-        <Grid container className={classes.body}>
+        <Grid className={classes.body}>
           <Paper className={classes.paper}>
             <form onSubmit={this.handleSubmit} className="white">
               <Grid item xs>

@@ -2,8 +2,14 @@ import React from "react";
 import { Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const SignedOutLinks = (props) => {
-  const { classes } = props;
+import { makeStyles } from "@material-ui/core/styles";
+import { themeStyles } from "../../theme";
+
+const useStyles = makeStyles(themeStyles);
+
+const SignedOutLinks = () => {
+  const classes = useStyles();
+  const { navLinksRow, navLinkItem } = classes;
   const [color, setColor] = React.useState({
     signIn: "primary",
     signUp: "default",
@@ -28,9 +34,10 @@ const SignedOutLinks = (props) => {
     }
   };
   return (
-    <Grid className={classes.navLinksRow}>
-      <Grid className={classes.navLinkItem}>
+    <Grid className={navLinksRow}>
+      <Grid className={navLinkItem}>
         <Button
+          id="signIn"
           variant={variant.signIn}
           color={color.signIn}
           onClick={handleButton}
@@ -40,8 +47,9 @@ const SignedOutLinks = (props) => {
           Sign In
         </Button>
       </Grid>
-      <Grid className={classes.navLinkItem}>
+      <Grid className={navLinkItem}>
         <Button
+          id="signUp"
           variant={variant.signUp}
           color={color.signUp}
           onClick={handleButton}

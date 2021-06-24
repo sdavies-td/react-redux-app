@@ -17,6 +17,7 @@ import {
   IconButton,
   Grid,
   Typography,
+  InputAdornment,
 } from "@material-ui/core";
 import { themeStyles } from "../../theme";
 
@@ -29,17 +30,8 @@ const ItemList = ({ items }) => {
     setValue(event.target.value);
   };
   return (
-    <React.Fragment>
-      <Grid
-        className={classes.search}
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
+    <Grid>
+      <Grid className={classes.search}>
         <TextField
           id="outlined-search"
           label="Search by Item Name..."
@@ -47,13 +39,20 @@ const ItemList = ({ items }) => {
           variant="outlined"
           value={value}
           onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <Paper>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className="bold">
+              <TableCell align="right">
                 <Typography variant="h6">Item Name</Typography>
               </TableCell>
               <TableCell align="right">
@@ -88,6 +87,7 @@ const ItemList = ({ items }) => {
                 })
                 .map((item, i) => {
                   const {
+                    id,
                     itemName,
                     supplierName,
                     itemPrice,
@@ -120,7 +120,12 @@ const ItemList = ({ items }) => {
                             <LinkIcon />
                           </IconButton>
                         </Link>
-                        <Link to={"/items/edit/" + item.id}>
+                        <Link
+                          to={{
+                            pathname: "/items/edit/" + id,
+                            item,
+                          }}
+                        >
                           <IconButton>
                             <EditIcon />
                           </IconButton>
@@ -135,7 +140,7 @@ const ItemList = ({ items }) => {
           </TableBody>
         </Table>
       </Paper>
-    </React.Fragment>
+    </Grid>
   );
 };
 

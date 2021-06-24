@@ -127,7 +127,7 @@ export default function GoogleMaps(props) {
         );
 
         return (
-          <Grid container alignItems="center">
+          <Grid alignItems="center">
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>
@@ -140,7 +140,6 @@ export default function GoogleMaps(props) {
                   {part.text}
                 </span>
               ))}
-
               <Typography variant="body2" color="textSecondary">
                 {option.structured_formatting.secondary_text}
               </Typography>

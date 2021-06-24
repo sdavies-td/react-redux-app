@@ -36,12 +36,17 @@ export const themeStyles = {
   body: {
     alignItems: "center",
     justifyContent: "center",
+    display: "flex",
   },
   paper: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(4),
-    justifyContent: "center",
-    display: "flex",
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
   button: {
     marginTop: "40px",
@@ -56,15 +61,15 @@ export const themeStyles = {
     marginTop: "20px",
     marginBottom: "20px",
   },
-  buttonRow: {
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
   inputRoot: {
     color: "inherit",
   },
   search: {
     paddingBottom: "10px",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    padding: "auto",
   },
   subTitle: {
     marginTop: "40px",
@@ -80,7 +85,11 @@ export const themeStyles = {
   },
   orderPaper: {
     padding: theme.spacing(4),
-    margin: theme.spacing(4),
+    margin: theme.spacing(1),
+  },
+  buttonRow: {
+    alignItems: "center",
+    display: "flex",
   },
   buttonItem: { width: "100%", padding: theme.spacing(1) },
   row: {
@@ -130,7 +139,7 @@ export const themeStyles = {
   orderButtonRow: {
     alignItems: "center",
     display: "flex",
-  }, //navbar
+  },
   navbarRoot: {
     flexGrow: 1,
     position: "static",
@@ -139,6 +148,11 @@ export const themeStyles = {
   navBarTitle: {
     flexGrow: 1,
     paddingTop: "5px",
+  },
+  toolbar: {
+    alignItems: "center",
+    justifyContent: "space-around",
+    display: "flex",
   },
   navLinksRow: {
     alignItems: "center",
