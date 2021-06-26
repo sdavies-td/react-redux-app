@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import { orderReducer, editOrderReducer } from "./orderReducer";
-import customerReducer from "./customerReducer";
-import storeReducer from "./storeReducer";
+import { customerReducer, editCustomerReducer } from "./customerReducer";
+import {
+  storeReducer,
+  editStoreReducer,
+  deleteStoreReducer,
+} from "./storeReducer";
 import { itemReducer, editItemReducer } from "./itemReducer";
 import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
@@ -14,7 +18,10 @@ const rootReducer = combineReducers({
   firestore: firestoreReducer,
   firebase: firebaseReducer,
   customer: customerReducer,
+  editCustomer: editCustomerReducer,
   store: storeReducer,
+  editStore: editStoreReducer,
+  deleteStore: deleteStoreReducer,
   item: itemReducer,
   editItem: editItemReducer,
 });

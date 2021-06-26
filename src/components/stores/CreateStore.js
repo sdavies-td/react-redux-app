@@ -23,9 +23,11 @@ class CreateStore extends Component {
     });
   };
   handleAddress = (e) => {
-    this.setState({
-      address: e.description,
-    });
+    if (e) {
+      this.setState({
+        address: e.description,
+      });
+    }
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -80,7 +82,7 @@ class CreateStore extends Component {
                     variant="outlined"
                     color="secondary"
                     component={Link}
-                    to="/items"
+                    to="/stores"
                     fullWidth
                   >
                     Cancel
@@ -105,7 +107,7 @@ class CreateStore extends Component {
   }
 }
 
-//<pre>{JSON.stringify(this.state, null, 2)}</pre>
+//
 
 const mapStateToProps = (state) => {
   return {

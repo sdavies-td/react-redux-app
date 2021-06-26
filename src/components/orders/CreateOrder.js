@@ -79,38 +79,29 @@ class CreateOrder extends Component {
           exclGst: Math.round((orderTotal - (orderTotal * 3) / 23) * 100) / 100,
         },
       },
-      () => {
-        //console.log(this.state.orderItems);
-      }
+      () => {}
     );
   }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createOrder(this.state);
     this.props.history.push("/orders");
-    //console.log(this.state);
   };
   handleDate = (e) => {
     const date = moment(e).format("DD/MM/YYYY");
-    //console.log(date);
     this.setState(
       {
         orderDate: date,
       },
-      () => {
-        //console.log(this.state);
-      }
+      () => {}
     );
   };
   handleShipping = (e, value) => {
-    //console.log(e);
     this.setState(
       {
         shipping: value,
       },
-      () => {
-        //console.log(this.state);
-      }
+      () => {}
     );
   };
   render() {
@@ -232,7 +223,6 @@ class CreateOrder extends Component {
 //<pre>{JSON.stringify(this.state, null, 2)}</pre>
 const mapStateToProps = (state) => {
   const db = state.firestore.ordered;
-  //console.log(ownProps);
   return {
     auth: state.firebase.auth,
     stores: db.stores,

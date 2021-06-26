@@ -27,13 +27,14 @@ export const editCustomer = (customer) => {
     const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
     const editedBy = profile.firstName + " " + profile.lastName;
-    firestore
-      .collection("customers")
-      .add({
-        ...customer,
-        editedByName: editedBy,
+    const docRef = firestore.collection("customers").doc(customer.customerId);
+    const { customerId, ...rest } = customer;
+    docRef
+      .update({
+        ...rest,
+        editedLastByName: editedBy,
         editedLastById: editedById,
-        editedAt: new Date(),
+        editedLastAt: new Date(),
       })
       .then(() => {
         dispatch({ type: "EDIT_CUSTOMER_SUCCESS" });

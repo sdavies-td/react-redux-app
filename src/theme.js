@@ -48,6 +48,16 @@ export const themeStyles = {
     marginRight: theme.spacing(4),
     marginBottom: theme.spacing(4),
   },
+  tablePaper: {
+    paddingTop: theme.spacing(0),
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
+    paddingBottom: theme.spacing(0),
+    marginTop: theme.spacing(0),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(0),
+  },
   button: {
     marginTop: "40px",
     justifyContent: "center",
@@ -159,6 +169,17 @@ export const themeStyles = {
     display: "flex",
   },
   navLinkItem: {
+    marginLeft: "1px",
+    marginRight: "1px",
+  },
+  footerRow: {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
+  },
+  footerItem: {
     marginLeft: "1px",
     marginRight: "1px",
   },

@@ -53,9 +53,7 @@ class EditOrder extends Component {
       {
         [id]: store,
       },
-      () => {
-        //console.log(this.state.orderItems);
-      }
+      () => {}
     );
   }
   handleItems(list) {
@@ -63,38 +61,29 @@ class EditOrder extends Component {
       {
         orderItems: list,
       },
-      () => {
-        //console.log(this.state.orderItems);
-      }
+      () => {}
     );
   }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createOrder(this.state);
     this.props.history.push("/orders");
-    //console.log(this.state);
   };
   handleDate = (e) => {
     const date = moment(e).format("DD/MM/YYYY");
-    //console.log(date);
     this.setState(
       {
         orderDate: date,
       },
-      () => {
-        //console.log(this.state);
-      }
+      () => {}
     );
   };
   handleShipping = (e, value) => {
-    //console.log(e);
     this.setState(
       {
         shipping: value,
       },
-      () => {
-        //console.log(this.state);
-      }
+      () => {}
     );
   };
   render() {

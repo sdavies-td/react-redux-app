@@ -193,20 +193,26 @@ class EditItem extends Component {
                     onChange={this.handleChange}
                   />
                 </Grid>
-                <Grid className={classes.button}>
-                  <Grid className={classes.buttonRow}>
+                <Grid className={classes.buttonRow}>
+                  <Grid className={classes.buttonItem}>
                     <Button
                       onClick={this.handleCancel}
                       variant="outlined"
                       color="secondary"
                       component={Link}
                       to="/items"
+                      fullWidth
                     >
                       Cancel
                     </Button>
                   </Grid>
-                  <Grid className={classes.buttonRow}>
-                    <Button type="submit" variant="outlined" color="primary">
+                  <Grid className={classes.buttonItem}>
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                    >
                       Edit
                     </Button>
                   </Grid>
@@ -224,11 +230,12 @@ class EditItem extends Component {
 // <pre>{JSON.stringify(this.state, null, 2)}</pre>
 
 const mapStateToProps = (state, ownProps) => {
-  //const id = ownProps.match.params.id;
+  const id = ownProps.match.params.id;
   const items = state.firestore.ordered.items;
   return {
     auth: state.firebase.auth,
     items,
+    id,
   };
 };
 

@@ -17,7 +17,6 @@ export const createItem = (state) => {
         dispatch({ type: "CREATE_ITEM_SUCCESS" });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({ type: "CREATE_ITEM_ERROR" }, err);
       });
   };

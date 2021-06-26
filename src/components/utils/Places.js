@@ -30,9 +30,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GoogleMaps(props) {
-  //console.log(props);
   const classes = useStyles();
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(props.defaultValue);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
@@ -59,7 +58,6 @@ export default function GoogleMaps(props) {
 
   React.useEffect(() => {
     let active = true;
-
     if (!autocompleteService.current && window.google) {
       autocompleteService.current =
         new window.google.maps.places.AutocompleteService();
@@ -67,12 +65,10 @@ export default function GoogleMaps(props) {
     if (!autocompleteService.current) {
       return undefined;
     }
-
     if (inputValue === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
-
     fetch({ input: inputValue }, (results) => {
       if (active) {
         let newOptions = [];
@@ -88,12 +84,10 @@ export default function GoogleMaps(props) {
         setOptions(newOptions);
       }
     });
-
     return () => {
       active = false;
     };
   }, [value, inputValue, fetch]);
-
   return (
     <Autocomplete
       id="google-map-demo"

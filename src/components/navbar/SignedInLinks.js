@@ -27,9 +27,9 @@ const SignedInLinks = (props) => {
     setAnchorEl(null);
   };
   const classes = useStyles();
-  const { profile, navLinks } = props;
+  const { profile, state, handleLoad } = props;
   const { firstName, lastName } = profile;
-  const { variant, color } = navLinks;
+  const { variant, color } = state;
   const { navLinksRow, navLinkItem } = classes;
   return (
     <Grid item className={navLinksRow}>
@@ -40,6 +40,7 @@ const SignedInLinks = (props) => {
           color={color.orders}
           component={Link}
           to="/orders"
+          onClick={handleLoad}
         >
           Orders
         </Button>
@@ -51,6 +52,7 @@ const SignedInLinks = (props) => {
           color={color.items}
           component={Link}
           to="/items"
+          onClick={handleLoad}
         >
           Items
         </Button>
@@ -62,6 +64,7 @@ const SignedInLinks = (props) => {
           color={color.customers}
           component={Link}
           to="/customers"
+          onClick={handleLoad}
         >
           Customers
         </Button>
@@ -73,6 +76,7 @@ const SignedInLinks = (props) => {
           color={color.stores}
           component={Link}
           to="/stores"
+          onClick={handleLoad}
         >
           Stores
         </Button>
@@ -97,7 +101,10 @@ const SignedInLinks = (props) => {
         </MenuItem>
         <MenuItem
           id="profile"
-          onClick={handleClose}
+          onClick={(e) => {
+            handleClose(e);
+            handleLoad(e);
+          }}
           component={Link}
           to="/profile"
         >

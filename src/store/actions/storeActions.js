@@ -16,7 +16,6 @@ export const createStore = (store) => {
         dispatch({ type: "CREATE_STORE_SUCCESS" });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({ type: "CREATE_STORE_ERROR" }, err);
       });
   };
@@ -28,19 +27,35 @@ export const editStore = (store) => {
     const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
     const editedBy = profile.firstName + " " + profile.lastName;
-    firestore
-      .collection("stores")
-      .add({
-        ...store,
-        editedByName: editedBy,
+    const docRef = firestore.collection("stores").doc(store.storeId);
+    const { storeId, ...rest } = store;
+    docRef
+      .update({
+        ...rest,
+        editedLastByName: editedBy,
         editedLastById: editedById,
-        editedAt: new Date(),
+        editedLastAt: new Date(),
       })
       .then(() => {
         dispatch({ type: "EDIT_STORE_SUCCESS" });
       })
       .catch((err) => {
         dispatch({ type: "EDIT_STORE_ERROR" }, err);
+      });
+  };
+};
+
+export const deleteStore = (id) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const docRef = firestore.collection("stores").doc(id);
+    docRef
+      .delete()
+      .then(() => {
+        dispatch({ type: "DELETE_STORE_SUCCESS" });
+      })
+      .catch((err) => {
+        dispatch({ type: "DELETE_STORE_ERROR" }, err);
       });
   };
 };

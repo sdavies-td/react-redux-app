@@ -25,9 +25,11 @@ class CreateCustomer extends Component {
     });
   };
   handleAddress = (e) => {
-    this.setState({
-      address: e.description,
-    });
+    if (e) {
+      this.setState({
+        address: e.description,
+      });
+    }
   };
   handleSubmit = (e) => {
     this.setState(

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { connect } from "react-redux";
@@ -13,21 +13,22 @@ const useStyles = makeStyles(themeStyles);
 const Navbar = (props) => {
   const classes = useStyles();
   const { navbarRoot, navBarTitle, toolbar } = classes;
-  const { auth, profile } = props;
+  const { auth, profile, state, handleLoad, location } = props;
   const links = auth.uid ? (
     <SignedInLinks
       profile={profile}
-      handleLoad={props.handleLoad}
-      navLinks={props.navLinks}
+      handleLoad={handleLoad}
+      state={state}
+      location={location}
     />
   ) : (
-    <SignedOutLinks handleLoad={props.handleLoad} navLinks={props.navLinks} />
+    <SignedOutLinks handleLoad={handleLoad} state={state} location={location} />
   );
 
   return (
     <AppBar className={navbarRoot}>
       <Grid className={toolbar}>
-        <Link
+        <NavLink
           to={{
             pathname: "https://www.projectkitchens.co.nz/",
           }}
@@ -36,7 +37,7 @@ const Navbar = (props) => {
           <Typography className={navBarTitle}>
             <img src={logo} alt="Project Kitchens" height={80} />
           </Typography>
-        </Link>
+        </NavLink>
         {links}
       </Grid>
     </AppBar>

@@ -41,7 +41,6 @@ export const createOrder = (order) => {
         dispatch({ type: "CREATE_ORDER_SUCCESS" });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({ type: "CREATE_ORDER_ERROR" }, err);
       });
   };
