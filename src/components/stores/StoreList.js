@@ -152,8 +152,8 @@ const StoreList = ({ stores, handleDelete }) => {
                               aria-labelledby="responsive-dialog-title"
                             >
                               <DialogTitle id="responsive-dialog-title">
-                                Are you sure you want to delete store
-                                {" " + deleteStore.name}?
+                                Are you sure you want to delete store '
+                                {deleteStore.name}'?
                               </DialogTitle>
                               <DialogContent>
                                 <DialogContentText>

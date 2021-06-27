@@ -180,7 +180,11 @@ export const themeStyles = {
     padding: theme.spacing(2),
   },
   footerItem: {
-    marginLeft: "1px",
-    marginRight: "1px",
+    marginLeft: "2px",
+    marginRight: "2px",
+  },
+  link: {
+    textDecoration: "none",
+    color: "black",
   },
 };

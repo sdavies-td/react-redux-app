@@ -110,7 +110,15 @@ const SignedInLinks = (props) => {
         >
           Profile
         </MenuItem>
-        <MenuItem onClick={props.signOut} component={Link} to="/auth/signin">
+        <MenuItem
+          id="signOut"
+          onClick={(e) => {
+            props.signOut(e);
+            handleLoad(e);
+          }}
+          component={Link}
+          to="/auth/signin"
+        >
           Logout
         </MenuItem>
       </Menu>
