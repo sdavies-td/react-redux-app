@@ -45,3 +45,18 @@ export const editItem = (item) => {
       });
   };
 };
+
+export const deleteStore = (id) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const docRef = firestore.collection("stores").doc(id);
+    docRef
+      .delete()
+      .then(() => {
+        dispatch({ type: "DELETE_STORE_SUCCESS" });
+      })
+      .catch((err) => {
+        dispatch({ type: "DELETE_STORE_ERROR" }, err);
+      });
+  };
+};

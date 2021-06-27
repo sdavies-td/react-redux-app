@@ -63,9 +63,6 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    this.setState({ isLoaded: true });
-    const path = window.location.pathname.split("/")[1];
-    const auth = window.location.pathname.split("/")[2];
     this.setState({
       variant: {
         orders: "contained",
@@ -85,7 +82,10 @@ class App extends Component {
         signIn: "primary",
         signUp: "default",
       },
+      isLoaded: true,
     });
+    const path = window.location.pathname.split("/")[1];
+    const auth = window.location.pathname.split("/")[2];
     if (path !== "auth") {
       this.setState((prevState) => ({
         variant: {
@@ -98,26 +98,55 @@ class App extends Component {
         },
       }));
     }
-    if (auth) {
+    if (path !== "orders") {
       this.setState((prevState) => ({
         variant: {
           ...prevState.variant,
-          [auth]: "contained",
+          orders: "outlined",
         },
         color: {
           ...prevState.color,
-          [auth]: "primary",
+          orders: "default",
+        },
+      }));
+    }
+    if (auth === "signup") {
+      this.setState((prevState) => ({
+        variant: {
+          ...prevState.variant,
+          signUp: "contained",
+          signIn: "outlined",
+        },
+        color: {
+          ...prevState.color,
+          signUp: "primary",
+          signIn: "default",
+        },
+      }));
+    }
+    if (auth === "signin") {
+      this.setState((prevState) => ({
+        variant: {
+          ...prevState.variant,
+          signIn: "contained",
+          signUp: "outlined",
+        },
+        color: {
+          ...prevState.color,
+          signIn: "primary",
+          signUp: "default",
         },
       }));
     }
   }
 
   handleLoad(e) {
-    //const id = e.target.textContent.toLowerCase();
     const id = e.currentTarget.id;
+    const path = window.location.pathname.split("/")[1];
     if (id === "signOut") {
-      this.setState({
+      this.setState((prevState) => ({
         variant: {
+          ...prevState.variant,
           orders: "contained",
           items: "outlined",
           customers: "outlined",
@@ -127,6 +156,7 @@ class App extends Component {
           signUp: "outlined",
         },
         color: {
+          ...prevState.color,
           orders: "primary",
           items: "default",
           customers: "default",
@@ -135,63 +165,62 @@ class App extends Component {
           signIn: "primary",
           signUp: "default",
         },
-      });
-    } else {
-      this.setState({
+        isLoaded: true,
+      }));
+    } else if (path !== "auth") {
+      this.setState((prevState) => ({
         variant: {
-          orders: "outlined",
-          items: "outlined",
-          customers: "outlined",
-          stores: "outlined",
-          profile: "outlined",
-          signIn: "outlined",
-          signUp: "outlined",
+          ...prevState.variant,
+          [path]: "outlined",
+          [id]: "contained",
         },
         color: {
-          orders: "default",
-          items: "default",
-          customers: "default",
-          stores: "default",
-          profile: "default",
-          signIn: "default",
-          signUp: "default",
+          ...prevState.color,
+          [path]: "default",
+          [id]: "primary",
         },
-      });
-      if (id === "signIn" || id === "signUp") {
-        this.setState((prevState) => ({
-          variant: {
-            ...prevState.variant,
-            [id]: "contained",
-            orders: "contained",
-          },
-          color: {
-            ...prevState.color,
-            [id]: "primary",
-            orders: "primary",
-          },
-        }));
-      } else {
-        this.setState((prevState) => ({
-          variant: {
-            ...prevState.variant,
-            [id]: "contained",
-          },
-          color: {
-            ...prevState.color,
-            [id]: "primary",
-          },
-        }));
-      }
+      }));
+    }
+    if (id === "signIn") {
+      this.setState((prevState) => ({
+        variant: {
+          ...prevState.variant,
+          signUp: "outlined",
+          signIn: "contained",
+          orders: "contained",
+        },
+        color: {
+          ...prevState.color,
+          signUp: "default",
+          signIn: "primary",
+          orders: "primary",
+        },
+      }));
+    }
+    if (id === "signUp") {
+      this.setState((prevState) => ({
+        variant: {
+          ...prevState.variant,
+          signIn: "outlined",
+          signUp: "contained",
+          orders: "contained",
+        },
+        color: {
+          ...prevState.color,
+          signIn: "default",
+          signUp: "primary",
+          orders: "primary",
+        },
+      }));
     }
   }
-  //<pre>{JSON.stringify(this.state, null, 2)}</pre>
+  ////<pre>{JSON.stringify(this.state, null, 2)}</pre>
   render() {
     const { classes } = this.props;
     return (
       <BrowserRouter>
         <div className="App">
           <Navbar handleLoad={this.handleLoad} state={this.state} />
-
           <ToastContainer />
           <Switch>
             <Route exact path="/items" component={ItemsDashboard} />

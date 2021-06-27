@@ -1,7 +1,11 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import { orderReducer, editOrderReducer } from "./orderReducer";
-import { customerReducer, editCustomerReducer } from "./customerReducer";
+import {
+  customerReducer,
+  editCustomerReducer,
+  deleteCustomerReducer,
+} from "./customerReducer";
 import {
   storeReducer,
   editStoreReducer,
@@ -19,6 +23,7 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   customer: customerReducer,
   editCustomer: editCustomerReducer,
+  deleteCustomer: deleteCustomerReducer,
   store: storeReducer,
   editStore: editStoreReducer,
   deleteStore: deleteStoreReducer,

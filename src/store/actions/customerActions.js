@@ -44,3 +44,18 @@ export const editCustomer = (customer) => {
       });
   };
 };
+
+export const deleteCustomer = (id) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const docRef = firestore.collection("customers").doc(id);
+    docRef
+      .delete()
+      .then(() => {
+        dispatch({ type: "DELETE_CUSTOMER_SUCCESS" });
+      })
+      .catch((err) => {
+        dispatch({ type: "DELETE_CUSTOMER_ERROR" }, err);
+      });
+  };
+};

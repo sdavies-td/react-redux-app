@@ -37,3 +37,22 @@ export const editCustomerReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const deleteCustomerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "DELETE_CUSTOMER_ERROR": {
+      toast.error("Delete customer error", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return state;
+    }
+    case "DELETE_CUSTOMER_SUCCESS": {
+      toast.success("Customer was deleted", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return state;
+    }
+    default:
+      return state;
+  }
+};
