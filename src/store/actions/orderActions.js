@@ -12,37 +12,47 @@ export const createOrder = (order) => {
     //   return s.substr(s.length - size);
     // };
 
-    db.collection("orders")
-      .add({
-        ...order,
-        createdByName: createdBy,
-        createdById: createdById,
-        createdAt: new Date(),
-        status: "Created",
-        orderCount: null,
-      })
-      .then((docRef) => {
-        const orderRef = ordersRef.doc(docRef.id);
-        orderCount.get().then((doc) => {
-          const pad = (num, size) => {
-            var s = "000000" + num;
-            return s.substr(s.length - size);
-          };
-          const batch = db.batch();
-          const count = doc.data().orderCount + 1;
-          const converted = pad(count, 6);
-          const concat = "#INV-CS".concat(converted);
-          batch.set(orderCount, { orderCount: count }, { merge: true });
-          batch.update(orderRef, {
-            orderCount: concat,
+    orderCount.get().then((doc) => {
+      if (!doc.exists) {
+        orderCount.set(
+          {
+            orderCount: 0,
+          },
+          { merge: true }
+        );
+      }
+      ordersRef
+        .add({
+          ...order,
+          createdByName: createdBy,
+          createdById: createdById,
+          createdAt: new Date(),
+          status: "Created",
+          orderCount: null,
+        })
+        .then((docRef) => {
+          const orderRef = ordersRef.doc(docRef.id);
+          orderCount.get().then((doc) => {
+            const pad = (num, size) => {
+              var s = "000000" + num;
+              return s.substr(s.length - size);
+            };
+            const batch = db.batch();
+            const count = doc.data().orderCount + 1;
+            const converted = pad(count, 6);
+            const concat = "#INV-CS".concat(converted);
+            batch.set(orderCount, { orderCount: count }, { merge: true });
+            batch.update(orderRef, {
+              orderCount: concat,
+            });
+            batch.commit();
           });
-          batch.commit();
+          dispatch({ type: "CREATE_ORDER_SUCCESS" });
+        })
+        .catch((err) => {
+          dispatch({ type: "CREATE_ORDER_ERROR" }, err);
         });
-        dispatch({ type: "CREATE_ORDER_SUCCESS" });
-      })
-      .catch((err) => {
-        dispatch({ type: "CREATE_ORDER_ERROR" }, err);
-      });
+    });
   };
 };
 

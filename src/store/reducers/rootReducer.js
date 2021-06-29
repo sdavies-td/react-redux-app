@@ -11,7 +11,7 @@ import {
   editStoreReducer,
   deleteStoreReducer,
 } from "./storeReducer";
-import { itemReducer, editItemReducer } from "./itemReducer";
+import { itemReducer, editItemReducer, deleteItemReducer } from "./itemReducer";
 import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
 
@@ -29,6 +29,7 @@ const rootReducer = combineReducers({
   deleteStore: deleteStoreReducer,
   item: itemReducer,
   editItem: editItemReducer,
+  deleteItem: deleteItemReducer,
 });
 
 export default rootReducer;

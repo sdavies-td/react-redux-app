@@ -78,8 +78,7 @@ function OrderItems(props) {
     setInputList(list);
     props.handleItems(list);
   };
-  const { items, classes } = props;
-
+  const { items, classes } = props; //add in orderItems here
   return (
     <div>
       <Grid className={classes.subHeader}>

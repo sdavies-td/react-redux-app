@@ -78,7 +78,7 @@ class EditStore extends Component {
           </Grid>
           <Grid className={classes.body}>
             <Paper className={classes.paper}>
-              <form noValidate onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit}>
                 <Grid className={classes.item}>
                   <TextField
                     id="name"
@@ -94,6 +94,7 @@ class EditStore extends Component {
                   <Places
                     defaultValue={address}
                     handleAddress={this.handleAddress}
+                    required
                   />
                 </Grid>
                 <Grid className={classes.item}>

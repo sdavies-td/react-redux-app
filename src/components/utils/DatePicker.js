@@ -8,8 +8,14 @@ import {
 import moment from "moment";
 
 export default function MaterialUIPickers(props) {
-  const { handleDate } = props;
-  const date = moment(new Date()).format("L");
+  const { handleDate, orderDate } = props;
+  let date;
+  if (orderDate) {
+    date = moment(orderDate, "DD-MM-YYYY").format("YYYY-MM-DD"); //convert back to mui datepicker readable format
+  } else {
+    date = moment(new Date()).format("L");
+  }
+
   const [selectedDate, setSelectedDate] = React.useState(date);
 
   const handleDateChange = (date) => {
@@ -21,6 +27,7 @@ export default function MaterialUIPickers(props) {
       <KeyboardDatePicker
         autoOk
         format="dd/MM/yyyy"
+        inputFormat="DD/MM/YYYY"
         id="orderDate"
         label="Order Date"
         value={selectedDate}
@@ -28,6 +35,7 @@ export default function MaterialUIPickers(props) {
         variant="inline"
         fullWidth
         inputProps={{ min: 0, style: { textAlign: "center" } }}
+        required
       />
     </MuiPickersUtilsProvider>
   );

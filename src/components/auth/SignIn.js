@@ -44,6 +44,7 @@ class SignIn extends Component {
                   type="email"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs>
@@ -53,6 +54,7 @@ class SignIn extends Component {
                   type="password"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.button}>

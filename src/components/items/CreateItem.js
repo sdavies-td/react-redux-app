@@ -82,7 +82,7 @@ class CreateItem extends Component {
         </Grid>
         <Grid className={classes.body}>
           <Paper className={classes.paper}>
-            <form noValidate onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
               <Grid className={classes.item}>
                 <TextField
                   id="itemName"
@@ -155,6 +155,7 @@ class CreateItem extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.buttonRow}>

@@ -115,7 +115,7 @@ class CreateOrder extends Component {
           </Grid>
           <Grid className={classes.orderBody}>
             <Paper className={classes.orderPaper}>
-              <form noValidate onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit}>
                 <Grid className={classes.row}>
                   <Grid className={classes.date}>
                     <MaterialUIPickers handleDate={this.handleDate} />

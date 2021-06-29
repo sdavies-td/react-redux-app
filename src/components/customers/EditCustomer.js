@@ -28,9 +28,16 @@ class EditCustomer extends Component {
     });
   };
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.editCustomer(this.state);
-    this.props.history.push("/customers");
+    this.setState(
+      {
+        fullName: this.state.firstName + " " + this.state.lastName,
+      },
+      () => {
+        e.preventDefault();
+        this.props.editCustomer(this.state);
+        this.props.history.push("/customers");
+      }
+    );
   };
   handleAddress = (e) => {
     if (e) {
@@ -84,7 +91,7 @@ class EditCustomer extends Component {
           </Grid>
           <Grid className={classes.body}>
             <Paper className={classes.paper}>
-              <form noValidate onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit}>
                 <Grid className={classes.item}>
                   <TextField
                     id="firstName"

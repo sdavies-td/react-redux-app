@@ -9,12 +9,16 @@ import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Loader from "../utils/Loader";
+import { deleteItem } from "../../store/actions/itemActions";
 
 import { themeStyles } from "../../theme";
 
 const styles = (theme) => themeStyles;
 
 class ItemsDashboard extends Component {
+  handleDelete(id) {
+    this.props.deleteItem(id);
+  }
   render() {
     const { items, auth, classes } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
@@ -28,7 +32,10 @@ class ItemsDashboard extends Component {
             </IconButton>
           </Grid>
           <Grid className={classes.body}>
-            <ItemList items={items} />
+            <ItemList
+              items={items}
+              handleDelete={this.handleDelete.bind(this)}
+            />
           </Grid>
         </Grid>
       );
@@ -45,8 +52,14 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteItem: (id) => dispatch(deleteItem(id)),
+  };
+};
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([{ collection: "items" }]),
   withStyles(styles, { withTheme: true })
 )(ItemsDashboard);

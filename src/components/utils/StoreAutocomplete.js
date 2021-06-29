@@ -12,7 +12,7 @@ const StoreAutocomplete = (props) => {
       renderOption={(store) => store.name}
       getOptionLabel={(store) => store.name}
       renderInput={(params) => (
-        <TextField {...params} label="Store" placeholder="Search.." />
+        <TextField {...params} label="Store" placeholder="Search.." required />
       )}
     />
   );

@@ -20,7 +20,12 @@ const ShippingAutocomplete = (props) => {
       getOptionLabel={(option) => option.method}
       getOptionSelected={(option) => option.method}
       renderInput={(params) => (
-        <TextField {...params} label="Shipping" placeholder="Search.." />
+        <TextField
+          {...params}
+          label="Shipping"
+          placeholder="Search.."
+          required
+        />
       )}
     />
   );

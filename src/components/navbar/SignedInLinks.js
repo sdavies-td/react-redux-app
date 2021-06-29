@@ -96,9 +96,6 @@ const SignedInLinks = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem>
-          <Typography>{firstName + " " + lastName}</Typography>
-        </MenuItem>
         <MenuItem
           id="profile"
           onClick={(e) => {
@@ -108,7 +105,7 @@ const SignedInLinks = (props) => {
           component={Link}
           to="/profile"
         >
-          Profile
+          <Typography>{firstName + " " + lastName}</Typography>
         </MenuItem>
         <MenuItem
           id="signOut"

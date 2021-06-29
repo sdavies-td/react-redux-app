@@ -61,6 +61,7 @@ class CreateCustomer extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.item}>
@@ -70,6 +71,7 @@ class CreateCustomer extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.item}>
@@ -79,6 +81,7 @@ class CreateCustomer extends Component {
                   type="email"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.item}>
@@ -88,6 +91,7 @@ class CreateCustomer extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.placesItem}>

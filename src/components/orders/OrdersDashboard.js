@@ -28,7 +28,7 @@ class OrdersDashboard extends Component {
             </IconButton>
           </Grid>
           <Grid className={classes.body}>
-            <OrderList orders={orders} />
+            <OrderList orders={orders} classes={classes} />
           </Grid>
         </Grid>
       );

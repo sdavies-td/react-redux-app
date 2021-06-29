@@ -46,17 +46,17 @@ export const editItem = (item) => {
   };
 };
 
-export const deleteStore = (id) => {
+export const deleteItem = (id) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const docRef = firestore.collection("stores").doc(id);
+    const docRef = firestore.collection("items").doc(id);
     docRef
       .delete()
       .then(() => {
-        dispatch({ type: "DELETE_STORE_SUCCESS" });
+        dispatch({ type: "DELETE_ITEM_SUCCESS" });
       })
       .catch((err) => {
-        dispatch({ type: "DELETE_STORE_ERROR" }, err);
+        dispatch({ type: "DELETE_ITEM_ERROR" }, err);
       });
   };
 };

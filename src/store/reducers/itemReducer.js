@@ -38,21 +38,21 @@ export const editItemReducer = (state = {}, action) => {
   }
 };
 
-// export const archiveItemReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case "ARCHIVE_ITEM_ERROR": {
-//       toast.error("Archive item error", {
-//         position: toast.POSITION.BOTTOM_RIGHT,
-//       });
-//       return state;
-//     }
-//     case "ARCHIVE_ITEM_ERROR_ITEM_SUCCESS": {
-//       toast.success("Item has been archived", {
-//         position: toast.POSITION.BOTTOM_RIGHT,
-//       });
-//       return state;
-//     }
-//     default:
-//       return state;
-//   }
-// };
+export const deleteItemReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "DELETE_ITEM_ERROR": {
+      toast.error("Delete item error", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return state;
+    }
+    case "DELETE_ITEM_SUCCESS": {
+      toast.success("Item was deleted", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return state;
+    }
+    default:
+      return state;
+  }
+};

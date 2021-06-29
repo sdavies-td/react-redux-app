@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import {
   Table,
@@ -24,13 +23,10 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { themeStyles } from "../../theme";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-const useStyles = makeStyles((theme) => themeStyles);
-
-const StoreList = ({ stores, handleDelete }) => {
+const StoreList = ({ stores, handleDelete, classes }) => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -43,8 +39,6 @@ const StoreList = ({ stores, handleDelete }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const classes = useStyles();
   const [value, setValue] = useState("");
   const [deleteStore, setDeleteStore] = useState("");
   const handleChange = (event) => {

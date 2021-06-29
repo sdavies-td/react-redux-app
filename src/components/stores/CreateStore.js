@@ -52,6 +52,7 @@ class CreateStore extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.placesItem}>
@@ -64,6 +65,7 @@ class CreateStore extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.item}>
@@ -73,6 +75,7 @@ class CreateStore extends Component {
                   type="text"
                   fullWidth
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid className={classes.buttonRow}>
