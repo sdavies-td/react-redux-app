@@ -78,13 +78,23 @@ function OrderItems(props) {
     setInputList(list);
     props.handleItems(list);
   };
-  const { items, classes } = props; //add in orderItems here
+  const { items, classes, orderItems } = props; //add in orderItems here
+  if (typeof orderItems !== "undefined") {
+    // const newArray = orderItems.map(
+    //   ({ gstExclusive, itemLink, ...rest }) => rest
+    // );
+    //console.log("inputList", inputList);
+    //console.log("orderItems", newArray);
+    //setInputList(newArray);
+    console.log("do edit logic");
+  }
   return (
     <div>
       <Grid className={classes.subHeader}>
         <Typography className={classes.subTitle}>Add Order Items</Typography>
       </Grid>
       {inputList.map((x, i) => {
+        //console.log(x);
         return (
           <Grid key={i} className={classes.itemRow}>
             <Grid className={classes.name}>
@@ -94,16 +104,16 @@ function OrderItems(props) {
                 autoSelect
                 disableClearable
                 options={items}
-                onChange={(e, item) => handleListChange(e, i, item)}
-                renderOption={(item) => item.itemName}
-                getOptionLabel={(item) => item.itemName}
+                onChange={(e, x) => handleListChange(e, i, x)}
+                renderOption={(x) => x.itemName}
+                getOptionLabel={(x) => x.itemName}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     required
                     label="Item Name"
                     placeholder="Search.."
-                    value={inputList[i].item}
+                    value={inputList[i].x}
                     variant="outlined"
                   />
                 )}

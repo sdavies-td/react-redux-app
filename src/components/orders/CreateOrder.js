@@ -107,7 +107,7 @@ class CreateOrder extends Component {
   render() {
     const { auth, stores, customers, classes, items } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    if (items) {
+    if (items && stores && customers) {
       return (
         <Grid className={classes.root}>
           <Grid className={classes.header}>

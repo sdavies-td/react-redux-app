@@ -27,6 +27,7 @@ class EditOrder extends Component {
     this.handleItems = this.handleItems.bind(this);
   }
   state = {
+    orderCount: null,
     orderDate: null,
     store: null,
     customer: null,
@@ -82,16 +83,39 @@ class EditOrder extends Component {
   render() {
     const { auth, stores, customers, classes, items, orders, id } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
-    let order;
-    if (orders && typeof order === "undefined") {
+    if (stores && customers && classes && items && orders && id) {
       const [, ...rest] = orders;
-      order = rest.find((order) => order.id === id);
-    }
-    if (typeof order !== "undefined") {
-      const { orderDate, customer, orderCount, store, orderItems } = order;
+      const order = rest.find((x) => x.id === id);
+      const { orderCount, orderDate, customer, store, orderItems, shipping } =
+        order;
+      if (this.state.orderCount === null) {
+        this.setState({
+          orderCount,
+        });
+      }
       if (this.state.orderDate === null) {
         this.setState({
           orderDate,
+        });
+      }
+      if (this.state.customer === null) {
+        this.setState({
+          customer,
+        });
+      }
+      if (this.state.shipping === null) {
+        this.setState({
+          shipping,
+        });
+      }
+      if (this.state.store === null) {
+        this.setState({
+          store,
+        });
+      }
+      if (this.state.store === null) {
+        this.setState({
+          orderItems,
         });
       }
       return (
@@ -207,6 +231,7 @@ class EditOrder extends Component {
               </form>
             </Paper>
           </Grid>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {
@@ -214,7 +239,7 @@ class EditOrder extends Component {
     }
   }
 }
-
+//<pre>{JSON.stringify(this.state, null, 2)}</pre>
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const db = state.firestore.ordered;
@@ -234,8 +259,6 @@ const mapDispatchToProps = (dispatch) => {
     editOrder: (order) => dispatch(editOrder(order)),
   };
 };
-
-//export default connect(mapStateToProps, mapDispatchToProps)(EditOrder);
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

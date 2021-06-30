@@ -48,7 +48,7 @@ const ItemList = ({ items, handleDelete }) => {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-  if (items.length > 0) {
+  if (items) {
     return (
       <Grid>
         <Grid className={classes.search}>

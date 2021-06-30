@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { editItem } from "../../store/actions/itemActions";
+import { firestoreConnect } from "react-redux-firebase";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -78,7 +79,7 @@ class EditItem extends Component {
     const { auth, classes, items, id } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     if (items) {
-      const item = items.find((item) => item.id === id);
+      const item = items.find((x) => x.id === id);
       const { itemName, supplierName, itemLink, itemPrice } = item;
       if (this.state.itemPrice === 0) {
         this.setState({
@@ -233,8 +234,9 @@ class EditItem extends Component {
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const items = state.firestore.ordered.items;
+  const auth = state.firebase.auth;
   return {
-    auth: state.firebase.auth,
+    auth,
     items,
     id,
   };
@@ -248,5 +250,6 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([{ collection: "items" }]),
   withStyles(styles, { withTheme: true })
 )(EditItem);

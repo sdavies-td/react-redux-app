@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 import { editCustomer } from "../../store/actions/customerActions";
 import { withStyles } from "@material-ui/core/styles";
 import Places from "../utils/Places";
@@ -50,7 +51,7 @@ class EditCustomer extends Component {
     const { auth, classes, customers, id } = this.props;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     if (customers) {
-      const customer = customers.find((customer) => customer.id === id);
+      const customer = customers.find((x) => x.id === id);
       const { fullName, firstName, lastName, email, phone, address } = customer;
       if (this.state.customerId === null) {
         this.setState({
@@ -196,5 +197,6 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([{ collection: "customers" }]),
   withStyles(styles, { withTheme: true })
 )(EditCustomer);

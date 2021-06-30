@@ -24,7 +24,7 @@ const OrderList = ({ orders, classes }) => {
     setValue(event.target.value);
   };
   const [, ...rest] = orders;
-  if (rest.length > 0) {
+  if (rest) {
     return (
       <Grid>
         <Grid className={classes.search}>

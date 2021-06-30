@@ -23,30 +23,31 @@ const CustomerAutocomplete = (props) => {
     newArray = customers;
     //console.log("array added not needed", newArray);
   }
-  //console.log(newArray);
-  return (
-    <Autocomplete
-      id="customer"
-      autoSelect
-      onChange={handleChange}
-      disableClearable
-      defaultValue={defaultValue}
-      options={newArray}
-      getOptionSelected={(x, defaultValue) =>
-        x.fullName === defaultValue.fullName
-      }
-      renderOption={(x) => x.fullName}
-      getOptionLabel={(x) => x.fullName}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Customer"
-          placeholder="Search.."
-          required
-        />
-      )}
-    />
-  );
+  if (typeof defaultValue !== "undefined") {
+    return (
+      <Autocomplete
+        id="customer"
+        autoSelect
+        onChange={handleChange}
+        disableClearable
+        defaultValue={defaultValue}
+        options={newArray}
+        getOptionSelected={(x, defaultValue) =>
+          x.fullName === defaultValue.fullName
+        }
+        renderOption={(x) => x.fullName}
+        getOptionLabel={(x) => x.fullName}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Customer"
+            placeholder="Search.."
+            required
+          />
+        )}
+      />
+    );
+  }
 };
 
 export default CustomerAutocomplete;
