@@ -12,17 +12,10 @@ function OrderItems(props) {
       itemName: null,
       supplierName: "",
       itemPrice: null,
-      itemQty: 0,
+      itemQty: null,
       itemSubtotal: null,
     },
   ]);
-  const [orderTotal, setOrderTotal] = useState({
-    orderTotal: {
-      exclGst: null,
-      gst: null,
-      total: null,
-    },
-  });
   const handleListChange = (e, i, item) => {
     const {
       createdAt,
@@ -36,33 +29,33 @@ function OrderItems(props) {
     const list = [...inputList];
     list[i] = {
       ...rest,
-      itemQty: 0,
-      itemSubtotal: 0,
+      itemQty: null,
+      itemSubtotal: null,
     };
-    handleSubtotal(list, i);
+    handleSubtotal(i);
+    setInputList(list);
+    props.handleItems(list);
   };
   const handleQtyChange = (e, i) => {
-    const { valueAsNumber } = e.target;
+    const { value } = e.target;
     const list = [...inputList];
-    list[i].itemQty = valueAsNumber;
-    setInputList(list);
-    //handleSubtotal(list, i);
+    if (e.target.value === "") {
+      list[i].itemQty = 0;
+      handleSubtotal(i);
+      setInputList(list);
+      props.handleItems(list);
+    } else {
+      list[i].itemQty = parseInt(value);
+      handleSubtotal(i);
+      setInputList(list);
+      props.handleItems(list);
+    }
   };
-  const handleSubtotal = (list, i) => {
-    list[i].itemSubtotal = list[i].itemQty * list[i].itemPrice;
-    const calculateTotal = list
-      .map((item) => item.itemSubtotal)
-      .reduce((prev, next) => prev + next);
+  const handleSubtotal = (i) => {
+    const itemSubtotal = inputList[i].itemPrice * inputList[i].itemQty;
+    const list = [...inputList];
+    list[i].itemSubtotal = itemSubtotal;
     setInputList(list);
-    setOrderTotal({
-      orderTotal: {
-        total: parseFloat(calculateTotal).toFixed(2),
-        gst: Math.round(((calculateTotal * 3) / 23) * 100) / 100,
-        exclGst:
-          Math.round((calculateTotal - (calculateTotal * 3) / 23) * 100) / 100,
-      },
-    });
-    props.handleItems(list, orderTotal);
   };
   const handleAddInput = (i) => {
     const list = [
@@ -71,27 +64,27 @@ function OrderItems(props) {
         itemName: "",
         supplierName: "",
         itemPrice: null,
-        itemQty: 0,
+        itemQty: null,
         itemSubtotal: null,
       },
     ];
     setInputList(list);
-    props.handleItems(list, orderTotal);
+    props.handleItems(list);
   };
   const handleRemoveInput = (i) => {
     const list = [...inputList];
     list.splice(i, 1);
     setInputList(list);
-    props.handleItems(list, orderTotal);
+    props.handleItems(list);
   };
   const { items, classes, orderItems } = props; //add in orderItems here
-  const tempOrderTotal = { orderTotal: props.orderTotal };
+  //let defaultValue;
   let newArray;
   let filteredArray;
   if (items && orderItems) {
+    console.log(orderItems);
     if (inputList[0].itemName === null) {
       setInputList(orderItems);
-      setOrderTotal(tempOrderTotal);
       props.handleItems(orderItems);
     }
     newArray = [...items, ...orderItems];
@@ -148,8 +141,8 @@ function OrderItems(props) {
                   type="number"
                   label="Qty"
                   required
-                  inputProps={{ min: 1, style: { textAlign: "center" } }}
-                  //defaultValue={inputList[i].itemQty}
+                  inputProps={{ min: 0, style: { textAlign: "center" } }}
+                  value={inputList[i].itemQty}
                   onChange={(e) => handleQtyChange(e, i)}
                   variant="outlined"
                 />
@@ -158,7 +151,8 @@ function OrderItems(props) {
                 <TextField
                   id="supplierName"
                   inputProps={{
-                    style: { textAlign: "left" },
+                    min: 0,
+                    style: { textAlign: "right" },
                   }}
                   type="text"
                   value={inputList[i].supplierName}
@@ -231,50 +225,6 @@ function OrderItems(props) {
             </Grid>
           );
         })}
-        <Grid className={classes.totalRow}>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="gstExcl"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.exclGst)}
-              label="Total Excl. GST"
-              variant="outlined"
-              disabled
-            />
-          </Grid>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="gst"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.gst)}
-              label="GST Amount"
-              variant="outlined"
-              disabled
-            />
-          </Grid>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="total"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.total)}
-              label="Total Incl. GST"
-              variant="outlined"
-              disabled
-            />
-          </Grid>
-        </Grid>
         <pre>{JSON.stringify(inputList, null, 2)}</pre>
       </div>
     );

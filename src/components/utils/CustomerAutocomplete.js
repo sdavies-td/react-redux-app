@@ -12,16 +12,13 @@ const CustomerAutocomplete = (props) => {
     if (index === -1) {
       newArray = customers.concat(customer);
       defaultValue = newArray[newArray.length - 1];
-      //console.log("array added", defaultValue);
     } else {
       newArray = customers;
       defaultValue = newArray[index];
-      //console.log("assigned defaultValue to correct object", newArray);
     }
   } else {
     defaultValue = null;
     newArray = customers;
-    //console.log("array added not needed", newArray);
   }
   if (typeof defaultValue !== "undefined") {
     return (

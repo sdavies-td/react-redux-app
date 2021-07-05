@@ -11,7 +11,7 @@ import StoreAutocomplete from "../utils/StoreAutocomplete";
 import ShippingAutocomplete from "../utils/ShippingAutocomplete";
 import MaterialUIPickers from "../utils/DatePicker";
 import moment from "moment";
-import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { Grid, Typography, Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
@@ -50,13 +50,11 @@ class EditOrder extends Component {
       () => {}
     );
   }
-  handleItems(list) {
-    this.setState(
-      {
-        orderItems: list,
-      },
-      () => {}
-    );
+  handleItems(items, total) {
+    this.setState({
+      orderItems: items,
+      orderTotal: total,
+    });
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -86,8 +84,15 @@ class EditOrder extends Component {
     if (stores && customers && classes && items && orders && id) {
       const [, ...rest] = orders;
       const order = rest.find((x) => x.id === id);
-      const { orderCount, orderDate, customer, store, orderItems, shipping } =
-        order;
+      const {
+        orderCount,
+        orderDate,
+        customer,
+        store,
+        orderItems,
+        shipping,
+        orderTotal,
+      } = order;
       if (this.state.orderCount === null) {
         this.setState({
           orderCount,
@@ -151,7 +156,10 @@ class EditOrder extends Component {
                     />
                   </Grid>
                   <Grid className={classes.shipping}>
-                    <ShippingAutocomplete handleChange={this.handleChange} />
+                    <ShippingAutocomplete
+                      handleChange={this.handleChange}
+                      shipping={shipping}
+                    />
                   </Grid>
                 </Grid>
                 <OrderItems
@@ -159,51 +167,8 @@ class EditOrder extends Component {
                   items={items}
                   handleItems={this.handleItems}
                   orderItems={orderItems}
+                  orderTotal={orderTotal}
                 />
-                <Grid className={classes.totalRow}>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="gstExcl"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.exclGst)}
-                      label="Total Excl. GST"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="gst"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.gst)}
-                      label="GST Amount"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="total"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.total)}
-                      label="Total Incl. GST"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                </Grid>
                 <Grid className={classes.orderButtonRow}>
                   <Grid className={classes.buttonItem}>
                     <Button
@@ -231,7 +196,6 @@ class EditOrder extends Component {
               </form>
             </Paper>
           </Grid>
-          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {

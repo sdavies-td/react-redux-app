@@ -12,16 +12,13 @@ const StoreAutocomplete = (props) => {
     if (index === -1) {
       newArray = stores.concat(store);
       defaultValue = newArray[newArray.length - 1];
-      //console.log("array added", defaultValue);
     } else {
       newArray = stores;
       defaultValue = newArray[index];
-      //console.log("assigned defaultValue to correct object", newArray);
     }
   } else {
     defaultValue = null;
     newArray = stores;
-    //console.log("array added not needed", newArray);
   }
   if (typeof defaultValue !== "undefined") {
     return (

@@ -11,7 +11,7 @@ import StoreAutocomplete from "../utils/StoreAutocomplete";
 import ShippingAutocomplete from "../utils/ShippingAutocomplete";
 import MaterialUIPickers from "../utils/DatePicker";
 import moment from "moment";
-import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
+import { Grid, Typography, Paper, Button } from "@material-ui/core";
 
 import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
@@ -57,31 +57,13 @@ class CreateOrder extends Component {
       () => {}
     );
   }
-  handleItems(items) {
-    this.setState(
-      {
-        orderItems: items,
-      },
-      () => {
-        this.updateTotal(this.state.orderItems);
-      }
-    );
+  handleItems(items, total) {
+    this.setState({
+      orderItems: items,
+      orderTotal: total,
+    });
   }
-  updateTotal(items) {
-    const orderTotal = items
-      .map((item) => item.itemSubtotal)
-      .reduce((prev, next) => prev + next);
-    this.setState(
-      {
-        orderTotal: {
-          total: parseFloat(orderTotal).toFixed(2),
-          gst: Math.round(((orderTotal * 3) / 23) * 100) / 100,
-          exclGst: Math.round((orderTotal - (orderTotal * 3) / 23) * 100) / 100,
-        },
-      },
-      () => {}
-    );
-  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createOrder(this.state);
@@ -142,50 +124,6 @@ class CreateOrder extends Component {
                   items={items}
                   handleItems={this.handleItems}
                 />
-                <Grid className={classes.totalRow}>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="gstExcl"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.exclGst)}
-                      label="Total Excl. GST"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="gst"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.gst)}
-                      label="GST Amount"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                  <Grid className={classes.totalItems}>
-                    <TextField
-                      inputProps={{ min: 0, style: { textAlign: "right" } }}
-                      id="total"
-                      type="text"
-                      value={Intl.NumberFormat("en-NZ", {
-                        style: "currency",
-                        currency: "NZD",
-                      }).format(this.state.orderTotal.total)}
-                      label="Total Incl. GST"
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
-                </Grid>
                 <Grid className={classes.buttonRow}>
                   <Grid className={classes.buttonItem}>
                     <Button
