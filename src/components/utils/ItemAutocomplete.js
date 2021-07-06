@@ -8,7 +8,6 @@ const ItemAutocomplete = (props) => {
   let newArray;
   let index;
   if (item && items) {
-    console.log(item);
     index = items.findIndex((x) => x.id === item.id);
     if (index === -1) {
       newArray = items.concat(item);

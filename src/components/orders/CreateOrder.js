@@ -49,10 +49,18 @@ class CreateOrder extends Component {
   handleChange(e, value) {
     const str = e.target.id;
     const id = str.substring(0, str.indexOf("-"));
-    const { createdAt, createdById, createdByName, ...store } = value;
+    const {
+      createdAt,
+      createdById,
+      createdByName,
+      editedLastById,
+      editedLastByName,
+      editedLastAt,
+      ...rest
+    } = value;
     this.setState(
       {
-        [id]: store,
+        [id]: rest,
       },
       () => {}
     );
@@ -151,6 +159,7 @@ class CreateOrder extends Component {
               </form>
             </Paper>
           </Grid>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {

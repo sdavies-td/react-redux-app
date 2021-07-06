@@ -23,46 +23,68 @@ function OrderItems(props) {
       total: null,
     },
   });
-  const handleListChange = (e, i, item) => {
+  const handleListChange = (e, i, x) => {
+    const list = [...inputList];
     const {
-      createdAt,
+      editedLastByName,
+      editedLastAt,
+      gstExclusive,
+      editedLastById,
       createdById,
       createdByName,
-      editedLastAt,
-      editedLastById,
-      editedLastByName,
+      createdAt,
       ...rest
-    } = item;
-    const list = [...inputList];
+    } = x;
     list[i] = {
       ...rest,
       itemQty: 0,
       itemSubtotal: 0,
     };
+    setInputList(list);
     handleSubtotal(list, i);
+    handleTotal(list);
   };
   const handleQtyChange = (e, i) => {
+    let list;
     const { valueAsNumber } = e.target;
-    const list = [...inputList];
-    list[i].itemQty = valueAsNumber;
+    const { ...rest } = inputList[i];
+    if (isNaN(valueAsNumber)) {
+      list = [...inputList];
+      list[i] = {
+        ...rest,
+        itemQty: 0,
+      };
+    } else {
+      list = [...inputList];
+      list[i] = {
+        ...rest,
+        itemQty: valueAsNumber,
+      };
+    }
     setInputList(list);
-    //handleSubtotal(list, i);
+    handleSubtotal(list, i);
+    handleTotal(list);
   };
-  const handleSubtotal = (list, i) => {
-    list[i].itemSubtotal = list[i].itemQty * list[i].itemPrice;
+  const handleTotal = (list) => {
     const calculateTotal = list
-      .map((item) => item.itemSubtotal)
+      .map((x) => x.itemSubtotal)
       .reduce((prev, next) => prev + next);
     setInputList(list);
-    setOrderTotal({
+    const tempTotal = {
       orderTotal: {
-        total: parseFloat(calculateTotal).toFixed(2),
+        total:
+          Math.round(((calculateTotal * 3) / 23) * 100) / 100 +
+          Math.round((calculateTotal - (calculateTotal * 3) / 23) * 100) / 100,
         gst: Math.round(((calculateTotal * 3) / 23) * 100) / 100,
         exclGst:
           Math.round((calculateTotal - (calculateTotal * 3) / 23) * 100) / 100,
       },
-    });
-    props.handleItems(list, orderTotal);
+    };
+    setOrderTotal(tempTotal);
+    handleItems(list, tempTotal);
+  };
+  const handleSubtotal = (list, i) => {
+    list[i].itemSubtotal = list[i].itemQty * list[i].itemPrice;
   };
   const handleAddInput = (i) => {
     const list = [
@@ -75,24 +97,21 @@ function OrderItems(props) {
         itemSubtotal: null,
       },
     ];
-    setInputList(list);
-    props.handleItems(list, orderTotal);
+    handleTotal(list);
   };
   const handleRemoveInput = (i) => {
     const list = [...inputList];
     list.splice(i, 1);
-    setInputList(list);
-    props.handleItems(list, orderTotal);
+    handleTotal(list);
   };
-  const { items, classes, orderItems } = props; //add in orderItems here
-  const tempOrderTotal = { orderTotal: props.orderTotal };
+  const { items, classes, orderItems, handleItems } = props; //add in orderItems here
   let newArray;
   let filteredArray;
   if (items && orderItems) {
     if (inputList[0].itemName === null) {
       setInputList(orderItems);
-      setOrderTotal(tempOrderTotal);
-      props.handleItems(orderItems);
+      handleTotal(orderItems);
+      handleItems(orderItems, props.orderTotal);
     }
     newArray = [...items, ...orderItems];
     filteredArray = newArray.filter(
@@ -105,182 +124,175 @@ function OrderItems(props) {
             t.itemPrice === newArray.itemPrice
         )
     );
-  } else if (!orderItems) {
+  } else if (items && !orderItems) {
     filteredArray = items;
   }
-  if (items) {
-    return (
-      <div>
-        <Grid className={classes.subHeader}>
-          <Typography className={classes.subTitle}>Add Order Items</Typography>
-        </Grid>
-        {inputList.map((x, i) => {
-          return (
-            <Grid key={i} className={classes.itemRow}>
-              <Grid className={classes.name}>
-                <Autocomplete
-                  id="itemName"
-                  inputProps={{ min: 0, style: { textAlign: "center" } }}
-                  autoSelect
-                  disableClearable
-                  defaultValue={inputList[i]}
-                  options={filteredArray}
-                  getOptionSelected={(x) =>
-                    x.itemName === inputList[i].itemName
-                  }
-                  onChange={(e, x) => handleListChange(e, i, x)}
-                  renderOption={(x) => x.itemName}
-                  getOptionLabel={(x) => x.itemName}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      required
-                      label="Item Name"
-                      placeholder="Search.."
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid className={classes.qty}>
-                <TextField
-                  id="itemQty"
-                  type="number"
-                  label="Qty"
-                  required
-                  inputProps={{ min: 1, style: { textAlign: "center" } }}
-                  //defaultValue={inputList[i].itemQty}
-                  onChange={(e) => handleQtyChange(e, i)}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid className={classes.supplier}>
-                <TextField
-                  id="supplierName"
-                  inputProps={{
-                    style: { textAlign: "left" },
-                  }}
-                  type="text"
-                  value={inputList[i].supplierName}
-                  label="Supplier"
-                  variant="outlined"
-                  disabled
-                />
-              </Grid>
-              <Grid className={classes.link}>
-                <Link
-                  to={{
-                    pathname: inputList[i].itemLink,
-                  }}
-                  target="_blank"
-                >
-                  <IconButton>
-                    <LinkIcon />
-                  </IconButton>
-                </Link>
-              </Grid>
-              <Grid className={classes.price}>
-                <TextField
-                  inputProps={{
-                    min: 0,
-                    style: { textAlign: "right" },
-                  }}
-                  id="itemPrice"
-                  type="text"
-                  value={Intl.NumberFormat("en-NZ", {
-                    style: "currency",
-                    currency: "NZD",
-                  }).format(inputList[i].itemPrice)}
-                  label="Price"
-                  variant="outlined"
-                  disabled
-                />
-              </Grid>
-              <Grid className={classes.itemSubtotal}>
-                <TextField
-                  inputProps={{
-                    min: 0,
-                    style: { textAlign: "right" },
-                  }}
-                  id="itemSubtotal"
-                  type="text"
-                  value={Intl.NumberFormat("en-NZ", {
-                    style: "currency",
-                    currency: "NZD",
-                  }).format(inputList[i].itemSubtotal)}
-                  label="Subtotal"
-                  variant="outlined"
-                  disabled
-                />
-              </Grid>
-              <Grid className={classes.itemAddRemove}>
-                {inputList.length !== 1 && (
-                  <IconButton
-                    color="secondary"
-                    onClick={() => handleRemoveInput(i)}
-                  >
-                    <RemoveCircleIcon />
-                  </IconButton>
+  return (
+    <div>
+      <Grid className={classes.subHeader}>
+        <Typography className={classes.subTitle}>Add Order Items</Typography>
+      </Grid>
+      {inputList.map((x, i) => {
+        return (
+          <Grid key={i} className={classes.itemRow}>
+            <Grid className={classes.name}>
+              <Autocomplete
+                id="itemName"
+                inputProps={{ min: 0, style: { textAlign: "center" } }}
+                autoSelect
+                disableClearable
+                value={x}
+                options={filteredArray}
+                getOptionSelected={(x) => x.itemName}
+                onChange={(e, x) => handleListChange(e, i, x)}
+                renderOption={(x) => x.itemName}
+                getOptionLabel={(x) => x.itemName}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Item Name"
+                    placeholder="Search.."
+                    variant="outlined"
+                  />
                 )}
-                {inputList.length - 1 === i && (
-                  <IconButton color="primary" onClick={() => handleAddInput(i)}>
-                    <AddCircleIcon />
-                  </IconButton>
-                )}
-              </Grid>
+              />
             </Grid>
-          );
-        })}
-        <Grid className={classes.totalRow}>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="gstExcl"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.exclGst)}
-              label="Total Excl. GST"
-              variant="outlined"
-              disabled
-            />
+            <Grid className={classes.qty}>
+              <TextField
+                id="itemQty"
+                type="number"
+                label="Qty"
+                required
+                inputProps={{ min: 1, style: { textAlign: "center" } }}
+                value={x.itemQty}
+                onChange={(e) => handleQtyChange(e, i)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid className={classes.supplier}>
+              <TextField
+                id="supplierName"
+                inputProps={{
+                  style: { textAlign: "left" },
+                }}
+                type="text"
+                value={x.supplierName}
+                label="Supplier"
+                variant="outlined"
+                disabled
+              />
+            </Grid>
+            <Grid className={classes.link}>
+              <Link
+                to={{
+                  pathname: x.itemLink,
+                }}
+                target="_blank"
+              >
+                <IconButton>
+                  <LinkIcon />
+                </IconButton>
+              </Link>
+            </Grid>
+            <Grid className={classes.price}>
+              <TextField
+                inputProps={{
+                  min: 0,
+                  style: { textAlign: "right" },
+                }}
+                id="itemPrice"
+                type="text"
+                value={Intl.NumberFormat("en-NZ", {
+                  style: "currency",
+                  currency: "NZD",
+                }).format(x.itemPrice)}
+                label="Price"
+                variant="outlined"
+                disabled
+              />
+            </Grid>
+            <Grid className={classes.itemSubtotal}>
+              <TextField
+                inputProps={{
+                  min: 0,
+                  style: { textAlign: "right" },
+                }}
+                id="itemSubtotal"
+                type="text"
+                value={Intl.NumberFormat("en-NZ", {
+                  style: "currency",
+                  currency: "NZD",
+                }).format(x.itemSubtotal)}
+                label="Subtotal"
+                variant="outlined"
+                disabled
+              />
+            </Grid>
+            <Grid className={classes.itemAddRemove}>
+              {inputList.length !== 1 && (
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleRemoveInput(i)}
+                >
+                  <RemoveCircleIcon />
+                </IconButton>
+              )}
+              {inputList.length - 1 === i && (
+                <IconButton color="primary" onClick={() => handleAddInput(i)}>
+                  <AddCircleIcon />
+                </IconButton>
+              )}
+            </Grid>
           </Grid>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="gst"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.gst)}
-              label="GST Amount"
-              variant="outlined"
-              disabled
-            />
-          </Grid>
-          <Grid className={classes.totalItems}>
-            <TextField
-              inputProps={{ min: 0, style: { textAlign: "right" } }}
-              id="total"
-              type="text"
-              value={Intl.NumberFormat("en-NZ", {
-                style: "currency",
-                currency: "NZD",
-              }).format(orderTotal.orderTotal.total)}
-              label="Total Incl. GST"
-              variant="outlined"
-              disabled
-            />
-          </Grid>
+        );
+      })}
+      <Grid className={classes.totalRow}>
+        <Grid className={classes.totalItems}>
+          <TextField
+            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            id="gstExcl"
+            type="text"
+            value={Intl.NumberFormat("en-NZ", {
+              style: "currency",
+              currency: "NZD",
+            }).format(orderTotal.orderTotal.exclGst)}
+            label="Total Excl. GST"
+            variant="outlined"
+            disabled
+          />
         </Grid>
-        <pre>{JSON.stringify(inputList, null, 2)}</pre>
-      </div>
-    );
-  }
+        <Grid className={classes.totalItems}>
+          <TextField
+            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            id="gst"
+            type="text"
+            value={Intl.NumberFormat("en-NZ", {
+              style: "currency",
+              currency: "NZD",
+            }).format(orderTotal.orderTotal.gst)}
+            label="GST Amount"
+            variant="outlined"
+            disabled
+          />
+        </Grid>
+        <Grid className={classes.totalItems}>
+          <TextField
+            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            id="total"
+            type="text"
+            value={Intl.NumberFormat("en-NZ", {
+              style: "currency",
+              currency: "NZD",
+            }).format(orderTotal.orderTotal.total)}
+            label="Total Incl. GST"
+            variant="outlined"
+            disabled
+          />
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
-
 export default OrderItems;
-
 //<pre>{JSON.stringify(inputList, null, 2)}</pre>

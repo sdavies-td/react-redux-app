@@ -27,6 +27,7 @@ class EditOrder extends Component {
     this.handleItems = this.handleItems.bind(this);
   }
   state = {
+    orderId: null,
     orderCount: null,
     orderDate: null,
     store: null,
@@ -63,20 +64,10 @@ class EditOrder extends Component {
   };
   handleDate = (e) => {
     const date = moment(e).format("DD/MM/YYYY");
-    this.setState(
-      {
-        orderDate: date,
-      },
-      () => {}
-    );
+    this.setState({ orderDate: date });
   };
   handleShipping = (e, value) => {
-    this.setState(
-      {
-        shipping: value,
-      },
-      () => {}
-    );
+    this.setState({ shipping: value });
   };
   render() {
     const { auth, stores, customers, classes, items, orders, id } = this.props;
@@ -118,9 +109,14 @@ class EditOrder extends Component {
           store,
         });
       }
-      if (this.state.store === null) {
+      if (this.state.orderItems === null) {
         this.setState({
           orderItems,
+        });
+      }
+      if (this.state.orderId === null) {
+        this.setState({
+          orderId: order.id,
         });
       }
       return (
@@ -196,6 +192,7 @@ class EditOrder extends Component {
               </form>
             </Paper>
           </Grid>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {
@@ -203,7 +200,7 @@ class EditOrder extends Component {
     }
   }
 }
-//<pre>{JSON.stringify(this.state, null, 2)}</pre>
+
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
   const db = state.firestore.ordered;

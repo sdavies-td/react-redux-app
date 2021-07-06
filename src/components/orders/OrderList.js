@@ -24,7 +24,7 @@ const OrderList = ({ orders, classes }) => {
     setValue(event.target.value);
   };
   const [, ...rest] = orders;
-  if (rest) {
+  if (rest.length > 0) {
     return (
       <Grid>
         <Grid className={classes.search}>
@@ -140,7 +140,15 @@ const OrderList = ({ orders, classes }) => {
     );
   } else {
     return (
-      <div>No orders found, create a new order by clicking the 'add' icon.</div>
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Grid>
+          No orders found, create a new order by clicking the 'add' icon.
+        </Grid>
+        <Grid>
+          Note: Before making your first order, make sure you have created
+          prerequisite information such as Items, Customers and Stores.
+        </Grid>
+      </Grid>
     );
   }
 };

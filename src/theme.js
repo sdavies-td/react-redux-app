@@ -190,4 +190,9 @@ export const themeStyles = {
   backDrop: {
     backgroundColor: "rgba(0,0,0,0.1)",
   },
+  column: {
+    alignItems: "center",
+    display: "flex",
+    direction: "column",
+  },
 };
