@@ -15,6 +15,7 @@ import { Grid, Typography, Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
+import _ from "lodash";
 
 import { themeStyles } from "../../theme";
 
@@ -27,7 +28,7 @@ class EditOrder extends Component {
     this.handleItems = this.handleItems.bind(this);
   }
   state = {
-    orderId: null,
+    id: null,
     orderCount: null,
     orderDate: null,
     store: null,
@@ -69,12 +70,25 @@ class EditOrder extends Component {
   handleShipping = (e, value) => {
     this.setState({ shipping: value });
   };
+  handleDisabled = () => {};
   render() {
     const { auth, stores, customers, classes, items, orders, id } = this.props;
+
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     if (stores && customers && classes && items && orders && id) {
+      let editDisabled;
       const [, ...rest] = orders;
-      const order = rest.find((x) => x.id === id);
+      const tempOrder = rest.find((x) => x.id === id);
+      const {
+        editedLastById,
+        editedLastByName,
+        editedLastAt,
+        createdByName,
+        createdById,
+        createdAt,
+        status,
+        ...order
+      } = tempOrder;
       const {
         orderCount,
         orderDate,
@@ -84,6 +98,11 @@ class EditOrder extends Component {
         shipping,
         orderTotal,
       } = order;
+      if (_.isEqual(this.state, order)) {
+        editDisabled = true;
+      } else {
+        editDisabled = false;
+      }
       if (this.state.orderCount === null) {
         this.setState({
           orderCount,
@@ -114,9 +133,9 @@ class EditOrder extends Component {
           orderItems,
         });
       }
-      if (this.state.orderId === null) {
+      if (this.state.id === null) {
         this.setState({
-          orderId: order.id,
+          id: order.id,
         });
       }
       return (
@@ -184,6 +203,7 @@ class EditOrder extends Component {
                       variant="outlined"
                       color="primary"
                       fullWidth
+                      disabled={editDisabled}
                     >
                       Edit
                     </Button>
@@ -192,7 +212,6 @@ class EditOrder extends Component {
               </form>
             </Paper>
           </Grid>
-          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {
@@ -200,6 +219,15 @@ class EditOrder extends Component {
     }
   }
 }
+
+// <Grid container direction="row" justify="center" alignItems="center">
+//   <Grid>
+//     <pre>{JSON.stringify(order, null, 2)}</pre>
+//   </Grid>
+//   <Grid>
+//     <pre>{JSON.stringify(this.state, null, 2)}</pre>
+//   </Grid>
+// </Grid>;
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;

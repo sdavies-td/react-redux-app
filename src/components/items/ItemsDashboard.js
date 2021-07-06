@@ -35,6 +35,7 @@ class ItemsDashboard extends Component {
             <ItemList
               items={items}
               handleDelete={this.handleDelete.bind(this)}
+              classes={classes}
             />
           </Grid>
         </Grid>

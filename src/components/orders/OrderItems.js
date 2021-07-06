@@ -175,12 +175,12 @@ function OrderItems(props) {
                 id="supplierName"
                 inputProps={{
                   style: { textAlign: "left" },
+                  readOnly: true,
                 }}
                 type="text"
                 value={x.supplierName}
                 label="Supplier"
                 variant="outlined"
-                disabled
               />
             </Grid>
             <Grid className={classes.link}>
@@ -200,6 +200,7 @@ function OrderItems(props) {
                 inputProps={{
                   min: 0,
                   style: { textAlign: "right" },
+                  readOnly: true,
                 }}
                 id="itemPrice"
                 type="text"
@@ -209,7 +210,6 @@ function OrderItems(props) {
                 }).format(x.itemPrice)}
                 label="Price"
                 variant="outlined"
-                disabled
               />
             </Grid>
             <Grid className={classes.itemSubtotal}>
@@ -217,6 +217,7 @@ function OrderItems(props) {
                 inputProps={{
                   min: 0,
                   style: { textAlign: "right" },
+                  readOnly: true,
                 }}
                 id="itemSubtotal"
                 type="text"
@@ -226,7 +227,6 @@ function OrderItems(props) {
                 }).format(x.itemSubtotal)}
                 label="Subtotal"
                 variant="outlined"
-                disabled
               />
             </Grid>
             <Grid className={classes.itemAddRemove}>
@@ -250,7 +250,11 @@ function OrderItems(props) {
       <Grid className={classes.totalRow}>
         <Grid className={classes.totalItems}>
           <TextField
-            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            inputProps={{
+              min: 0,
+              style: { textAlign: "right" },
+              readOnly: true,
+            }}
             id="gstExcl"
             type="text"
             value={Intl.NumberFormat("en-NZ", {
@@ -259,12 +263,15 @@ function OrderItems(props) {
             }).format(orderTotal.orderTotal.exclGst)}
             label="Total Excl. GST"
             variant="outlined"
-            disabled
           />
         </Grid>
         <Grid className={classes.totalItems}>
           <TextField
-            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            inputProps={{
+              min: 0,
+              style: { textAlign: "right" },
+              readOnly: true,
+            }}
             id="gst"
             type="text"
             value={Intl.NumberFormat("en-NZ", {
@@ -273,12 +280,15 @@ function OrderItems(props) {
             }).format(orderTotal.orderTotal.gst)}
             label="GST Amount"
             variant="outlined"
-            disabled
           />
         </Grid>
         <Grid className={classes.totalItems}>
           <TextField
-            inputProps={{ min: 0, style: { textAlign: "right" } }}
+            inputProps={{
+              min: 0,
+              style: { textAlign: "right" },
+              readOnly: true,
+            }}
             id="total"
             type="text"
             value={Intl.NumberFormat("en-NZ", {
@@ -287,7 +297,6 @@ function OrderItems(props) {
             }).format(orderTotal.orderTotal.total)}
             label="Total Incl. GST"
             variant="outlined"
-            disabled
           />
         </Grid>
       </Grid>

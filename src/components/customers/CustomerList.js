@@ -21,22 +21,18 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const CustomerList = ({ customers, handleDelete, classes }) => {
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = (customer) => {
     setOpen(true);
     setDeleteCustomer(customer);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const [value, setValue] = useState("");
   const [deleteCustomer, setDeleteCustomer] = useState("");
   const handleChange = (event) => {
@@ -138,8 +134,26 @@ const CustomerList = ({ customers, handleDelete, classes }) => {
                             >
                               <DeleteIcon />
                             </IconButton>
-                            <Dialog open={open} onClose={handleClose}>
-                              <DialogTitle>
+                            <Dialog
+                              open={open}
+                              onClose={handleClose}
+                              aria-labelledby="responsive-dialog-title"
+                              PaperProps={{
+                                style: {
+                                  boxShadow:
+                                    "0 2px 2px rgba(0,0,0,0.16), 0 2px 2px rgba(0,0,0,0.23)",
+                                },
+                              }}
+                              variant="elevation"
+                              BackdropProps={{
+                                style: {
+                                  backgroundColor: "#000000",
+                                  opacity: "0.2",
+                                  //backdropFilter: "blur(5px)",
+                                },
+                              }}
+                            >
+                              <DialogTitle id="responsive-dialog-title">
                                 Are you sure you want to delete customer '
                                 {deleteCustomer.fullName}'?
                               </DialogTitle>

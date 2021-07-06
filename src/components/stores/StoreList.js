@@ -144,6 +144,16 @@ const StoreList = ({ stores, handleDelete, classes }) => {
                               open={open}
                               onClose={handleClose}
                               aria-labelledby="responsive-dialog-title"
+                              PaperProps={{
+                                style: {
+                                  boxShadow: "none",
+                                },
+                              }}
+
+                              // BackdropProps={{
+                              //   style: { backgroundColor: "transparent" },
+                              //   boxShadow: "none",
+                              // }}
                             >
                               <DialogTitle id="responsive-dialog-title">
                                 Are you sure you want to delete store '
