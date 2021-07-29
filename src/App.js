@@ -22,6 +22,7 @@ import EditItem from "./components/items/EditItem";
 import OrdersDashboard from "./components/orders/OrdersDashboard";
 import CreateOrder from "./components/orders/CreateOrder";
 import EditOrder from "./components/orders/EditOrder";
+import ViewOrder from "./components/orders/ViewOrder";
 
 import StoresDashboard from "./components/stores/StoresDashboard";
 import CreateStore from "./components/stores/CreateStore";
@@ -232,6 +233,7 @@ class App extends Component {
             <Route exact path="/orders" component={OrdersDashboard} />
             <Route path="/orders/edit/:id" component={EditOrder} />
             <Route path="/orders/create" component={CreateOrder} />
+            <Route path="/orders/view/:id" component={ViewOrder} />
             <Route exact path="/stores" component={StoresDashboard} />
             <Route path="/stores/edit/:id" component={EditStore} />
             <Route path="/stores/create" component={CreateStore} />

@@ -139,7 +139,6 @@ function OrderItems(props) {
               <Autocomplete
                 id="itemName"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
-                autoSelect
                 disableClearable
                 value={x}
                 options={filteredArray}

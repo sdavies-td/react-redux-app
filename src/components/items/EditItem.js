@@ -106,7 +106,6 @@ class EditItem extends Component {
           itemLink,
         });
       }
-
       return (
         <Grid className={classes.root}>
           <Grid className={classes.header}>
@@ -159,6 +158,9 @@ class EditItem extends Component {
                       fullWidth
                       defaultValue={itemPrice}
                       InputProps={{
+                        inputProps: {
+                          min: 0,
+                        },
                         startAdornment: (
                           <InputAdornment position="start">$</InputAdornment>
                         ),

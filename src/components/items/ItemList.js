@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import SearchIcon from "@material-ui/icons/Search";
-
 import {
   TextField,
   Table,
@@ -21,18 +20,13 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-  Fade,
 } from "@material-ui/core";
 import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const ItemList = ({ items, handleDelete, classes }) => {
-  const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = useState(false);
   const handleClickOpen = (item) => {
     setOpen(true);
     setDeleteItem(item);
@@ -67,7 +61,7 @@ const ItemList = ({ items, handleDelete, classes }) => {
         </Grid>
         <Grid className={classes.body}>
           <Paper className={classes.tablePaper}>
-            <Table aria-label="simple table">
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell align="right">
@@ -105,6 +99,7 @@ const ItemList = ({ items, handleDelete, classes }) => {
                       }
                       return null;
                     })
+                    .sort((a, b) => (b.createdAt > a.createdAt && 1) || -1)
                     .map((item, i) => {
                       const {
                         id,
@@ -155,23 +150,20 @@ const ItemList = ({ items, handleDelete, classes }) => {
                             <Dialog
                               open={open}
                               onClose={handleClose}
-                              aria-labelledby="responsive-dialog-title"
                               PaperProps={{
                                 style: {
                                   boxShadow:
                                     "0 2px 2px rgba(0,0,0,0.16), 0 2px 2px rgba(0,0,0,0.23)",
                                 },
                               }}
-                              variant="elevation"
                               BackdropProps={{
                                 style: {
                                   backgroundColor: "#000000",
                                   opacity: "0.2",
-                                  //backdropFilter: "blur(5px)",
                                 },
                               }}
                             >
-                              <DialogTitle id="responsive-dialog-title">
+                              <DialogTitle>
                                 Are you sure you want to delete item '
                                 {deleteItem.itemName}'?
                               </DialogTitle>
@@ -185,7 +177,9 @@ const ItemList = ({ items, handleDelete, classes }) => {
                               <DialogActions>
                                 <Button
                                   autoFocus
-                                  onClick={handleClose}
+                                  onClick={() => {
+                                    handleClose();
+                                  }}
                                   color="secondary"
                                   variant="outlined"
                                 >
@@ -194,6 +188,7 @@ const ItemList = ({ items, handleDelete, classes }) => {
                                 <Button
                                   onClick={() => {
                                     handleDelete(deleteItem.id);
+                                    handleClose();
                                   }}
                                   color="secondary"
                                   autoFocus

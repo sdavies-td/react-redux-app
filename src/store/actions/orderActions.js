@@ -62,8 +62,8 @@ export const editOrder = (order) => {
     const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
     const editedBy = profile.firstName + " " + profile.lastName;
-    const docRef = firestore.collection("orders").doc(order.orderId);
-    const { orderId, ...rest } = order;
+    const docRef = firestore.collection("orders").doc(order.id);
+    const { id, ...rest } = order;
     docRef
       .update({
         ...rest,

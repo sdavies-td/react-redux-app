@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: white;
+}
+
+body a:link,
+body a:visited {
+  text-decoration: none;
+}
+
+li {
+  font-size: 12px;
+}
+
+ul {
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.a4 {
+  margin: 0 auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 1.5cm;
+  width: 21cm;
+  height: 29.7cm;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 -2px 8px -3px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 -2px 8px -3px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+  }
+}
+/* @import url("https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@100,200,300,400,500,600,700,800,900;100,200,300,400,500,600,700,800,900&display=swap"); */
+*/ * {
+  box-sizing: border-box;
+  font-family: "Open Sans Condensed";
+}
+
+.pk-logo {
+  width: 80%;
+  height: auto;
+}
+
+.page {
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  font-weight: 600;
+}
+
+.company-name {
+  position: absolute;
+  font-weight: 500;
+  bottom: 0%;
+  top: 94.6%;
+  left: 0%;
+  right: 0%;
+  text-align: center;
+}

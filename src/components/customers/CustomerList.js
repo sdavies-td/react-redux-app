@@ -25,7 +25,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const CustomerList = ({ customers, handleDelete, classes }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClickOpen = (customer) => {
     setOpen(true);
     setDeleteCustomer(customer);
@@ -60,7 +60,7 @@ const CustomerList = ({ customers, handleDelete, classes }) => {
         </Grid>
         <Grid className={classes.body}>
           <Paper className={classes.tablePaper}>
-            <Table>
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell align="left">
@@ -101,6 +101,7 @@ const CustomerList = ({ customers, handleDelete, classes }) => {
                       }
                       return null;
                     })
+                    .sort((a, b) => (b.createdAt > a.createdAt && 1) || -1)
                     .map((customer, i) => {
                       const {
                         id,
@@ -137,7 +138,6 @@ const CustomerList = ({ customers, handleDelete, classes }) => {
                             <Dialog
                               open={open}
                               onClose={handleClose}
-                              aria-labelledby="responsive-dialog-title"
                               PaperProps={{
                                 style: {
                                   boxShadow:
@@ -149,11 +149,10 @@ const CustomerList = ({ customers, handleDelete, classes }) => {
                                 style: {
                                   backgroundColor: "#000000",
                                   opacity: "0.2",
-                                  //backdropFilter: "blur(5px)",
                                 },
                               }}
                             >
-                              <DialogTitle id="responsive-dialog-title">
+                              <DialogTitle>
                                 Are you sure you want to delete customer '
                                 {deleteCustomer.fullName}'?
                               </DialogTitle>

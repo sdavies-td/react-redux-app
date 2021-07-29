@@ -66,7 +66,7 @@ const StoreList = ({ stores, handleDelete, classes }) => {
         </Grid>
         <Grid className={classes.body}>
           <Paper className={classes.tablePaper}>
-            <Table aria-label="simple table">
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell align="left">
@@ -106,6 +106,7 @@ const StoreList = ({ stores, handleDelete, classes }) => {
                       }
                       return null;
                     })
+                    .sort((a, b) => (b.createdAt > a.createdAt && 1) || -1)
                     .map((store, i) => {
                       const {
                         id,

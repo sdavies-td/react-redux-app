@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ItemList from "./ItemList";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
+import { deleteItem } from "../../store/actions/itemActions";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -9,8 +10,6 @@ import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Loader from "../utils/Loader";
-import { deleteItem } from "../../store/actions/itemActions";
-
 import { themeStyles } from "../../theme";
 
 const styles = (theme) => themeStyles;

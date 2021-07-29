@@ -25,7 +25,6 @@ const ItemAutocomplete = (props) => {
     return (
       <Autocomplete
         id="item"
-        autoSelect
         onChange={handleChange}
         disableClearable
         options={items}

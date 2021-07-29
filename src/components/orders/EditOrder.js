@@ -16,6 +16,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
 import _ from "lodash";
+import EditOrderDialog from "./EditOrderDialog";
 
 import { themeStyles } from "../../theme";
 
@@ -26,57 +27,88 @@ class EditOrder extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleItems = this.handleItems.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.editDisabled = null;
   }
   state = {
-    id: null,
-    orderCount: null,
-    orderDate: null,
-    store: null,
-    customer: null,
-    shipping: null,
-    orderItems: null,
-    orderTotal: {
-      exclGst: null,
-      gst: null,
-      total: null,
+    beforeChange: {},
+    proposedChange: {},
+    boolean: {
+      setOpen: false,
     },
   };
   handleChange(e, value) {
     const str = e.target.id;
-    const id = str.substring(0, str.indexOf("-"));
-    const { createdAt, createdById, createdByName, ...store } = value;
+    const i = str.substring(0, str.indexOf("-"));
+    const {
+      editedLastById,
+      editedLastAt,
+      createdAt,
+      createdByName,
+      createdById,
+      editedLastByName,
+      ...rest
+    } = value;
     this.setState(
       {
-        [id]: store,
+        proposedChange: { ...this.state.proposedChange, [i]: rest },
       },
       () => {}
     );
+    this.handleDisabledButton();
   }
   handleItems(items, total) {
-    this.setState({
-      orderItems: items,
-      orderTotal: total,
-    });
+    if (!_.isEmpty(this.state.proposedChange)) {
+      this.setState({
+        ...this.state,
+        proposedChange: {
+          ...this.state.proposedChange,
+          orderItems: items,
+          orderTotal: total,
+        },
+      });
+      this.handleDisabledButton();
+    }
   }
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.editOrder(this.state);
+    //e.preventDefault();
+    this.props.editOrder(this.state.proposedChange);
     this.props.history.push("/orders");
   };
   handleDate = (e) => {
     const date = moment(e).format("DD/MM/YYYY");
-    this.setState({ orderDate: date });
+    this.setState({
+      proposedChange: { ...this.state.proposedChange, orderDate: date },
+    });
+    this.handleDisabledButton();
   };
   handleShipping = (e, value) => {
-    this.setState({ shipping: value });
+    this.setState({
+      proposedChange: { ...this.state.proposedChange, shipping: value },
+    });
+    this.handleDisabledButton();
   };
-  handleDisabled = () => {};
+  handleDialogOpen = () => {
+    this.setState({ boolean: { ...this.state.boolean, setOpen: true } });
+  };
+  handleDialogClose = () => {
+    this.setState({ boolean: { ...this.state.boolean, setOpen: false } });
+  };
+  handleDisabledButton = () => {
+    if (
+      _.isEqual(this.state.beforeChange, this.state.proposedChange) &&
+      !_.isEmpty(this.state.proposedChange)
+    ) {
+      this.editDisabled = true;
+    } else {
+      this.editDisabled = false;
+    }
+  };
   render() {
     const { auth, stores, customers, classes, items, orders, id } = this.props;
-
+    const { beforeChange, proposedChange, boolean } = this.state;
     if (!auth.uid) return <Redirect to="/auth/signin" />;
     if (stores && customers && classes && items && orders && id) {
-      let editDisabled;
       const [, ...rest] = orders;
       const tempOrder = rest.find((x) => x.id === id);
       const {
@@ -98,45 +130,20 @@ class EditOrder extends Component {
         shipping,
         orderTotal,
       } = order;
-      if (_.isEqual(this.state, order)) {
-        editDisabled = true;
+
+      if (_.isEmpty(beforeChange)) {
+        this.setState({ ...this.state, beforeChange: order }, () => {});
+      }
+      if (_.isEmpty(proposedChange)) {
+        this.setState({ ...this.state, proposedChange: order }, () => {});
+      }
+      if (
+        _.isEqual(beforeChange, proposedChange) &&
+        !_.isEmpty(proposedChange)
+      ) {
+        this.editDisabled = true;
       } else {
-        editDisabled = false;
-      }
-      if (this.state.orderCount === null) {
-        this.setState({
-          orderCount,
-        });
-      }
-      if (this.state.orderDate === null) {
-        this.setState({
-          orderDate,
-        });
-      }
-      if (this.state.customer === null) {
-        this.setState({
-          customer,
-        });
-      }
-      if (this.state.shipping === null) {
-        this.setState({
-          shipping,
-        });
-      }
-      if (this.state.store === null) {
-        this.setState({
-          store,
-        });
-      }
-      if (this.state.orderItems === null) {
-        this.setState({
-          orderItems,
-        });
-      }
-      if (this.state.id === null) {
-        this.setState({
-          id: order.id,
-        });
+        this.editDisabled = false;
       }
       return (
         <Grid className={classes.root}>
@@ -199,11 +206,15 @@ class EditOrder extends Component {
                   </Grid>
                   <Grid className={classes.buttonItem}>
                     <Button
-                      type="submit"
+                      //type="submit"
                       variant="outlined"
                       color="primary"
                       fullWidth
-                      disabled={editDisabled}
+                      disabled={this.editDisabled}
+                      onClick={() => {
+                        //this.getObjectDiff(order, this.state);
+                        this.handleDialogOpen();
+                      }}
                     >
                       Edit
                     </Button>
@@ -211,6 +222,14 @@ class EditOrder extends Component {
                 </Grid>
               </form>
             </Paper>
+            <EditOrderDialog
+              classes={classes}
+              beforeChange={beforeChange}
+              proposedChange={proposedChange}
+              boolean={boolean.setOpen}
+              handleClose={this.handleDialogClose}
+              handleSubmit={this.handleSubmit}
+            />
           </Grid>
         </Grid>
       );
@@ -219,15 +238,6 @@ class EditOrder extends Component {
     }
   }
 }
-
-// <Grid container direction="row" justify="center" alignItems="center">
-//   <Grid>
-//     <pre>{JSON.stringify(order, null, 2)}</pre>
-//   </Grid>
-//   <Grid>
-//     <pre>{JSON.stringify(this.state, null, 2)}</pre>
-//   </Grid>
-// </Grid>;
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;

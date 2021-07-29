@@ -139,6 +139,9 @@ class CreateItem extends Component {
                     fullWidth
                     defaultValue={this.state.itemPrice}
                     InputProps={{
+                      inputProps: {
+                        min: 0,
+                      },
                       startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
                       ),

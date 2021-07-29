@@ -24,7 +24,6 @@ const StoreAutocomplete = (props) => {
     return (
       <Autocomplete
         id="store"
-        autoSelect
         onChange={handleChange}
         disableClearable
         defaultValue={defaultValue}

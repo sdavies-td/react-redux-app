@@ -16,6 +16,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+//import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import EditIcon from "@material-ui/icons/Edit";
 
 const OrderList = ({ orders, classes }) => {
@@ -46,7 +47,7 @@ const OrderList = ({ orders, classes }) => {
         </Grid>
         <Grid className={classes.body}>
           <Paper className={classes.tablePaper}>
-            <Table aria-label="simple table">
+            <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell className="bold">
@@ -90,7 +91,7 @@ const OrderList = ({ orders, classes }) => {
                       }
                       return null;
                     })
-                    .sort((a, b) => b.orderCount.localeCompare(a.orderCount))
+                    .sort((a, b) => (b.orderCount > a.orderCount && 1) || -1)
                     .map((order, i) => {
                       const {
                         id,
@@ -118,7 +119,9 @@ const OrderList = ({ orders, classes }) => {
                           </TableCell>
                           <TableCell align="left">{createdByName}</TableCell>
                           <TableCell align="right">
-                            <Link to={"/orders/view/" + id}>
+                            <Link
+                              to={{ pathname: "/orders/view/" + id, order }}
+                            >
                               <IconButton>
                                 <VisibilityIcon />
                               </IconButton>
