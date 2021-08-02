@@ -2,38 +2,26 @@ import { toast } from "react-toastify";
 
 const authReducer = (state = {}, action) => {
   switch (action.type) {
-    case "LOGIN_ERROR": {
-      toast.error("Login error", {
+    case "SIGNIN_ERROR": {
+      toast.error("Error signing in", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       return state;
     }
-    case "LOGIN_SUCCESS": {
-      toast.success("Login success", {
+    case "SIGNIN_SUCCESS": {
+      toast.success("Sign in success", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       return state;
     }
     case "SIGNOUT_SUCCESS": {
-      toast.success("Signout success", {
+      toast.success("Sign out success", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       return state;
     }
     case "SIGNOUT_ERROR": {
-      toast.error("Signout error", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      return state;
-    }
-    case "SIGNUP_SUCCESS": {
-      toast.success("Signup success", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      return state;
-    }
-    case "SIGNUP_ERROR": {
-      toast.error("Signup error", {
+      toast.error("Sign out error", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       return state;

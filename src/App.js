@@ -8,8 +8,6 @@ import {
 } from "react-router-dom";
 
 import Navbar from "./components/navbar/Navbar";
-import SignIn from "./components/auth/SignIn";
-import SignUp from "./components/auth/SignUp";
 
 import CustomersDashboard from "./components/customers/CustomersDashboard";
 import CreateCustomer from "./components/customers/CreateCustomer";
@@ -71,8 +69,6 @@ class App extends Component {
         customers: "outlined",
         stores: "outlined",
         profile: "outlined",
-        signIn: "contained",
-        signUp: "outlined",
       },
       color: {
         orders: "primary",
@@ -80,13 +76,10 @@ class App extends Component {
         customers: "default",
         stores: "default",
         profile: "default",
-        signIn: "primary",
-        signUp: "default",
       },
       isLoaded: true,
     });
     const path = window.location.pathname.split("/")[1];
-    const auth = window.location.pathname.split("/")[2];
     if (path !== "auth") {
       this.setState((prevState) => ({
         variant: {
@@ -111,34 +104,6 @@ class App extends Component {
         },
       }));
     }
-    if (auth === "signup") {
-      this.setState((prevState) => ({
-        variant: {
-          ...prevState.variant,
-          signUp: "contained",
-          signIn: "outlined",
-        },
-        color: {
-          ...prevState.color,
-          signUp: "primary",
-          signIn: "default",
-        },
-      }));
-    }
-    if (auth === "signin") {
-      this.setState((prevState) => ({
-        variant: {
-          ...prevState.variant,
-          signIn: "contained",
-          signUp: "outlined",
-        },
-        color: {
-          ...prevState.color,
-          signIn: "primary",
-          signUp: "default",
-        },
-      }));
-    }
   }
 
   handleLoad(e) {
@@ -153,8 +118,6 @@ class App extends Component {
           customers: "outlined",
           stores: "outlined",
           profile: "outlined",
-          signIn: "contained",
-          signUp: "outlined",
         },
         color: {
           ...prevState.color,
@@ -163,8 +126,6 @@ class App extends Component {
           customers: "default",
           stores: "default",
           profile: "default",
-          signIn: "primary",
-          signUp: "default",
         },
         isLoaded: true,
       }));
@@ -215,7 +176,7 @@ class App extends Component {
       }));
     }
   }
-  ////<pre>{JSON.stringify(this.state, null, 2)}</pre>
+  //<pre>{JSON.stringify(this.state, null, 2)}</pre>
   render() {
     const { classes } = this.props;
     return (
@@ -237,10 +198,8 @@ class App extends Component {
             <Route exact path="/stores" component={StoresDashboard} />
             <Route path="/stores/edit/:id" component={EditStore} />
             <Route path="/stores/create" component={CreateStore} />
-            <Route path="/auth/signin" component={SignIn} />
-            <Route path="/auth/signup" component={SignUp} />
             <Route exact path="/">
-              <Redirect to="/orders" />
+              <Redirect to="/auth" />
             </Route>
           </Switch>
         </div>

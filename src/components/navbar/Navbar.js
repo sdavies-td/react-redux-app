@@ -7,16 +7,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Typography, Grid } from "@material-ui/core";
 import logo from "./logo.png";
 import { themeStyles } from "../../theme";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(themeStyles);
 
 const Navbar = (props) => {
   const classes = useStyles();
   const { navbarRoot, navBarTitle, toolbar } = classes;
-  const { auth, profile, state, handleLoad, location } = props;
+  const { auth, state, handleLoad, location } = props;
   const links = auth.uid ? (
     <SignedInLinks
-      profile={profile}
+      auth={auth}
       handleLoad={handleLoad}
       state={state}
       location={location}
@@ -24,7 +25,13 @@ const Navbar = (props) => {
   ) : (
     <SignedOutLinks handleLoad={handleLoad} state={state} location={location} />
   );
-
+  const path = window.location.pathname.split("/")[1];
+  if (auth.uid && path === "auth") {
+    return <Redirect to="/orders" />;
+  }
+  if (!auth.uid && path !== "auth") {
+    return <Redirect to="/auth" />;
+  }
   return (
     <AppBar className={navbarRoot}>
       <Grid className={toolbar}>

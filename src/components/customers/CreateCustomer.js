@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { createCustomer } from "../../store/actions/customerActions";
-import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -44,8 +43,7 @@ class CreateCustomer extends Component {
     );
   };
   render() {
-    const { auth, classes } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes } = this.props;
     return (
       <Grid className={classes.root}>
         <Grid className={classes.header}>

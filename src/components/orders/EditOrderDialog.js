@@ -279,7 +279,7 @@ export default function EditOrderDialog(props) {
             </DialogContent>
           </Grid>
           <Grid className={classes.dialogItem}>
-            <DialogTitle align="center">Before Change</DialogTitle>
+            <DialogTitle align="center">Proposed Change</DialogTitle>
             <DialogContent>
               <TableContainer component={Paper}>
                 <DialogTitle align="center">Order Info</DialogTitle>

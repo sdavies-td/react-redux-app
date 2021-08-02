@@ -5,7 +5,7 @@ import { editStore } from "../../store/actions/storeActions";
 import { withStyles } from "@material-ui/core/styles";
 import Places from "../utils/Places";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
 
 import { themeStyles } from "../../theme";
@@ -39,8 +39,7 @@ class EditStore extends Component {
     }
   };
   render() {
-    const { auth, classes, stores, id } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes, stores, id } = this.props;
     if (stores) {
       const store = stores.find((store) => store.id === id);
       const { name, address, bank, gst } = store;

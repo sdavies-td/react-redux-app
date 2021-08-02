@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { deleteCustomer } from "../../store/actions/customerActions";
 import { compose } from "redux";
-import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -19,8 +18,7 @@ class CustomersDashboard extends Component {
     this.props.deleteCustomer(id);
   }
   render() {
-    const { customers, auth, classes } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { customers, classes } = this.props;
     if (customers) {
       return (
         <Grid className={classes.root}>

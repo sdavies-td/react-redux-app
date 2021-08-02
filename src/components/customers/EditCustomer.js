@@ -6,7 +6,7 @@ import { editCustomer } from "../../store/actions/customerActions";
 import { withStyles } from "@material-ui/core/styles";
 import Places from "../utils/Places";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
 
 import { themeStyles } from "../../theme";
@@ -48,8 +48,7 @@ class EditCustomer extends Component {
     }
   };
   render() {
-    const { auth, classes, customers, id } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes, customers, id } = this.props;
     if (customers) {
       const customer = customers.find((x) => x.id === id);
       const { fullName, firstName, lastName, email, phone, address } = customer;

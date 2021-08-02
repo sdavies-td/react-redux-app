@@ -1,9 +1,8 @@
 export const createOrder = (order) => {
   return (dispatch, getState, { getFirebase }) => {
     const db = getFirebase().firestore();
-    const profile = getState().firebase.profile;
     const createdById = getState().firebase.auth.uid;
-    const createdBy = profile.firstName + " " + profile.lastName;
+    const createdBy = getState().firebase.auth.displayName;
     const ordersRef = db.collection("orders");
     const orderCount = ordersRef.doc("--stats--");
 
@@ -59,9 +58,8 @@ export const createOrder = (order) => {
 export const editOrder = (order) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
-    const editedBy = profile.firstName + " " + profile.lastName;
+    const editedBy = getState().firebase.auth.displayName;
     const docRef = firestore.collection("orders").doc(order.id);
     const { id, ...rest } = order;
     docRef

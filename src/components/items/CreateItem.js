@@ -13,7 +13,7 @@ import {
   Switch,
   FormControlLabel,
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { themeStyles } from "../../theme";
 
@@ -73,8 +73,7 @@ class CreateItem extends Component {
     }
   };
   render() {
-    const { auth, classes } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes } = this.props;
     return (
       <Grid className={classes.root}>
         <Grid className={classes.header}>
@@ -123,6 +122,10 @@ class CreateItem extends Component {
                     fullWidth
                     defaultValue={this.state.itemPrice}
                     InputProps={{
+                      inputProps: {
+                        min: 0,
+                        step: "any",
+                      },
                       startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
                       ),
@@ -141,6 +144,7 @@ class CreateItem extends Component {
                     InputProps={{
                       inputProps: {
                         min: 0,
+                        step: "any",
                       },
                       startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>

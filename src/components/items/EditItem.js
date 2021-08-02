@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   Switch,
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Loader from "../utils/Loader";
 
 import { themeStyles } from "../../theme";
@@ -76,8 +76,7 @@ class EditItem extends Component {
     }
   };
   render() {
-    const { auth, classes, items, id } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes, items, id } = this.props;
     if (items) {
       const item = items.find((x) => x.id === id);
       const { itemName, supplierName, itemLink, itemPrice } = item;
@@ -160,6 +159,7 @@ class EditItem extends Component {
                       InputProps={{
                         inputProps: {
                           min: 0,
+                          step: "any",
                         },
                         startAdornment: (
                           <InputAdornment position="start">$</InputAdornment>
@@ -177,6 +177,10 @@ class EditItem extends Component {
                       fullWidth
                       defaultValue={this.state.itemPrice}
                       InputProps={{
+                        inputProps: {
+                          min: 0,
+                          step: "any",
+                        },
                         startAdornment: (
                           <InputAdornment position="start">$</InputAdornment>
                         ),

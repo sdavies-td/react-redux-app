@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { deleteItem } from "../../store/actions/itemActions";
 import { compose } from "redux";
-import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -19,8 +18,7 @@ class ItemsDashboard extends Component {
     this.props.deleteItem(id);
   }
   render() {
-    const { items, auth, classes } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { items, classes } = this.props;
     if (items) {
       return (
         <Grid className={classes.root}>

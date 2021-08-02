@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { deleteStore } from "../../store/actions/storeActions";
 import { compose } from "redux";
-import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, IconButton, Typography } from "@material-ui/core";
@@ -21,9 +20,7 @@ class StoresDashboard extends Component {
   }
 
   render() {
-    const { stores, auth, classes } = this.props;
-
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { stores, classes } = this.props;
     if (stores) {
       return (
         <Grid className={classes.root}>

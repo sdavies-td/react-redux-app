@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { createOrder } from "../../store/actions/orderActions";
-import { Redirect } from "react-router-dom";
 import OrderItems from "./OrderItems";
 import CustomerAutocomplete from "../utils/CustomerAutocomplete";
 import StoreAutocomplete from "../utils/StoreAutocomplete";
@@ -95,8 +94,7 @@ class CreateOrder extends Component {
     );
   };
   render() {
-    const { auth, stores, customers, classes, items } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { stores, customers, classes, items } = this.props;
     if (items && stores && customers) {
       return (
         <Grid className={classes.root}>
@@ -159,7 +157,6 @@ class CreateOrder extends Component {
               </form>
             </Paper>
           </Grid>
-          <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </Grid>
       );
     } else {

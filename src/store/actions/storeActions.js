@@ -1,9 +1,8 @@
 export const createStore = (store) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
     const createdById = getState().firebase.auth.uid;
-    const createdBy = profile.firstName + " " + profile.lastName;
+    const createdBy = getState().firebase.auth.displayName;
     firestore
       .collection("stores")
       .add({
@@ -24,9 +23,8 @@ export const createStore = (store) => {
 export const editStore = (store) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
-    const editedBy = profile.firstName + " " + profile.lastName;
+    const editedBy = getState().firebase.auth.displayName;
     const docRef = firestore.collection("stores").doc(store.storeId);
     const { storeId, ...rest } = store;
     docRef

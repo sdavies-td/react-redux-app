@@ -1,18 +1,3 @@
-export const signIn = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(() => {
-        dispatch({ type: "LOGIN_SUCCESS" });
-      })
-      .catch((err) => {
-        dispatch({ type: "LOGIN_ERROR" });
-      });
-  };
-};
-
 export const signOut = () => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -28,30 +13,22 @@ export const signOut = () => {
   };
 };
 
-export const signUp = (newUser) => {
+export const signInWithGoogle = () => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    const firestore = getFirebase().firestore();
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: "select_account",
+      //hd: "projectkitchens.co.nz",
+    });
     firebase
       .auth()
-      .createUserWithEmailAndPassword(newUser.email, newUser.password)
-      .then((resp) => {
-        return firestore
-          .collection("users")
-          .doc(resp.user.uid)
-          .set({
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            initials: newUser.firstName[0] + newUser.lastName[0],
-            orderPin: newUser.orderPin,
-            role: 0,
-          });
-      })
+      .signInWithRedirect(provider)
       .then(() => {
-        dispatch({ type: "SIGNUP_SUCCESS" });
+        dispatch({ type: "SIGNIN_SUCCESS" });
       })
       .catch((err) => {
-        dispatch({ type: "SIGNUP_ERROR" });
+        dispatch({ type: "SIGNIN_ERROR" });
       });
   };
 };

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { editOrder } from "../../store/actions/orderActions";
-import { Redirect } from "react-router-dom";
 import OrderItems from "./OrderItems";
 import CustomerAutocomplete from "../utils/CustomerAutocomplete";
 import StoreAutocomplete from "../utils/StoreAutocomplete";
@@ -105,9 +104,8 @@ class EditOrder extends Component {
     }
   };
   render() {
-    const { auth, stores, customers, classes, items, orders, id } = this.props;
+    const { stores, customers, classes, items, orders, id } = this.props;
     const { beforeChange, proposedChange, boolean } = this.state;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
     if (stores && customers && classes && items && orders && id) {
       const [, ...rest] = orders;
       const tempOrder = rest.find((x) => x.id === id);

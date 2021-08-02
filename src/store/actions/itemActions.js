@@ -1,10 +1,8 @@
 export const createItem = (state) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
-
     const createdById = getState().firebase.auth.uid;
-    const createdBy = profile.firstName + " " + profile.lastName;
+    const createdBy = getState().firebase.auth.displayName;
     const parentDocRef = firestore.collection("items").doc();
     parentDocRef
       .set({
@@ -25,9 +23,8 @@ export const createItem = (state) => {
 export const editItem = (item) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
     const editedById = getState().firebase.auth.uid;
-    const editedBy = profile.firstName + " " + profile.lastName;
+    const editedBy = getState().firebase.auth.displayName;
     const docRef = firestore.collection("items").doc(item.itemId);
     const { itemId, ...rest } = item;
     docRef

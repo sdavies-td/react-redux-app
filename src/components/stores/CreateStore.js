@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { createStore } from "../../store/actions/storeActions";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Paper, Button, TextField } from "@material-ui/core";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Places from "../utils/Places";
 import { themeStyles } from "../../theme";
 
@@ -35,8 +35,7 @@ class CreateStore extends Component {
     this.props.history.push("/stores");
   };
   render() {
-    const { auth, classes } = this.props;
-    if (!auth.uid) return <Redirect to="/auth/signin" />;
+    const { classes } = this.props;
     return (
       <Grid className={classes.root}>
         <Grid className={classes.header}>

@@ -8,9 +8,9 @@ import {
   Menu,
   MenuItem,
   Typography,
+  Avatar,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -27,10 +27,10 @@ const SignedInLinks = (props) => {
     setAnchorEl(null);
   };
   const classes = useStyles();
-  const { profile, state, handleLoad } = props;
-  const { firstName, lastName } = profile;
+  const { auth, state, handleLoad } = props;
   const { variant, color } = state;
   const { navLinksRow, navLinkItem } = classes;
+
   return (
     <Grid item className={navLinksRow}>
       <Grid className={navLinkItem}>
@@ -87,7 +87,7 @@ const SignedInLinks = (props) => {
         color={color.profile}
         onClick={handleClick}
       >
-        <AccountCircleIcon />
+        <Avatar src={auth.photoURL} />
       </IconButton>
       <Menu
         id="menu"
@@ -105,7 +105,7 @@ const SignedInLinks = (props) => {
           component={Link}
           to="/profile"
         >
-          <Typography>{firstName + " " + lastName}</Typography>
+          <Typography>{auth.displayName}</Typography>
         </MenuItem>
         <MenuItem
           id="signOut"
@@ -114,7 +114,7 @@ const SignedInLinks = (props) => {
             handleLoad(e);
           }}
           component={Link}
-          to="/auth/signin"
+          to="/auth"
         >
           Logout
         </MenuItem>
