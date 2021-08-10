@@ -16,12 +16,7 @@ const Navbar = (props) => {
   const { navbarRoot, navBarTitle, toolbar } = classes;
   const { auth, state, handleLoad, location } = props;
   const links = auth.uid ? (
-    <SignedInLinks
-      auth={auth}
-      handleLoad={handleLoad}
-      state={state}
-      location={location}
-    />
+    <SignedInLinks auth={auth} />
   ) : (
     <SignedOutLinks handleLoad={handleLoad} state={state} location={location} />
   );

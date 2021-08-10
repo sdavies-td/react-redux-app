@@ -16,7 +16,6 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-//import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import EditIcon from "@material-ui/icons/Edit";
 
 const OrderList = ({ orders, classes }) => {

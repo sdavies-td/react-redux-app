@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authActions";
 import {
@@ -19,7 +19,7 @@ import { themeStyles } from "../../theme";
 const useStyles = makeStyles(themeStyles);
 
 const SignedInLinks = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -27,10 +27,48 @@ const SignedInLinks = (props) => {
     setAnchorEl(null);
   };
   const classes = useStyles();
-  const { auth, state, handleLoad } = props;
-  const { variant, color } = state;
+  const { auth } = props;
   const { navLinksRow, navLinkItem } = classes;
-
+  const initialVariant = {
+    orders: "outlined",
+    items: "outlined",
+    customers: "outlined",
+    stores: "outlined",
+    profile: "outlined",
+  };
+  const initialColor = {
+    orders: "default",
+    items: "default",
+    customers: "default",
+    stores: "default",
+    profile: "default",
+  };
+  const [variant, setVariant] = useState(initialVariant);
+  const [color, setColor] = useState(initialColor);
+  useEffect(() => {
+    const path = window.location.pathname.split("/")[1];
+    var tempVariant = initialVariant;
+    delete tempVariant[path];
+    var tempColor = initialColor;
+    delete tempColor[path];
+    setColor({ ...tempColor, [path]: "primary" });
+    setVariant({ ...tempVariant, [path]: "contained" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const setButtonStyle = (e) => {
+    const path = e.target.innerHTML;
+    if (path === auth.displayName) {
+      setColor(initialColor);
+      setVariant(initialVariant);
+    } else {
+      var tempVariant = initialVariant;
+      delete tempVariant[path];
+      var tempColor = initialColor;
+      delete tempColor[path];
+      setColor({ ...tempColor, [path]: "primary" });
+      setVariant({ ...tempVariant, [path]: "contained" });
+    }
+  };
   return (
     <Grid item className={navLinksRow}>
       <Grid className={navLinkItem}>
@@ -40,9 +78,11 @@ const SignedInLinks = (props) => {
           color={color.orders}
           component={Link}
           to="/orders"
-          onClick={handleLoad}
+          onClick={(e) => {
+            setButtonStyle(e);
+          }}
         >
-          Orders
+          orders
         </Button>
       </Grid>
       <Grid className={navLinkItem}>
@@ -52,9 +92,11 @@ const SignedInLinks = (props) => {
           color={color.items}
           component={Link}
           to="/items"
-          onClick={handleLoad}
+          onClick={(e) => {
+            setButtonStyle(e);
+          }}
         >
-          Items
+          items
         </Button>
       </Grid>
       <Grid className={navLinkItem}>
@@ -64,9 +106,11 @@ const SignedInLinks = (props) => {
           color={color.customers}
           component={Link}
           to="/customers"
-          onClick={handleLoad}
+          onClick={(e) => {
+            setButtonStyle(e);
+          }}
         >
-          Customers
+          customers
         </Button>
       </Grid>
       <Grid className={navLinkItem}>
@@ -76,17 +120,14 @@ const SignedInLinks = (props) => {
           color={color.stores}
           component={Link}
           to="/stores"
-          onClick={handleLoad}
+          onClick={(e) => {
+            setButtonStyle(e);
+          }}
         >
-          Stores
+          stores
         </Button>
       </Grid>
-      <IconButton
-        id="profile"
-        variant={variant.profile}
-        color={color.profile}
-        onClick={handleClick}
-      >
+      <IconButton id="profile" onClick={handleClick}>
         <Avatar src={auth.photoURL} />
       </IconButton>
       <Menu
@@ -98,9 +139,11 @@ const SignedInLinks = (props) => {
       >
         <MenuItem
           id="profile"
+          variant={variant.profile}
+          color={color.profile}
           onClick={(e) => {
             handleClose(e);
-            handleLoad(e);
+            setButtonStyle(e);
           }}
           component={Link}
           to="/profile"
@@ -111,12 +154,10 @@ const SignedInLinks = (props) => {
           id="signOut"
           onClick={(e) => {
             props.signOut(e);
-            handleLoad(e);
+            window.location.href = "/";
           }}
-          component={Link}
-          to="/auth"
         >
-          Logout
+          Log Out
         </MenuItem>
       </Menu>
     </Grid>
