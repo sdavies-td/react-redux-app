@@ -3,12 +3,12 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const fbConfig = {
-  apiKey: "AIzaSyANQdv8k-lk8ls_-K9dFQJ6yHw6UIxD2Qg",
-  authDomain: "pk-customer-orders.firebaseapp.com",
-  projectId: "pk-customer-orders",
-  storageBucket: "pk-customer-orders.appspot.com",
-  messagingSenderId: "245193408999",
-  appId: "1:245193408999:web:7e0ee95d944ef084e0bd42",
+  apiKey: "SET_API_KEY",
+  authDomain: "SET_AUTH_DOMAIN",
+  projectId: "SET_PROJECT_ID",
+  storageBucket: "SET_STORAGE_BUCKET",
+  messagingSenderId: "SET_MESSAGE_SENDER_ID",
+  appId: "SET_APP_ID",
 };
 
 firebase.initializeApp(fbConfig);
